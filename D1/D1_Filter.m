@@ -122,7 +122,7 @@ h_tx_reshape = reshape(h_tx_initial_shape, 4, [])';
 h_tx_scale_factor = max(sum(abs(h_tx_reshape))); % get max value
 
 h_srrc_tx_scld = h_srrc_tx/h_tx_scale_factor;
-h_srrc_tx_scld_verilog = round(h_srrc_tx_scld*2^17);
+h_srrc_tx_scld_verilog = round(h_srrc_tx_scld*2^17); % coeff fits into 1s17 number
 
 % freq response
 H_srrc_tx = freqz(h_srrc_tx_scld, 1, 2*pi*f); % need to ask about freqz as it may not be helpful
