@@ -4,6 +4,7 @@
 # symbols = [0, 1 , 0.6666666666666666, -0.6666666666666666, -1]
 symbols = [0, 3, 1, -1, -3]
 # symbols = [0, 2, 1, -1, -2]
+# symbols = [0, 1, 1/3, -1/3, -1]
 # print(symbols)
 
 def LUT_inputs (symb_list:list)-> list:
@@ -123,24 +124,24 @@ def generate_lut_case_statement(lut_num: int, lut_inpt_list: list, LUT_dict: dic
         # print(val)
         # print(lut_inpt_list)
         if lut_inpt_list[val] < 0:
-            lut_file.write(f"\t\t-{num_add_bits}'d{abs(lut_inpt_list[val])} \t\t:")
+            lut_file.write(f"\t\t-{num_add_bits}'d{abs(lut_inpt_list[val]):<6} :")
             #check negative coeff output
 
             if LUT_dict[f'LUT_{lut_num}'][val] < 0:
 
-                lut_file.write(f"\t\t LUT_out[{lut_num}] = -{num_lt_bits}'d{abs(LUT_dict[f'LUT_{lut_num}'][val])};\n")
+                lut_file.write(f"\tLUT_out{str([lut_num]):<4} = -{num_lt_bits}'d{abs(LUT_dict[f'LUT_{lut_num}'][val])};\n")
             else:
-                lut_file.write(f"\t\t LUT_out[{lut_num}] = {num_lt_bits}'d{LUT_dict[f'LUT_{lut_num}'][val]};\n")
+                lut_file.write(f"\tLUT_out{str([lut_num]):<4} = {num_lt_bits}'d{LUT_dict[f'LUT_{lut_num}'][val]};\n")
                 
         # for postive values    
         else:
-            lut_file.write(f"\t\t{num_add_bits}'d{lut_inpt_list[val]} \t\t:")
+            lut_file.write(f"\t\t{num_add_bits} 'd{lut_inpt_list[val]:<6} :")
             #check negative coeff output
             if LUT_dict[f'LUT_{lut_num}'][val] < 0:
-                lut_file.write(f"\t\t LUT_out[{lut_num}] = -{num_lt_bits}'d{abs(LUT_dict[f'LUT_{lut_num}'][val])};\n")
+                lut_file.write(f"\tLUT_out{str([lut_num]):<4} = -{num_lt_bits}'d{abs(LUT_dict[f'LUT_{lut_num}'][val])};\n")
             else:
-                lut_file.write(f"\t\t LUT_out[{lut_num}] = {num_lt_bits}'d{LUT_dict[f'LUT_{lut_num}'][val]};\n")
-    lut_file.write(f"\t\tdefault \t\t: LUT_out[{lut_num}] = {num_lt_bits}'d0;\n")
+                lut_file.write(f"\tLUT_out{str([lut_num]):<4} = {num_lt_bits}'d{LUT_dict[f'LUT_{lut_num}'][val]};\n")
+    lut_file.write(f"\t\tdefault{':':>6}\tLUT_out{str([lut_num]):<4} = {num_lt_bits}'d0;\n")
     lut_file.write(f"\tendcase\n")
     lut_file.write(f"end\n\n")
 
@@ -222,15 +223,22 @@ def generate_filter_script(base_file_name: str, new_file_name:str, num_LUT_bits:
 in_val_verilog = convert_to_verilog(symbols, 16)
 print(in_val_verilog)
 
+# hex_val = []
+# for i in in_val_verilog:
+#     hex_val.append(int(hex(i),16))
+# print(hex_val)
+# print(type(0x5F))
 lut_inpt_verilog = LUT_inputs(in_val_verilog)
+# lut_inpt_verilog = LUT_inputs(hex_val)
 print(lut_inpt_verilog)
 
 coeff_list = get_coeff_from_txt("Coeff4Python.txt")
-print(coeff_list)
+# print(coeff_list)
 
 LUTs = LUT_outputs(symbols, coeff_list, 3, 16)
-# print(LUTs["LUT_0"])
-print(LUTs)
+# # print(LUTs["LUT_0"])
+# print(LUTs)
+
 
 generate_filter_script("srrc_filter_base_template.v", "srrc_filter_Luts.v", 37, 19, symbols, coeff_list, 17, 3)
             
