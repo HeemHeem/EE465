@@ -2,9 +2,10 @@
 # import numpy as np
 # parameters
 # symbols = [0, 1 , 0.6666666666666666, -0.6666666666666666, -1]
-symbols = [0, 3, 1, -1, -3]
+# symbols = [0, 3, 1, -1, -3]
 # symbols = [0, 2, 1, -1, -2]
 # symbols = [0, 1, 1/3, -1/3, -1]
+symbols = [0,3/4, 1/4, -1/4, -3/4]
 # print(symbols)
 
 def LUT_inputs (symb_list:list)-> list:
@@ -205,7 +206,7 @@ def generate_filter_script(base_file_name: str, new_file_name:str, num_LUT_bits:
             
 
 
-
+# generate case statement to check range?
                                             
                         
                                                 
@@ -220,18 +221,19 @@ def generate_filter_script(base_file_name: str, new_file_name:str, num_LUT_bits:
                     
 
 
-in_val_verilog = convert_to_verilog(symbols, 16)
+# in_val_verilog = convert_to_verilog(symbols, 16)
+in_val_verilog = symbols
 print(in_val_verilog)
 
-# hex_val = []
-# for i in in_val_verilog:
-#     hex_val.append(int(hex(i),16))
-# print(hex_val)
+
 # print(type(0x5F))
 lut_inpt_verilog = LUT_inputs(in_val_verilog)
 # lut_inpt_verilog = LUT_inputs(hex_val)
 print(lut_inpt_verilog)
-
+# hex_val = []
+# for i in lut_inpt_verilog:
+#     hex_val.append(hex(i))
+# print(hex_val)
 coeff_list = get_coeff_from_txt("Coeff4Python.txt")
 # print(coeff_list)
 
