@@ -3,6 +3,7 @@
 # parameters
 # symbols = [0, 1 , 0.6666666666666666, -0.6666666666666666, -1]
 symbols = [0, 3, 1, -1, -3]
+# symbols = [0, 2, 1, -1, -2]
 # print(symbols)
 
 def LUT_inputs (symb_list:list)-> list:
@@ -103,13 +104,119 @@ def LUT_outputs(symb_list: list, coeff_list_verilog:list, scale_factor: int, fra
 # TODO: write to verilog file with the list of coefficients needed. Also need to fix last LUT as it only requires the initial input values and no the combination
 # print(LUT_inputs(symbols))
 
-def generate_filter_script(LUT_Outputs:dict, file_name: str) -> None:
-    """ Write write LUT case statements to existing verilog filter script.
+def generate_lut_case_statement(lut_num: int, lut_inpt_list: list, LUT_dict: dict, lut_file, num_add_bits: int, num_lt_bits: int) -> None:
+    """ Write case statement for LUT outputs to file object
 
     Args:
-        LUT_Outputs (dict): dictionary of LUT outputs
-        file_name (str): name of existing verilog filter file
+        lut_num (int): the LUT number
+        lut_inpt_list (list): list of inputs for the LUT
+        LUT_dict (dict): LUT output dictionary
+        lut_file (TextIOWrapper): file object to be written to
+        num_add_bits (int): number of adder bits
+        num_lt_bits (int): number of bits needed for LUT
     """
+    lut_file.write(f"\tcase(sum_level_1[{lut_num}])\n")
+    
+    # loop through adder output vals and map to coefficient
+    for val in range(0,len(lut_inpt_list)):
+        #check negative input value
+        # print(val)
+        # print(lut_inpt_list)
+        if lut_inpt_list[val] < 0:
+            lut_file.write(f"\t\t-{num_add_bits}'d{abs(lut_inpt_list[val])} \t\t:")
+            #check negative coeff output
+
+            if LUT_dict[f'LUT_{lut_num}'][val] < 0:
+
+                lut_file.write(f"\t\t LUT_out[{lut_num}] = -{num_lt_bits}'d{abs(LUT_dict[f'LUT_{lut_num}'][val])};\n")
+            else:
+                lut_file.write(f"\t\t LUT_out[{lut_num}] = {num_lt_bits}'d{LUT_dict[f'LUT_{lut_num}'][val]};\n")
+                
+        # for postive values    
+        else:
+            lut_file.write(f"\t\t{num_add_bits}'d{lut_inpt_list[val]} \t\t:")
+            #check negative coeff output
+            if LUT_dict[f'LUT_{lut_num}'][val] < 0:
+                lut_file.write(f"\t\t LUT_out[{lut_num}] = -{num_lt_bits}'d{abs(LUT_dict[f'LUT_{lut_num}'][val])};\n")
+            else:
+                lut_file.write(f"\t\t LUT_out[{lut_num}] = {num_lt_bits}'d{LUT_dict[f'LUT_{lut_num}'][val]};\n")
+    lut_file.write(f"\t\tdefault \t\t: LUT_out[{lut_num}] = {num_lt_bits}'d0;\n")
+    lut_file.write(f"\tendcase\n")
+    lut_file.write(f"end\n\n")
+
+
+
+
+def generate_filter_script(base_file_name: str, new_file_name:str, num_LUT_bits: int, num_adder_bits: int, symb_list:list,coeff_list: list, 
+                           num_symb_frac_bits:int, scale_factor: int) -> None:
+    """Generate new verilog filter file with LUTs instead of multipliers from a verilog base template
+
+    Args:
+        base_file_name (str): base template verilog file name
+        new_file_name (str): new verilog filter file name
+        num_LUT_bits (int): number of bits needed for LUT outputs
+        num_adder_bits (int): number of bits needed for adder output that will be going into LUT
+        symb_list (list): initial symbols in decimal format
+        coeff_list (list): coefficient list in verilog format
+        num_symb_frac_bits (int): number of fractional bits needed to represent input symbols in verilog format
+        scale_factor (int): scaling factor required for scaling down inputs as python doesn't hand fractions well
+    """
+    
+    # get LUT parameters
+    initial_symb_verilog = convert_to_verilog(symb_list, num_symb_frac_bits)
+    initial_symb_verilog_scaled = []
+    
+    # scale down initial symbols
+    for val in initial_symb_verilog:    
+        initial_symb_verilog_scaled.append(round(val/scale_factor))
+        
+    
+    LUT_input_verilog = LUT_inputs(initial_symb_verilog)
+    LUT_input_verilog_scaled = []
+    for val in LUT_input_verilog:    
+        LUT_input_verilog_scaled.append(round(val/scale_factor))
+    
+    #t get LUT output dictionary
+    LUT = LUT_outputs(symb_list, coeff_list, scale_factor, num_symb_frac_bits)
+    
+    # copy contents of base file into new file
+    with open(base_file_name, 'r') as base_file, open(new_file_name, 'w') as new_file:
+        for line in base_file:
+            new_file.write(line)
+            
+    # write Lut outputs to new file
+    with open(new_file_name, "a") as lut_file:
+        
+        # loop through dictionary and write coefficient outputs to LUT outputs
+        for lut_num in range(0, len(LUT)):
+            lut_file.write(f"// LUT_{lut_num} \n")
+            lut_file.write("\nalways @ *\n")
+            lut_file.write("begin\n")
+            
+            # for the middle coefficient
+            if lut_num == len(LUT) - 1:
+                generate_lut_case_statement(lut_num, initial_symb_verilog_scaled, LUT, lut_file, num_adder_bits, num_LUT_bits)
+
+            else:
+                generate_lut_case_statement(lut_num, LUT_input_verilog, LUT, lut_file, num_adder_bits, num_LUT_bits)
+        lut_file.write("\nendmodule")
+                
+            
+
+
+
+                                            
+                        
+                                                
+                    
+                    
+            
+            
+            
+            
+        
+        
+                    
 
 
 in_val_verilog = convert_to_verilog(symbols, 16)
@@ -125,5 +232,5 @@ LUTs = LUT_outputs(symbols, coeff_list, 3, 16)
 # print(LUTs["LUT_0"])
 print(LUTs)
 
-
+generate_filter_script("srrc_filter_base_template.v", "srrc_filter_Luts.v", 37, 19, symbols, coeff_list, 17, 3)
             
