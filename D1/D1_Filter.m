@@ -133,6 +133,7 @@ H_srrc_tx_not_scaled = freqz(h_srrc_tx, 1, 2*pi*f);
 % rx is just h_srrc
 h_srrc_rx = rcosdesign(beta_rx, Nsymb_srrc, Nsps, "sqrt");
 h_srrc_rx_scld = h_srrc_rx/sum(abs(h_srrc_rx));
+h_srrc_rx_scld_verilog = round(h_srrc_rx_scld * 2^18); %0s18 number
 H_srrc_rx = freqz(h_srrc_rx_scld, 1, 2*pi*f);
 
 figure(4)
