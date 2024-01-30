@@ -29,10 +29,10 @@ vlib rtl_work
 vmap work rtl_work
 
 # compile source files
+vlog -sv -work work ${SOURCE_DIR}/tx_filter_with_mult.v
 vlog -sv -work work ${SOURCE_DIR}/tbench.sv
-vlog -sv -work work ${SOURCE_DIR}/tx_filter_with_mult.sv
-# vlog -sv -work work ${SOURCE_DIR}/tx_filter_with_Luts.sv
-# vlog -sv -work work ${SOURCE_DIR}/rx_filter_with_mult.sv
+# vlog -sv -work work ${SOURCE_DIR}/tx_filter_with_Luts.v
+# vlog -sv -work work ${SOURCE_DIR}/rx_filter_with_mult.v
 
 
 
