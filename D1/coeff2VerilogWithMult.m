@@ -18,7 +18,7 @@ function coeff2VerilogWithMult(b_n, bits, template_fileName, new_fileName)
     for i = 1:half_length
         idx = i-1;
         if b(i) < 0 % check for negative
-            fprintf(fid, "\tb[%d] = -%d'sd %d;\n", idx, bits, b(i));
+            fprintf(fid, "\tb[%d] = -%d'sd %d;\n", idx, bits, abs(b(i)));
         else
             fprintf(fid, "\tb[%d] = %d'sd %d;\n", idx, bits, b(i));
         end
