@@ -58,9 +58,9 @@ if (reset)
         sum_out[i] = 18'sd 0;
 else
     begin
-        sum_out[0] = LUT_out[0][35:18] + LUT_out[1][35:18];
+        sum_out[0] = LUT_out[0][34:17] + LUT_out[1][34:17];
         for(i = 0; i <=8 ; i=i+1)
-            sum_out[i+1] <= sum_out[i] + LUT_out[i+2][35:18]; 
+            sum_out[i+1] <= sum_out[i] + LUT_out[i+2][34:17]; 
     end
     
 
@@ -86,7 +86,7 @@ begin
 	b[8] = 18'sd 55379;
 	b[9] = 18'sd 87688;
 	b[10] = 18'sd 100745;
-end
+	end
 
 initial
 begin
@@ -101,11 +101,5 @@ begin
 	b[8] = 18'sd 55379;
 	b[9] = 18'sd 87688;
 	b[10] = 18'sd 100745;
-end
-
-
-
-
-
-
+	end
 endmodule

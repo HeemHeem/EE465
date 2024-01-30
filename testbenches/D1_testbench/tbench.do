@@ -43,7 +43,7 @@ vlog -sv -work work ${TB_DIR}/${TB_MODULE}.sv
 # initialize simulation
 # add other libraries if necessary with -L lib_name
 # if simulating megafunctions, add libraries specified by Quartus
-vsim -t 1ns -L work ${TB_MODULE}
+vsim -voptargs="+acc" -t 1ns -L work ${TB_MODULE}
 
 # open waveform viewer and populate with saved list of signals
 do wave.do
