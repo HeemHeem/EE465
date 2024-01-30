@@ -1,4 +1,4 @@
-module srrc_filter( input clk, reset,
+module tx_filter_with_mult( input clk, reset,
 							input [1:0] sw,
                     input signed [17:0] x_in, //1s17
                     output reg signed [17:0] y); //1s17);
@@ -45,11 +45,11 @@ always @ *
 
 
 // multiply by coefficients
-// always @ *
-// begin
-//     for(i=0; i <= 10; i=i+1)
-//     mult_out[i] <= sum_level_1[i] * b[i]; 
-// end
+always @ *
+begin
+    for(i=0; i <= 10; i=i+1)
+    LUT_out[i] <= sum_level_1[i] * b[i]; 
+end
 
 // sum up mutlipliers
 always @ *
@@ -78,13 +78,34 @@ begin
 	b[0] = 18'sd 911;
 	b[1] = 18'sd 2137;
 	b[2] = 18'sd 1732;
-	b[3] = -18'sd -2384;
-	b[4] = -18'sd -9246;
-	b[5] = -18'sd -12898;
-	b[6] = -18'sd -4792;
+	b[3] = -18'sd 2384;
+	b[4] = -18'sd 9246;
+	b[5] = -18'sd 12898;
+	b[6] = -18'sd 4792;
 	b[7] = 18'sd 19698;
 	b[8] = 18'sd 55379;
 	b[9] = 18'sd 87688;
 	b[10] = 18'sd 100745;
-	end
+end
+
+initial
+begin
+	b[0] = 18'sd 911;
+	b[1] = 18'sd 2137;
+	b[2] = 18'sd 1732;
+	b[3] = -18'sd 2384;
+	b[4] = -18'sd 9246;
+	b[5] = -18'sd 12898;
+	b[6] = -18'sd 4792;
+	b[7] = 18'sd 19698;
+	b[8] = 18'sd 55379;
+	b[9] = 18'sd 87688;
+	b[10] = 18'sd 100745;
+end
+
+
+
+
+
+
 endmodule
