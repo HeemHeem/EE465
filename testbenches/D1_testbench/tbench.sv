@@ -107,7 +107,7 @@ always @ (posedge clk)
     count++;
 
 // Instantiate device under test (DUT)
-srrc_filter test_inst (
+tx_filter_with_mult test_inst (
   // clocks and resets
   .clk(clk),
   .reset(reset),
