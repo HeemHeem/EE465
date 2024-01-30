@@ -115,14 +115,20 @@ h_srrc_tx = h_srrc .* wn_kaiser.';
 % upsampled, so turn the coefficients into an nx4 (row x column) matrix
 % then sum each column and use max value to scale.
 
-% make room for h_srrc_tx reshaping
-h_tx_initial_shape = zeros(1,24);
-h_tx_initial_shape(1:length(h_srrc_tx)) = h_srrc_tx; 
-h_tx_reshape = reshape(h_tx_initial_shape, 4, [])'; 
-h_tx_scale_factor = max(sum(abs(h_tx_reshape))); % get max value
 
-h_srrc_tx_scld = h_srrc_tx/h_tx_scale_factor;
+% make room for h_srrc_tx reshaping
+h_tx_initial_shape = zeros(1,24)
+h_tx_initial_shape(1:length(h_srrc_tx)) = h_srrc_tx 
+h_tx_reshape = reshape(h_tx_initial_shape, 4, [])' 
+h_tx_scale_factor = max(sum(abs(h_tx_reshape))); % get max value
+%h_tx_scale_factor = sum(abs(h_srrc_tx));
+
+h_srrc_tx_scld = h_srrc_tx/h_tx_scale_factor
 h_srrc_tx_scld_verilog = round(h_srrc_tx_scld*2^17); % coeff fits into 1s17 number
+
+h_srrc_tx_upsampled = upsample(h_srrc_tx_scld,4);
+figure(10)
+freqz(h_srrc_tx_upsampled,1, 2*pi*f)
 
 % freq response
 H_srrc_tx = freqz(h_srrc_tx_scld, 1, 2*pi*f); % need to ask about freqz as it may not be helpful
