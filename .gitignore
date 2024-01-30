@@ -1,0 +1,9 @@
+testbenches/D1_testbench/modelsim.ini
+testbenches/D1_testbench/rtl_work/_info
+testbenches/D1_testbench/rtl_work/_lib.qdb
+testbenches/D1_testbench/rtl_work/_lib1_0.qdb
+testbenches/D1_testbench/rtl_work/_lib1_0.qpg
+testbenches/D1_testbench/rtl_work/_lib1_0.qtl
+testbenches/D1_testbench/rtl_work/_vmake
+testbenches/D1_testbench/vsim.wlf
+testbenches/D1_testbench/wave.do
