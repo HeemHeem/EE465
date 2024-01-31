@@ -120,15 +120,15 @@ h_srrc_tx = h_srrc .* wn_kaiser.';
 h_tx_initial_shape = zeros(1,24)
 h_tx_initial_shape(1:length(h_srrc_tx)) = h_srrc_tx 
 h_tx_reshape = reshape(h_tx_initial_shape, 4, [])' 
-h_tx_scale_factor = max(sum(abs(h_tx_reshape))); % get max value
-%h_tx_scale_factor = sum(abs(h_srrc_tx));
+% h_tx_scale_factor = max(sum(abs(h_tx_reshape))); % get max value
+h_tx_scale_factor = sum(abs(h_srrc_tx));
 
 h_srrc_tx_scld = h_srrc_tx/h_tx_scale_factor
 h_srrc_tx_scld_verilog = round(h_srrc_tx_scld*2^17); % coeff fits into 1s17 number
 
-h_srrc_tx_upsampled = upsample(h_srrc_tx_scld,4);
-figure(10)
-freqz(h_srrc_tx_upsampled,1, 2*pi*f)
+% h_srrc_tx_upsampled = upsample(h_srrc_tx_scld,4);
+% figure(10)
+% freqz(h_srrc_tx_upsampled,1, 2*pi*f)
 
 % freq response
 H_srrc_tx = freqz(h_srrc_tx_scld, 1, 2*pi*f); % need to ask about freqz as it may not be helpful
@@ -154,7 +154,7 @@ grid;
 
 % convolve filters to get rc
 h_rc_practical = conv(h_srrc_tx_scld, h_srrc_rx_scld);
-
+H_rc_practical_to_verilog = h_rc_practical*2^17;
 % find idx of peak val
 Peak_idx = (length(h_rc_practical)-1)/2 + 1; 
 P_avg_sig = abs(h_rc_practical(Peak_idx))^2;
