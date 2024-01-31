@@ -1,4 +1,4 @@
-module srrc_filter( input clk, reset,
+module rx_filter_with_mult( input clk, reset,
 							input [1:0] sw,
                     input signed [17:0] x_in, //1s17
                     output reg signed [17:0] y); //1s17);
@@ -45,11 +45,11 @@ always @ *
 
 
 // multiply by coefficients
-// always @ *
-// begin
-//     for(i=0; i <= 10; i=i+1)
-//     mult_out[i] <= sum_level_1[i] * b[i]; 
-// end
+always @ *
+begin
+    for(i=0; i <= 10; i=i+1)
+    LUT_out[i] <= sum_level_1[i] * b[i]; 
+end
 
 // sum up mutlipliers
 always @ *
@@ -78,13 +78,30 @@ begin
 	b[0] = 18'sd 2817;
 	b[1] = 18'sd 4060;
 	b[2] = 18'sd 2289;
-	b[3] = -18'sd -2373;
-	b[4] = -18'sd -7348;
-	b[5] = -18'sd -8574;
-	b[6] = -18'sd -2772;
+	b[3] = -18'sd 2373;
+	b[4] = -18'sd 7348;
+	b[5] = -18'sd 8574;
+	b[6] = -18'sd 2772;
 	b[7] = 18'sd 10263;
 	b[8] = 18'sd 26830;
 	b[9] = 18'sd 40696;
 	b[10] = 18'sd 46096;
 	end
+
+
+initial
+begin
+	b[0] = 18'sd 2817;
+	b[1] = 18'sd 4060;
+	b[2] = 18'sd 2289;
+	b[3] = -18'sd 2373;
+	b[4] = -18'sd 7348;
+	b[5] = -18'sd 8574;
+	b[6] = -18'sd 2772;
+	b[7] = 18'sd 10263;
+	b[8] = 18'sd 26830;
+	b[9] = 18'sd 40696;
+	b[10] = 18'sd 46096;
+	end
+
 endmodule

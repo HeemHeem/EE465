@@ -80,7 +80,10 @@ integer file_in;
 
 initial
 begin
+  // file_in = $fopen("impulse_lut.txt", "r");
   file_in = $fopen("impulse_input.txt", "r");
+  // file_in = $fopen("impulse_3_zero.txt", "r");
+
 end
 
 always @ (posedge clk)
@@ -107,7 +110,34 @@ always @ (posedge clk)
     count++;
 
 // Instantiate device under test (DUT)
-tx_filter_with_mult test_inst (
+// tx_filter_with_mult test_inst (
+//   // clocks and resets
+//   .clk(clk),
+//   .reset(reset),
+  
+//   // inputs
+//   .x_in(x_in),
+  
+//   //outputs
+//   .y(y)
+
+// );
+
+// tx_filter_with_luts test_inst (
+//   // clocks and resets
+//   .clk(clk),
+//   .reset(reset),
+  
+//   // inputs
+//   .x_in(x_in),
+  
+//   //outputs
+//   .y(y)
+
+// );
+
+
+rx_filter_with_mult test_inst (
   // clocks and resets
   .clk(clk),
   .reset(reset),
