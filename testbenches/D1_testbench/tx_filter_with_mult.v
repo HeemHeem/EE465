@@ -10,7 +10,7 @@ integer  i;
 reg signed [17:0] x[20:0]; // for 21 coefficients
 reg signed [18:0] sum_level_1[10:0];
 reg signed [17:0] sum_out[9:0];
-reg signed [36:0] LUT_out[10:0]; // 1s35 but changed to 2s35
+reg signed [36:0] mult_out[10:0]; // 1s35 but changed to 2s35
 reg signed [17:0] b[10:0]; // coefficients
 
 always @ (posedge clk or posedge reset)
@@ -48,7 +48,7 @@ always @ *
 always @ *
 begin
     for(i=0; i <= 10; i=i+1)
-    LUT_out[i] <= sum_level_1[i] * b[i]; 
+    mult_out[i] <= sum_level_1[i] * b[i]; 
 end
 
 // sum up mutlipliers
@@ -58,9 +58,9 @@ if (reset)
         sum_out[i] = 18'sd 0;
 else
     begin
-        sum_out[0] = LUT_out[0][34:17] + LUT_out[1][34:17];
+        sum_out[0] = mult_out[0][35:18] + mult_out[1][35:18];
         for(i = 0; i <=8 ; i=i+1)
-            sum_out[i+1] <= sum_out[i] + LUT_out[i+2][34:17]; 
+            sum_out[i+1] <= sum_out[i] + mult_out[i+2][35:18]; 
     end
     
 
@@ -75,31 +75,31 @@ always @ (posedge clk or posedge reset)
 
 always @ *
 begin
-	b[0] = 18'sd 242;
-	b[1] = 18'sd 566;
-	b[2] = 18'sd 459;
-	b[3] = -18'sd 632;
-	b[4] = -18'sd 2451;
-	b[5] = -18'sd 3419;
-	b[6] = -18'sd 1270;
-	b[7] = 18'sd 5221;
-	b[8] = 18'sd 14679;
-	b[9] = 18'sd 23244;
-	b[10] = 18'sd 26705;
+	b[0] = 18'sd 319;
+	b[1] = 18'sd 1660;
+	b[2] = 18'sd 2257;
+	b[3] = 18'sd 266;
+	b[4] = -18'sd 4341;
+	b[5] = -18'sd 8124;
+	b[6] = -18'sd 5432;
+	b[7] = 18'sd 7333;
+	b[8] = 18'sd 27596;
+	b[9] = 18'sd 46573;
+	b[10] = 18'sd 54343;
 	end
 
 initial
 begin
-	b[0] = 18'sd 242;
-	b[1] = 18'sd 566;
-	b[2] = 18'sd 459;
-	b[3] = -18'sd 632;
-	b[4] = -18'sd 2451;
-	b[5] = -18'sd 3419;
-	b[6] = -18'sd 1270;
-	b[7] = 18'sd 5221;
-	b[8] = 18'sd 14679;
-	b[9] = 18'sd 23244;
-	b[10] = 18'sd 26705;
+	b[0] = 18'sd 319;
+	b[1] = 18'sd 1660;
+	b[2] = 18'sd 2257;
+	b[3] = 18'sd 266;
+	b[4] = -18'sd 4341;
+	b[5] = -18'sd 8124;
+	b[6] = -18'sd 5432;
+	b[7] = 18'sd 7333;
+	b[8] = 18'sd 27596;
+	b[9] = 18'sd 46573;
+	b[10] = 18'sd 54343;
 	end
 endmodule
