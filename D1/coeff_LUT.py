@@ -71,8 +71,7 @@ def get_coeff_from_txt(txt_file: str) -> list:
         
 
 def LUT_outputs(symb_list: list, coeff_list_verilog:list, frac_bits: int) -> dict:
-    """Generate a dictionary of lists for the possible verilog LUT outputs based on filter coefficients
-        also scale down by a factor due to python not handling fractions well. so scale down by the input scaling
+    """Generate a dictionary of lists for the possible verilog LUT outputs based on filter coefficients.
         Reminder, the middle coefficient only needs the initial inputs, not the combo
 
     Args:
@@ -257,10 +256,10 @@ print(lut_inpt_verilog)
 coeff_list = get_coeff_from_txt("lut_coefficient.txt")
 print(coeff_list)
 
-LUTs = LUT_outputs(symbols, coeff_list, 3, 16)
+# LUTs = LUT_outputs(symbols, coeff_list, 3, 16)
 # # print(LUTs["LUT_0"])
 # print(LUTs)
 
 
-generate_filter_script("srrc_filter_base_template.v", "srrc_filter_Luts.v", 37, 19, symbols, coeff_list, 17)
+generate_filter_script("srrc_filter_LUT_base_template.v", "srrc_filter_Luts.v", 37, 19, symbols, coeff_list, 17)
             
