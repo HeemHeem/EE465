@@ -25,7 +25,8 @@ Nsymb_rc = 10; % number of symbols
 N_rc = 41; % length of RC
 
 %%%%%%%%%%%%%%%%% Sampling Vectors %%%%%%%%%%%%%%%%%
-Fs = 25*10^6; % 25MHz sampling
+% Fs = 25*10^6; % 25MHz sampling
+Fs = 1;
 
 f_c = 1/2/Nsps; % 6dB downpoint for rc and 3db for srrc
 
@@ -69,10 +70,12 @@ grid
 
 % find and plot the impulse response
 % impulse response of rc filter
-h_rc = rcosdesign(beta_tx, Nsymb_rc, Nsps, "normal");
+% h_rc = rcosdesign(beta_tx, Nsymb_rc, Nsps, "normal");
+h_rc = firrcos(N_rc-1, Fs/8, beta_tx, Fs, 'rolloff');
 
 % impulse response of srrc filter
-h_srrc = rcosdesign(beta_tx, Nsymb_srrc, Nsps, "sqrt");
+% h_srrc = rcosdesign(beta_tx, Nsymb_srrc, Nsps, "sqrt");
+h_srrc = firrcos(N_srrc-1, Fs/8, beta_tx, Fs, 'rolloff', 'sqrt');
 
 % PLOTS
 figure(2)
@@ -104,10 +107,10 @@ else
     beta_kaiser = 0.5842*(A-21)^0.4 + 0.07886*(A-21);
 end
 
-wn_kaiser = kaiser(M_srrc+1,1.5);
+wn_kaiser = kaiser(M_srrc+1,2.46831);
 
-h_srrc = rcosdesign(beta_tx, Nsymb_srrc, Nsps, "sqrt");
-
+% h_srrc = rcosdesign(beta_tx, Nsymb_srrc, Nsps, "sqrt");
+h_srrc = firrcos(N_srrc-1, Fs/7.433, beta_tx, Fs, 'rolloff', 'sqrt');
 h_srrc_tx = h_srrc .* wn_kaiser.';
 
 
@@ -117,14 +120,14 @@ h_srrc_tx = h_srrc .* wn_kaiser.';
 
 
 % make room for h_srrc_tx reshaping
-h_tx_initial_shape = zeros(1,24)
-h_tx_initial_shape(1:length(h_srrc_tx)) = h_srrc_tx 
-h_tx_reshape = reshape(h_tx_initial_shape, 4, [])' 
+h_tx_initial_shape = zeros(1,24);
+h_tx_initial_shape(1:length(h_srrc_tx)) = h_srrc_tx; 
+h_tx_reshape = reshape(h_tx_initial_shape, 4, [])';
 % h_tx_scale_factor = max(sum(abs(h_tx_reshape))); % get max value
 h_tx_scale_factor = sum(abs(h_srrc_tx));
 
-h_srrc_tx_scld = h_srrc_tx/h_tx_scale_factor
-h_srrc_tx_scld_verilog = round(h_srrc_tx_scld*2^17); % coeff fits into 1s17 number
+h_srrc_tx_scld = h_srrc_tx/h_tx_scale_factor;
+h_srrc_tx_scld_verilog = round(h_srrc_tx_scld*2^18); % coeff fits into 0s18 number
 
 % h_srrc_tx_upsampled = upsample(h_srrc_tx_scld,4);
 % figure(10)
@@ -170,6 +173,8 @@ ylabel('h_{rc-real}[n]');
 xlabel('n');
 legend('Practical')
 grid;
+
+DC_to_cutoff = 20*log10(abs(H_srrc_tx(1))/abs(H_srrc_tx(find(f == 0.2))))
 
 
 
