@@ -104,7 +104,7 @@ else
     beta_kaiser = 0.5842*(A-21)^0.4 + 0.07886*(A-21);
 end
 
-wn_kaiser = kaiser(M_srrc+1,beta_kaiser);
+wn_kaiser = kaiser(M_srrc+1,1.5);
 
 h_srrc = rcosdesign(beta_tx, Nsymb_srrc, Nsps, "sqrt");
 
@@ -154,7 +154,7 @@ grid;
 
 % convolve filters to get rc
 h_rc_practical = conv(h_srrc_tx_scld, h_srrc_rx_scld);
-H_rc_practical_to_verilog = h_rc_practical*2^17;
+H_rc_practical_to_verilog = round(h_rc_practical*2^17);
 % find idx of peak val
 Peak_idx = (length(h_rc_practical)-1)/2 + 1; 
 P_avg_sig = abs(h_rc_practical(Peak_idx))^2;
