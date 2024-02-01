@@ -9,7 +9,7 @@ reg clk;
 reg reset;
 int count;
 
-reg signed [17:0] x_in, y;
+reg signed [17:0] x_in, y, y_inter;
 // wire c;
 
 localparam PERIOD = 21;
@@ -92,7 +92,7 @@ always @ (posedge clk)
   else
     begin
 
-    if(count + 1 == 21)
+    if(count + 1 == 41)
     begin
         $fseek(file_in, 0,0); // restart file reading position
         $fscanf(file_in, "%d\n", x_in);
@@ -104,24 +104,24 @@ always @ (posedge clk)
 always @ (posedge clk)
   if(reset)
     count <= 0;
-  else if (count == 20)
+  else if (count == 40)
     count <= 0;
   else
     count++;
 
 // Instantiate device under test (DUT)
-// tx_filter_with_mult test_inst (
-//   // clocks and resets
-//   .clk(clk),
-//   .reset(reset),
+tx_filter_with_mult tx_test (
+  // clocks and resets
+  .clk(clk),
+  .reset(reset),
   
-//   // inputs
-//   .x_in(x_in),
+  // inputs
+  .x_in(x_in),
   
-//   //outputs
-//   .y(y)
+  //outputs
+  .y(y_inter)
 
-// );
+);
 
 // tx_filter_with_luts test_inst (
 //   // clocks and resets
@@ -137,13 +137,13 @@ always @ (posedge clk)
 // );
 
 
-rx_filter_with_mult test_inst (
+rx_filter_with_mult rx_test (
   // clocks and resets
   .clk(clk),
   .reset(reset),
   
   // inputs
-  .x_in(x_in),
+  .x_in(y_inter),
   
   //outputs
   .y(y)
