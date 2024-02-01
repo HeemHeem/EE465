@@ -80,8 +80,8 @@ integer file_in;
 
 initial
 begin
-  // file_in = $fopen("impulse_lut.txt", "r");
-  file_in = $fopen("impulse_input.txt", "r");
+  file_in = $fopen("impulse_lut.txt", "r");
+  // file_in = $fopen("impulse_input.txt", "r");
   // file_in = $fopen("impulse_3_zero.txt", "r");
 
 end
@@ -92,7 +92,7 @@ always @ (posedge clk)
   else
     begin
 
-    if(count + 1 == 41)
+    if(count + 1 == 81)
     begin
         $fseek(file_in, 0,0); // restart file reading position
         $fscanf(file_in, "%d\n", x_in);
@@ -104,13 +104,26 @@ always @ (posedge clk)
 always @ (posedge clk)
   if(reset)
     count <= 0;
-  else if (count == 40)
+  else if (count == 80)
     count <= 0;
   else
     count++;
 
 // Instantiate device under test (DUT)
-tx_filter_with_mult tx_test (
+// tx_filter_with_mult tx_test (
+//   // clocks and resets
+//   .clk(clk),
+//   .reset(reset),
+  
+//   // inputs
+//   .x_in(x_in),
+  
+//   //outputs
+//   .y(y_inter)
+
+// );
+
+tx_filter_with_luts test_inst (
   // clocks and resets
   .clk(clk),
   .reset(reset),
@@ -122,19 +135,6 @@ tx_filter_with_mult tx_test (
   .y(y_inter)
 
 );
-
-// tx_filter_with_luts test_inst (
-//   // clocks and resets
-//   .clk(clk),
-//   .reset(reset),
-  
-//   // inputs
-//   .x_in(x_in),
-  
-//   //outputs
-//   .y(y)
-
-// );
 
 
 rx_filter_with_mult rx_test (
