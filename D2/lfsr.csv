@@ -1,0 +1,4 @@
+To,					Assignment Name,	Value
+clk,					Location,	PIN_B14
+load_data,			Location,   PIN_N21
+q_out,				Location,   PIN_AB22
