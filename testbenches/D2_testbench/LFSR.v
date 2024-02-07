@@ -3,16 +3,15 @@ module LFSR(
 	input wire sam_clk_ena,
 	input wire load_data,
 	output reg [21:0] q,
-	output reg [1:0] LFSR_2_BITS,
-	output reg [21:0] LFSR_Counter
+	output reg [1:0] LFSR_2_BITS
 
 );
-wire [21:0] data;
+reg [21:0] data;
 reg d0;
-//(* noprune *) reg [21:0] counter;
+(* noprune *) reg [21:0] counter;
 
 	
-assign data = 22'h0fffff;
+assign data = 22'h3fffff;
 
 // shift register
 always @ (posedge clk)
@@ -29,11 +28,11 @@ always @ *
 // counter
 always @ (posedge clk)
 
-	if (~load_data || q == 22'h0fffff)
-		LFSR_Counter <= 22'd1;
+	if (~load_data || q == 22'h3fffff)
+		counter <= 22'd1;
 	
 	else
-		LFSR_Counter <= LFSR_Counter + 22'd1;
+		counter = counter + 22'd1;
 
 always @ (posedge clk)
 	if(sam_clk_ena)
@@ -42,14 +41,11 @@ always @ (posedge clk)
 		LFSR_2_BITS <= LFSR_2_BITS;
 
 
-
-
-
-
-	
-
-
-
+// FOR TESTING
+initial begin
+	LFSR_2_BITS <= 2'b0;
+	// counter  <= 22'b0;
+end
 
 
 
