@@ -1,23 +1,27 @@
 module magnitude_estimate #(
 
     parameter           DATA_WIDTH = 18, // data width
-    parameter           ACC_DATA_WIDTH = 22, // only have 22 for now since the period could be very long
-    parameter           ACC_IN_PADDING = ACC_DATA_WIDTH-DATA_WIDTH // padding to the input of the accumulator as it may be large?
+    parameter           ACC_DATA_WIDTH = 38, // only have 22 for now since the period could be very long - Should be 18s17 but make it 21s17 just in case
+    parameter           ACC_IN_PADDING = ACC_DATA_WIDTH-DATA_WIDTH, // padding to the input of the accumulator as it may be large?
+    parameter           REF_DIV = 20, // reference level division. Divide by 20 since 8*M = 8*2^18 = 2^21
+    parameter           P_AVE_MULTIPLIER = 4'd5 //1.25 as a 2s2 number
 )( 
 
     input              sym_clk_ena, //symbol clk enable
     input              clear_accumulator, 
+    input              clk,
     input wire signed [DATA_WIDTH-1:0]   decision_variable, // dont know what format yet.
-    output reg signed [DATA_WIDTH-1:0]   reference_level, // 1s17
-    output reg signed [3*DATA_WIDTH-1:0]   mapper_out_power // estimated average power - probably need more bits  (3 multiplications - could however use less bits as we know
-                                                            // reference is 1.25) 
+    output reg signed [DATA_WIDTH-1:0]   reference_level, b, // 1s17
+	output	reg signed [ACC_DATA_WIDTH-1:0] accumulator, accum_shift, absolute_value,
+    output reg signed [2*DATA_WIDTH+4-1:0]   mapper_out_power // estimated average power - probably need more bits  (3 multiplications - could however use less bits as we know
+                                                            // reference is 1.25) Data is now 1s17*1s17 = 2s34*2s2 = 4s36
 );
 
 
 
-reg signed [DATA_WIDTH-1:0] absolute_value; 
+//reg signed [ACC_DATA_WIDTH-1:0] absolute_value; 
 
-reg signed [ACC_DATA_WIDTH-1:0] acculumlator;
+
 
 reg signed [2*DATA_WIDTH-1:0] reference_level_squared;
 
@@ -28,34 +32,52 @@ reg signed [2*DATA_WIDTH-1:0] reference_level_squared;
 // absolute value
 always @ *
     if(decision_variable[DATA_WIDTH-1] == 1'b1)
-        absolute_value = -{ACC_IN_PADDING*{decision_variable[DATA_WIDTH]}, decision_variable};
-
+        //absolute_value = -{{ACC_IN_PADDING{decision_variable[DATA_WIDTH-1]}}, decision_variable};
+		  absolute_value <= -decision_variable;
     else
-        absolute_value = {ACC_IN_PADDING*{1'b0}, decision_variable};
+        //absolute_value = {{ACC_IN_PADDING{1'b0}}, decision_variable};
+		  absolute_value <= decision_variable;
 
-
-// acculumlator
-always @ (posedge sym_clk_ena or posedge clear_accumulator) // maybe change to always @ * instead?
+// acculumlator 21s17 
+always @ (posedge clk) // or posedge clear_accumulator) // maybe change to always @ * instead?
 
     if (clear_accumulator)
-        acculumlator <= `DATA_WIDTH'd0;
-    
-    else
-        acculumlator <= acculumlator + absolute_value;
-    
+		accumulator <= absolute_value;
+				//accumulator <= {{ACC_IN_PADDING{1'b0}}, decision_variable};
+				
+    else if(sym_clk_ena)
+        accumulator <= accumulator + absolute_value;
+		 
+	else
+		accumulator <= accumulator;
 // reference_level
-always @ (posedge clear_accumulator)
-    reference_level <= acculumlator[ACC_DATA_WIDTH:ACC_DATA_WIDTH-DATA_WIDTH];
+// always @ *
+// 	accum_shift = accumulator >> REF_DIV;
+	
+always @ (posedge clk)
+    if (clear_accumulator)
+         //reference_level <= accum_shift[36:19];
+		//reference_level <= accumulator[35:18]; // 1s17
+		reference_level <= accumulator[36:19];
+	else
+		reference_level <= reference_level;
+		  
+always @ (posedge clk)
+	if (clear_accumulator)
+		b <= accumulator[37:20];
+        //b <= accumulator[36:19];
+	else
+		b <= b;
 
 // reference squared
 always @ *
     reference_level_squared = reference_level * reference_level;
 
 // code for mapper_out_power
-/*
+
 always @ *
-    mapper_out_power = 1.25 * reference_level_squared
+    mapper_out_power = P_AVE_MULTIPLIER * reference_level_squared;
 
 
-*/
+
 endmodule

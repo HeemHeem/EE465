@@ -29,7 +29,7 @@ always @ *
 // counter
 always @ (posedge clk)
 
-	if (~load_data || q == 22'h0fffff)
+	if (~load_data || q == data)
 		LFSR_Counter <= 22'd1;
 	
 	else
@@ -37,7 +37,7 @@ always @ (posedge clk)
 
 always @ (posedge clk)
 	if(sam_clk_ena)
-		LFSR_2_BITS <= q[2:1];
+		LFSR_2_BITS <= q[1:0];
 	else
 		LFSR_2_BITS <= LFSR_2_BITS;
 
