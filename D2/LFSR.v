@@ -19,8 +19,10 @@ always @ (posedge clk)
 	if(~load_data)
 		q <= data;
 	
-	else
+	else if (sam_clk_ena)
 		q <= {q[20:0], d0};
+	else
+		q <= q;
 
 // feedback network
 always @ *
@@ -32,9 +34,10 @@ always @ (posedge clk)
 	if (~load_data || q == data)
 		LFSR_Counter <= 22'd1;
 	
-	else
+	else if(sam_clk_ena)
 		LFSR_Counter <= LFSR_Counter + 22'd1;
-
+	else
+		LFSR_Counter <= LFSR_Counter;
 always @ (posedge clk)
 	if(sam_clk_ena)
 		LFSR_2_BITS <= q[1:0];
