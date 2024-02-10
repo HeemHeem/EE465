@@ -6,7 +6,7 @@ module Deliverable_2(
 	output wire sys_clk, sam_clk_ena, sym_clk_ena, sym_correct, sym_error,
 	output reg clear_accumulator,
 	output wire [3:0] clk_phase,
-	output wire [17:0] reference_level, decision_variable, b,
+	output wire [17:0] reference_level, decision_variable, //b,
 	output wire [39:0] mapper_out_power,
 	output wire [37:0] accumulator, absolute_value, acc_counter
 
@@ -60,7 +60,7 @@ magnitude_estimate mag_est(
 	.reference_level(reference_level),
 	.mapper_out_power(mapper_out_power),
 	.accumulator(accumulator),
-	.b(b),
+	//.b(b),
 	.absolute_value(absolute_value),
 	.acc_counter(acc_counter)
 

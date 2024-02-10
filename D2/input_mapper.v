@@ -14,10 +14,10 @@ always @ *
     
         2'b00: mapper_out = -`DATA_LENGTH'sd 98304; // -0.75 (-3a)
         2'b01: mapper_out = -`DATA_LENGTH'sd 32768; // -0.25 (-a)
-        2'b10: mapper_out = `DATA_LENGTH'sd 32768; // 0.25 (a)
-        2'b11: mapper_out = `DATA_LENGTH'sd 98304; // 0.75 (3a)
+        2'b11: mapper_out = `DATA_LENGTH'sd 32768; // 0.25 (a)
+        2'b10: mapper_out = `DATA_LENGTH'sd 98304; // 0.75 (3a)
 
-        default: mapper_out = `DATA_LENGTH'sd 0;
+        default: mapper_out = `DATA_LENGTH'sd 98304;
     endcase
 
 endmodule

@@ -11,7 +11,7 @@ module magnitude_estimate #(
     input              clear_accumulator, 
     input              clk,
     input wire signed [DATA_WIDTH-1:0]   decision_variable, // dont know what format yet.
-    output reg signed [DATA_WIDTH-1:0]   reference_level, b, // 1s17
+    output reg signed [DATA_WIDTH-1:0]   reference_level, //b, // 1s17
 	output	reg signed [ACC_DATA_WIDTH-1:0] accumulator, absolute_value, acc_counter,
     output reg signed [2*DATA_WIDTH+4-1:0]   mapper_out_power // estimated average power - probably need more bits  (3 multiplications - could however use less bits as we know
                                                             // reference is 1.25) Data is now 1s17*1s17 = 2s34*2s2 = 4s36
@@ -70,12 +70,12 @@ always @ (posedge clk)
 	else
 		reference_level <= reference_level; // 1s17
 		  
-always @ (posedge clk)
-	if (clear_accumulator)
-		b <= accumulator[38:21];
-        //b <= accumulator[36:19];
-	else
-		b <= b;
+// always @ (posedge clk)
+// 	if (clear_accumulator)
+// 		b <= accumulator[38:21];
+//         //b <= accumulator[36:19];
+// 	else
+// 		b <= b;
 
 // reference squared
 always @ *
