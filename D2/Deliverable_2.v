@@ -6,9 +6,17 @@ module Deliverable_2(
 	output wire sys_clk, sam_clk_ena, sym_clk_ena, sym_correct, sym_error,
 	output reg clear_accumulator,
 	output wire [3:0] clk_phase,
-	output wire [17:0] reference_level, decision_variable, //b,
+	output wire [17:0] reference_level, decision_variable, mapper_out, error, b,
 	output wire [39:0] mapper_out_power,
-	output wire [37:0] accumulator, absolute_value, acc_counter
+	output wire [37:0] accumulator, absolute_value, acc_counter,
+
+	// accumulated_square_error
+	output wire [49:0] acc_error,
+	output wire [35:0] sqr_error,
+	output wire [29:0] acc_sqr_error,
+
+	// accumulated_dc_error
+	output wire [35:0] acc_dc, acc_error_out_dc
 
 );
 
@@ -37,7 +45,7 @@ LFSR lfsr(
 
 );
 
-
+/************************* CLEAR ACCUMULATOR SIGNAL *******************************/
 always @ (posedge sys_clk)
 	if(LFSR_Counter == 22'h3fffff)
 	//if(q == 22'h0fffff)
@@ -81,6 +89,42 @@ comparator comp(
 	.sym_error(sym_error),
 	.clk(sys_clk)
 );
+
+
+output_mapper out_map(
+	.reference_level(reference_level),
+	.slice_in(slice_out),
+	.mapper_out(mapper_out),
+	.b(b)
+);
+
+decision_error	dec_err(
+	.clk(sys_clk),
+	.sym_clk_ena(sym_clk_ena),
+	.decision_variable(decision_variable),
+	.mapper_out(mapper_out),
+	.error(error)
+);
+
+accumulated_squared_error acc_sq_err(
+	.clk(sys_clk),
+	.clear_accumulator(clear_accumulator),
+	.sym_clk_ena(sym_clk_ena),
+	.error(error),
+	.acc_error(acc_error),
+	.sqr_error(sqr_error),
+	.acc_sqr_error(acc_sqr_error)
+);
+
+accumulated_dc_error acc_dc_error(
+	.clk(sys_clk),
+	.sym_clk_ena(sym_clk_ena),
+	.clear_accumulator(clear_accumulator),
+	.error(error),
+	.acc(acc_dc),
+	.acc_error_out(acc_error_out_dc)
+);
+
 
 
 

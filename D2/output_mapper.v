@@ -1,10 +1,10 @@
 module output_mapper(
     input wire signed [17:0] reference_level,
     input wire [1:0] slice_in,
-    output reg signed [17:0] mapper_out
+    output reg signed [17:0] mapper_out, b
 );
 
-reg signed [17:0] b;
+//reg signed [17:0] b;
 
 always  @ *
     b = reference_level >> 1; // b value. Divide reference by 2
