@@ -1,4 +1,4 @@
-module accumulated_squared_error #(
+module average_accumulated_squared_error #(
     parameter DATA_WIDTH = 18, // DATA WIDTH
     parameter ACC_DATA_WIDTH = 50, // accumulator data width
     parameter SQUR_ERROR_DATA_WIDTH = 36,
@@ -9,7 +9,7 @@ module accumulated_squared_error #(
     input wire signed [DATA_WIDTH-1:0] error, // 1s17
     output reg  [ACC_DATA_WIDTH-1:0] acc_error, // 16u34
     output reg  [SQUR_ERROR_DATA_WIDTH-1:0] sqr_error, //2u34
-    output reg  [ACC_SQR_ERROR_DATA_WIDTH-1:0] acc_sqr_error // -4u34
+    output reg  [ACC_SQR_ERROR_DATA_WIDTH-1:0] accumulated_squared_error // -4u34
 
 );
 
@@ -22,16 +22,16 @@ always @(posedge clk)
     if(clear_accumulator)
         acc_error <= {{ACC_IN_PADDING{sqr_error[SQUR_ERROR_DATA_WIDTH-1]}}, sqr_error};
     else if (sym_clk_ena)
-        acc_error <= acc_error + {{ACC_IN_PADDING{1'b0}}, sqr_error};
+        acc_error <= acc_error + {{ACC_IN_PADDING{1'b0}}, sqr_error}; //16u34 + 2u34 padded to 16u34
     else
         acc_error <= acc_error; 
 
 // averaging
 always @ (posedge clk)
     if(clear_accumulator)
-        acc_sqr_error <= acc_error[49:20]; // -4u30
+        accumulated_squared_error <= acc_error[49:20]; // -4u30
     else
-        acc_sqr_error <= acc_sqr_error;
+        accumulated_squared_error <= accumulated_squared_error;
 
 
 

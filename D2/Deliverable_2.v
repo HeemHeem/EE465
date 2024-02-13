@@ -2,22 +2,30 @@ module Deliverable_2(
 	input load_data,
 	input CLOCK_50,
 	output wire [21:0] q, LFSR_Counter,
-	output wire [1:0] LFSR_2_BITS, slice_out,
+	output wire [1:0] LFSR_2_BITS, slice_out, symb_a,
 	output wire sys_clk, sam_clk_ena, sym_clk_ena, sym_correct, sym_error,
 	output reg clear_accumulator,
 	output wire [3:0] clk_phase,
-	output wire [17:0] reference_level, decision_variable, mapper_out, error, b,
-	output wire [39:0] mapper_out_power,
+	output wire [17:0] reference_level, decision_variable, mapper_out, error, b, symbol_into_filter, errorless_decision_variable, error_by_system, // 1s17
+	output wire [39:0] mapper_out_power, //4s36
 	output wire [37:0] accumulator, absolute_value, acc_counter,
 
 	// accumulated_square_error
 	output wire [49:0] acc_error,
 	output wire [35:0] sqr_error,
-	output wire [29:0] acc_sqr_error,
+	output wire [29:0] accumulated_squared_error, // -4u34
 
 	// accumulated_dc_error
-	output wire [35:0] acc_dc, acc_error_out_dc
+	output wire [35:0] acc_dc,
+	output wire [35:0] accumulated_error // -1s37
 
+);
+
+wire signed [17:0] isi_in;
+
+ISI isi_probes(
+	.probe(isi_in),
+	.source(isi_in)
 );
 
 
@@ -56,8 +64,29 @@ always @ (posedge sys_clk)
 input_mapper in_map(
 
 	.mapper_in(LFSR_2_BITS),
-	.mapper_out(decision_variable) // decision variable output for now.
+	.mapper_out(symbol_into_filter) // decision variable output for now.
 );
+
+
+
+DUT_for_MER_measurement SUT(
+
+	.clk(sys_clk),
+	.clk_en(sym_clk_ena),
+	.reset(load_data),
+	 //.isi_power(18'sd9268), //20dB
+	// .isi_power(18'sd293), //50 dB
+	//.isi_power(18'sd165), //55dB
+	.isi_power(isi_in),
+	.in_data(symbol_into_filter),
+	.decision_variable(decision_variable),
+	.errorless_decision_variable(errorless_decision_variable),
+	.error(error_by_system)
+
+);
+
+
+
 
 magnitude_estimate mag_est(
 
@@ -83,7 +112,7 @@ slicer slice(
 
 comparator comp(
 	.sym_clk_ena(sym_clk_ena),
-	.symb_a(LFSR_2_BITS),
+	.symb_a(symb_a),
 	.symb_b(slice_out),
 	.sym_correct(sym_correct),
 	.sym_error(sym_error),
@@ -106,14 +135,14 @@ decision_error	dec_err(
 	.error(error)
 );
 
-accumulated_squared_error acc_sq_err(
+average_accumulated_squared_error acc_sq_err(
 	.clk(sys_clk),
 	.clear_accumulator(clear_accumulator),
 	.sym_clk_ena(sym_clk_ena),
 	.error(error),
 	.acc_error(acc_error),
 	.sqr_error(sqr_error),
-	.acc_sqr_error(acc_sqr_error)
+	.accumulated_squared_error(accumulated_squared_error)
 );
 
 accumulated_dc_error acc_dc_error(
@@ -122,11 +151,17 @@ accumulated_dc_error acc_dc_error(
 	.clear_accumulator(clear_accumulator),
 	.error(error),
 	.acc(acc_dc),
-	.acc_error_out(acc_error_out_dc)
+	.accumulated_error(accumulated_error)
 );
 
 
-
+delay dl(
+	.sym_clk_ena(sym_clk_ena),
+	.sam_clk_ena(sam_clk_ena),
+	.symb_in(LFSR_2_BITS),
+	.symb_a(symb_a),
+	.clk(sys_clk)
+);
 
 
 
