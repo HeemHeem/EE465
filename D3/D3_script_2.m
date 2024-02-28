@@ -89,11 +89,11 @@ MER_pract = 0;
 N_start = 101; % length start
 MER_pract = 30;
 % loop through parameters to find best MER and OB1 to match
-for N_rx = 117:Nsps:201 
+for N_rx = 77:Nsps:201 
         hsrrc_gs_rx = firrcos(N_rx-1, samp_rate/8, beta, samp_rate, 'rolloff', 'sqrt');
-    for N_tx = 101: Nsps:201
+    for N_tx = 25: Nsps:201
         for samp_rate_divider = 7:0.1:8
-            for beta_pract = 0.09:0.005:0.13
+            for beta_pract = 0.08:0.005:0.13
                 h_srrc_trunc = firrcos(N_tx-1, samp_rate/samp_rate_divider, beta_pract, samp_rate, 'rolloff', 'sqrt');
                 for beta_kaiser = 5:-1:1
                     
@@ -109,7 +109,7 @@ for N_rx = 117:Nsps:201
                     P_avg_sig_pract = abs(h_rc_pract(Peak_idx_pract))^2;
                     P_avg_error_pract = sum(abs(h_rc_pract(1:Nsps:end)).^2)- P_avg_sig_pract;
                     
-                    % MER Calc
+                    % MER Calc  
                     MER_pract = 10*log10(P_avg_sig_pract/P_avg_error_pract);
     
                     % Channel Power Calc
@@ -157,10 +157,10 @@ x_N_tx_gs_best = 0;
 x_samp_divider_best_gs = 0;
 x_beta_pract_best_gs = 0;
 
-for N_tx_gs = 101:Nsps:201
+for N_tx_gs = 25:Nsps:201
     for samp_tx_divider = 7:0.1:8
-        for beta_tx = 0.09:0.01:0.15
-            hsrrc_tx_gs =firrcos(N_tx_gs-1, samp_rate/samp_tx_divider, beta_tx, samp_rate, 'rolloff', 'sqrt');
+        %for beta_tx = 0.11:0.01:0.15
+            hsrrc_tx_gs =firrcos(N_tx_gs-1, samp_rate/samp_tx_divider, beta, samp_rate, 'rolloff', 'sqrt');
             Hsrrc_tx_gs = freqz(hsrrc_tx_gs, 1, 2*pi*f);
             
             h_rc_gs = conv(hsrrc_tx_gs, hsrrc_gs_rx_sim);
@@ -176,14 +176,14 @@ for N_tx_gs = 101:Nsps:201
             if(MER_gs > 50)
                 x_N_tx_gs_best = N_tx_gs;
                 x_samp_divider_best_gs = samp_tx_divider;
-                x_beta_pract_best_gs = beta_tx;
+                %x_beta_pract_best_gs = beta_tx;
                 break
             end
 
-        end
-        if(MER_gs >50)
-            break
-        end
+        %end
+        % if(MER_gs >50)
+        %     break
+        % end
 
     end
     if(MER_gs >50)
@@ -197,7 +197,7 @@ end
 %% Plots
 h_srrc_prac_sim = firrcos(x_N_tx_best-1, samp_rate/x_samp_divider_best, x_beta_pract_best, samp_rate, 'rolloff', 'sqrt');
 wn_kaiser_sim = kaiser(x_N_tx_best, x_beta_kaiser_best);
-h_srrc_wind_sim = h_srrc_prac_sim .* wn_kaiser_sim .'; %'
+h_srrc_wind_sim = h_srrc_prac_sim .* wn_kaiser_sim .';%'
 H_srrc_prac_sim = freqz(h_srrc_wind_sim, 1, 2*pi*f);
 
 
