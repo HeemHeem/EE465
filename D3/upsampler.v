@@ -1,7 +1,7 @@
 module upsampler(
     input sys_clk, sym_clk_en, sam_clk_en, reset,
-    input reg signed [17:0] symb_in,
-    input [1:0] counter,
+    input wire signed [17:0] symb_in,
+    // input [1:0] counter,
     output reg signed [17:0] sig_out
 );
 

@@ -1,9 +1,9 @@
 module downsampler(
     input sym_clk_en, sam_clk_en, sys_clk,
-    input reg signed [17:0] sig_in,
+    input wire signed [17:0] sig_in,
     output reg signed [17:0] sym_out
 
-)
+);
 
 always @ (posedge sys_clk or posedge reset)
     if(reset)
