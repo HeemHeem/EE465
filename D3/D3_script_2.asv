@@ -237,7 +237,7 @@ h_tx_gs_scale_factor = max(sum(abs(h_tx_reshape))); % get max value
 
 
 h_srrc_tx_gs_scld = hsrrc_tx_gs/h_tx_gs_scale_factor;
-h_srrc_tx_gs_scld_verilog = round(h_srrc_tx_gs_scld*2^18); % coeff fits into 0s18 number
+h_srrc_tx_gs_scld_verilog = round(h_srrc_tx_scld*2^18); % coeff fits into 0s18 number
 
 
 
@@ -251,12 +251,7 @@ h_tx_pract_scale_factor = max(sum(abs(h_tx_reshape))); % get max value
 
 
 h_srrc_tx_pract_scld = h_srrc_prac_sim/h_tx_pract_scale_factor;
-% h_srrc_tx_pract_scld_verilog = round(h_srrc_tx_pract_scld*2^18); % coeff fits into 0s18 number
-
-
-% scaling of rx
-h_rx_scld = hsrrc_gs_rx_sim/sum(abs(hsrrc_gs_rx_sim));
-h_rx_scld_verilog = round(h_rx_scld * 2^18); % coeff fits into 0s18
+h_srrc_tx_pract_scld_verilog = round(h_srrc_tx_pract_scld*2^18); % coeff fits into 0s18 number
 
 
 
