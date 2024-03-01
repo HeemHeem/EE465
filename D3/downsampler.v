@@ -1,5 +1,5 @@
 module downsampler(
-    input sym_clk_en, sam_clk_en, sys_clk,
+    input sym_clk_en, sam_clk_en, sys_clk, reset,
     input wire signed [17:0] sig_in,
     output reg signed [17:0] sym_out
 
