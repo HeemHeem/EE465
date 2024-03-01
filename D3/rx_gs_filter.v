@@ -8,7 +8,7 @@ module rx_gs_filter( input clk, reset, sym_clk_en, sam_clk_en,
 // create array of vectors
 integer  i;
 reg signed [17:0] x[80:0]; // for 81 coefficients
-reg signed [18:0] sum_level_1[10:0]; // 2s18
+reg signed [18:0] sum_level_1[40:0]; // 2s18
 reg signed [17:0] sum_out[39:0];
 reg signed [36:0] mult_out[40:0]; // 1s35 but changed to 2s35
 reg signed [17:0] b[40:0]; // coefficients
