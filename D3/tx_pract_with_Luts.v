@@ -1,4 +1,4 @@
-module srrc_filter( input clk, reset, sym_clk_en, sam_clk_en,
+module tx_pract_filter( input clk, reset, sym_clk_en, sam_clk_en,
 							input [1:0] sw,
                     input signed [17:0] x_in, //1s17
                     output reg signed [17:0] y); //1s17);
