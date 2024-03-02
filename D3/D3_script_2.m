@@ -89,12 +89,12 @@ MER_pract = 0;
 N_start = 101; % length start
 MER_pract = 30;
 % loop through parameters to find best MER and OB1 to match
-for N_rx = 81:Nsps:201 
+for N_rx = 141:Nsps:201 
         hsrrc_gs_rx = firrcos(N_rx-1, samp_rate/8, beta, samp_rate, 'rolloff', 'sqrt');
     for N_tx = 101: Nsps:201
-        %for samp_rate_divider = 7:0.1:8
-            for beta_pract = 0.08:0.001:0.13
-                h_srrc_trunc = firrcos(N_tx-1, samp_rate/8, beta_pract, samp_rate, 'rolloff', 'sqrt');
+        for samp_rate_divider = 7:0.1:8
+            for beta_pract = 0.08:0.01:0.15
+                h_srrc_trunc = firrcos(N_tx-1, samp_rate/samp_rate_divider, beta_pract, samp_rate, 'rolloff', 'sqrt');
                 for beta_kaiser = 5:-1:1
                     
                     wn_kaiser = kaiser(N_tx, beta_kaiser);
@@ -125,25 +125,25 @@ for N_rx = 81:Nsps:201
                     x_beta_kaiser_best = beta_kaiser;
                     x_beta_pract_best = beta_pract;
                     %x_samp_divider_best = samp_rate_divider;
-                    if (P_diff_OB1 > 58)
+                    if (P_diff_OB1 > 62 && MER_pract > 40)
     
                         break
                     end
                 end
-                if(P_diff_OB1 > 58)
+                if(P_diff_OB1 > 62)
                     break
                 end
             end
         % just to break out of the loop
-        % if(P_diff_OB1 > 58)
-        %     break
-        % end
-        %end
-        if(P_diff_OB1 > 58)
+        if(P_diff_OB1 > 62)
+            break
+        end
+        end
+        if(P_diff_OB1 > 62)
             break
         end
     end
-    if(MER_pract > 40 && MER_pract < 46)
+    if(MER_pract > 40)
         break
     end
 end
@@ -156,8 +156,9 @@ Hsrrc_gs_rx_sim = freqz(hsrrc_gs_rx_sim, 1, 2*pi*f);
 x_N_tx_gs_best = 0;
 x_samp_divider_best_gs = 0;
 x_beta_pract_best_gs = 0;
-
-for N_tx_gs = 61:Nsps:201
+for N_rx_gs = 141:Nsps:201
+    hsrrc_gs_rx_sim = firrcos(N_rx_gs-1, samp_rate/8, beta, samp_rate, 'rolloff', 'sqrt');
+    for N_tx_gs = 25:Nsps:201
     %for samp_tx_divider = 7:0.1:8
         %for beta_tx = 0.11:0.01:0.15
             hsrrc_tx_gs =firrcos(N_tx_gs-1, samp_rate/8, beta, samp_rate, 'rolloff', 'sqrt');
@@ -185,10 +186,10 @@ for N_tx_gs = 61:Nsps:201
         %     break
         % end
 
-    % end
-    % if(MER_gs >50)
-    %     break
-    % end
+    end
+    if(MER_gs >50)
+        break
+    end
 
 end
 
@@ -229,7 +230,7 @@ MER_pract_test = 10*log10(P_avg_sig_pract_test/P_avg_error_pract_test);
 
 
 % make room for h_srrc_tx reshaping for gs
-h_tx_initial_shape = zeros(1,68);
+h_tx_initial_shape = zeros(1,80);
 h_tx_initial_shape(1:length(hsrrc_tx_gs)) = hsrrc_tx_gs; 
 h_tx_reshape = reshape(h_tx_initial_shape, 4, [])';
 h_tx_gs_scale_factor = sum(abs(h_tx_reshape))
@@ -243,7 +244,7 @@ h_srrc_tx_gs_scld_verilog = round(h_srrc_tx_gs_scld*2^18); % coeff fits into 0s1
 
 
 % make room for h_srrc_tx reshaping for pract
-h_tx_initial_shape = zeros(1,108);
+h_tx_initial_shape = zeros(1,152);
 h_tx_initial_shape(1:length(h_srrc_prac_sim)) = h_srrc_prac_sim; 
 h_tx_reshape = reshape(h_tx_initial_shape, 4, [])';
 h_tx_pract_scale_factor = sum(abs(h_tx_reshape))
@@ -251,7 +252,7 @@ h_tx_pract_scale_factor = max(sum(abs(h_tx_reshape))); % get max value
 
 
 h_srrc_tx_pract_scld = h_srrc_prac_sim/h_tx_pract_scale_factor;
-% h_srrc_tx_pract_scld_verilog = round(h_srrc_tx_pract_scld*2^18); % coeff fits into 0s18 number
+h_srrc_tx_pract_scld_verilog = round(h_srrc_tx_pract_scld*2^18); % coeff fits into 0s18 number
 
 
 % scaling of rx

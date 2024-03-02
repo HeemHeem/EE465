@@ -5,7 +5,7 @@ module upsampler(
     output reg signed [17:0] sig_out
 );
 
-always @ (posedge sys_clk or posedge reset)
+always @ *//@ (posedge sys_clk or posedge reset)
     if(reset)
         sig_out <= 18'sd0;
     else if (sam_clk_en && sym_clk_en)

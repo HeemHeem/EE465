@@ -16,8 +16,10 @@ reg signed [36:0] LUT_out[52:0]; // 1s35 but changed to 2s35
 always @ (posedge clk or posedge reset)
     if(reset)
         x[0] <= 0;
-    else
+    else if (sam_clk_en)
         x[0] <= x_in;
+	else
+		x[0] <= x[0];
 
 always @ (posedge clk or posedge reset)
     if(reset) 

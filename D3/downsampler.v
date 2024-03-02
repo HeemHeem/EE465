@@ -5,7 +5,7 @@ module downsampler(
 
 );
 
-always @ (posedge sys_clk or posedge reset)
+always @ *//@ (posedge sys_clk or posedge reset)
     if(reset)
         sym_out = 18'sd0;
     else if(sym_clk_en)
