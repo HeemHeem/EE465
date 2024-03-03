@@ -5,8 +5,8 @@
 # symbols = [0, 3, 1, -1, -3]
 # symbols = [0, 2, 1, -1, -2]
 # symbols = [0, 1, 1/3, -1/3, -1]
-symbols = [0,3/4, 1/4, -1/4, -3/4]
-symbols = [0 , 32767, 98302, -32767, -98302]
+symbols_list_dec = [0,3/4, 1/4, -1/4, -3/4]
+symbols_list_verilog = [0 , 98304, 32768, -32768, -98304]
 # print(symbols)
 
 def LUT_inputs (symb_list:list)-> list:
@@ -63,7 +63,7 @@ def get_coeff_from_txt(txt_file: str) -> list:
 
             # print(line)
             
-            coeff_list.append(int(line))
+            coeff_list.append(float(line))
     # print(coeff_list)
     return coeff_list
 
@@ -71,40 +71,42 @@ def get_coeff_from_txt(txt_file: str) -> list:
 
         
 
-def LUT_outputs(symb_list: list, coeff_list_verilog:list, frac_bits: int) -> dict:
+def LUT_outputs(symb_list_verilog: list, symb_list_decimal: list, coeff_list:list, frac_bits: int) -> dict:
     """Generate a dictionary of lists for the possible verilog LUT outputs based on filter coefficients.
         Reminder, the middle coefficient only needs the initial inputs, not the combo
 
     Args:
-        symb_list (list): list of input symbols in decimal format
-        coeff_list_verilog: list of coefficients in verilog format
+        symb_list_verilog (list): list of input symbols in verilog format
+        symb_list_decimal (list): list of input symbols in decimal format
+        coeff_list: list of coefficients in decimal format
         frac_bits: integer number of fractional bits
     
     Returns:
         dict: a dictionary of lists for each LUT
     """
     # generate lut inputs
-    symb_list_verilog = symb_list#convert_to_verilog(symb_list, frac_bits)
+    # symb_list_verilog = symb_list#convert_to_verilog(symb_list, frac_bits)
     lut_in = LUT_inputs(symb_list_verilog)
+    lut_in_dec = LUT_inputs(symb_list_decimal)
     # print(lut_in)
     
     # generate key names
     LUT_dict = {}
-    for num in range(0,len(coeff_list_verilog)):
+    for num in range(0,len(coeff_list)):
         LUT_Num = f"LUT_{num}"
         tmp = [] # calculate lut values
         
         # for last coefficient -  it only requires the initial input values
-        if num == len(coeff_list_verilog)-1:
-            for inpt in symb_list_verilog:
-                mult = coeff_list_verilog[num] * inpt
+        if num == len(coeff_list)-1:
+            for inpt in symb_list_decimal:
+                mult = round(coeff_list[num] * inpt * 2**frac_bits) # 1s17
                 # print(f'{inpt} * {coeff_list_verilog[num]} = {mult}')
 
                 tmp.append(mult)
         else:
                 
-            for val in lut_in:
-                mult = coeff_list_verilog[num] * val
+            for val in lut_in_dec:
+                mult = round(coeff_list[num] * val * 2**frac_bits) #1s17
                 if mult not in tmp:
                     # print(f'{val} * {coeff_list_verilog[num]} = {mult}')
 
@@ -164,8 +166,8 @@ def generate_lut_case_statement(lut_num: int, lut_inpt_list: list, LUT_dict: dic
 
 
 
-def generate_filter_script(base_file_name: str, new_file_name:str, num_LUT_bits: int, num_adder_bits: int, symb_list:list,coeff_list: list, 
-                           num_symb_frac_bits:int) -> None:
+def generate_filter_script(base_file_name: str, new_file_name:str, num_LUT_bits: int, LUT: dict, num_adder_bits: int, symb_list_verilog:list) -> None:  #num_adder_bits: int, symb_list:list,coeff_list: list, 
+                           #num_symb_frac_bits:int) -> None:
     """Generate new verilog filter file with LUTs instead of multipliers from a verilog base template
 
     Args:
@@ -180,26 +182,27 @@ def generate_filter_script(base_file_name: str, new_file_name:str, num_LUT_bits:
     """
     
     # get LUT parameters
-    initial_symb_verilog = symb_list#convert_to_verilog(symb_list, num_symb_frac_bits)
-    initial_symb_verilog_scaled = []
+    # initial_symb_verilog = symb_list#convert_to_verilog(symb_list, num_symb_frac_bits)
+    # initial_symb_verilog_scaled = []
 
     # print(str(initial_symb_verilog) + " initial_symb_verilog")
     
     # scale down initial symbols
-    for val in initial_symb_verilog:    
-        initial_symb_verilog_scaled.append(val)#round(val))
+    # for val in initial_symb_verilog:    
+    #     initial_symb_verilog_scaled.append(val)#round(val))
         
     
-    LUT_input_verilog = LUT_inputs(initial_symb_verilog)
-    LUT_input_verilog_scaled = []
+    LUT_input_verilog = LUT_inputs(symb_list_verilog)
+    # LUT_input_verilog_scaled = []
 
-    for val in LUT_input_verilog:    
-        LUT_input_verilog_scaled.append(round(val))
+    # for val in LUT_input_verilog:    
+    #     LUT_input_verilog_scaled.append(round(val))
     
     # print(str(LUT_input_verilog) + "LUT_input_verilog")
     
     #t get LUT output dictionary
-    LUT = LUT_outputs(symb_list, coeff_list, num_symb_frac_bits)
+
+    # LUT = LUT_outputs(symb_list, coeff_list, num_symb_frac_bits)
     
     # copy contents of base file into new file
     with open(base_file_name, 'r') as base_file, open(new_file_name, 'w') as new_file:
@@ -217,7 +220,7 @@ def generate_filter_script(base_file_name: str, new_file_name:str, num_LUT_bits:
             
             # for the middle coefficient
             if lut_num == len(LUT) - 1:
-                generate_lut_case_statement(lut_num, initial_symb_verilog_scaled, LUT, lut_file, num_adder_bits, num_LUT_bits)
+                generate_lut_case_statement(lut_num, symb_list_verilog, LUT, lut_file, num_adder_bits, num_LUT_bits)
 
             else:
                 generate_lut_case_statement(lut_num, LUT_input_verilog, LUT, lut_file, num_adder_bits, num_LUT_bits)
@@ -241,26 +244,27 @@ def generate_filter_script(base_file_name: str, new_file_name:str, num_LUT_bits:
                     
 
 
-in_val_verilog = convert_to_verilog(symbols, 17)
-# in_val_verilog = symbols
-print(in_val_verilog)
+# in_val_verilog = convert_to_verilog(symbols, 17)
+# # in_val_verilog = symbols
+# print(in_val_verilog)
 
 
 # print(type(0x5F))
-lut_inpt_verilog = LUT_inputs(in_val_verilog)
+# lut_inpt_verilog = LUT_inputs(in_val_verilog)
 # lut_inpt_verilog = LUT_inputs(hex_val)
-print(lut_inpt_verilog)
+# print(lut_inpt_verilog)
 # hex_val = []
 # for i in lut_inpt_verilog:
 #     hex_val.append(hex(i))
 # print(hex_val)
-coeff_list = get_coeff_from_txt("tx_pract_coeff.txt")
+coeff_list = get_coeff_from_txt("windowed_coeff.txt")
 print(coeff_list)
 
-# LUTs = LUT_outputs(symbols, coeff_list, 3, 16)
+# LUTs = LUT_outputs(symbols, coeff_list, 3)
+LUTs = LUT_outputs(symbols_list_verilog, symbols_list_dec, coeff_list, 17)
 # # print(LUTs["LUT_0"])
-# print(LUTs)
+print(LUTs)
 
 
-generate_filter_script("srrc_filter_LUT_base_template.v", "tx_pract_with_Luts_test.v", 37, 19, symbols, coeff_list, 17)
-            
+#generate_filter_script("srrc_filter_LUT_base_template.v", "tx_pract_with_Luts_test.v", 37, 19, symbols, coeff_list, 17)
+generate_filter_script("srrc_filter_LUT_adder_tree_template.v", "tx_practical_adder_tree_LUTS_windowed.v", 18, LUTs, 19, symbols_list_verilog)            
