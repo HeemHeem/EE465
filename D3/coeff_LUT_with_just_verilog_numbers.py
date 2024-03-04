@@ -257,7 +257,7 @@ def generate_filter_script(base_file_name: str, new_file_name:str, num_LUT_bits:
 # for i in lut_inpt_verilog:
 #     hex_val.append(hex(i))
 # print(hex_val)
-coeff_list = get_coeff_from_txt("windowed_coeff.txt")
+coeff_list = get_coeff_from_txt("wind_coeff2.txt")
 print(coeff_list)
 
 # LUTs = LUT_outputs(symbols, coeff_list, 3)

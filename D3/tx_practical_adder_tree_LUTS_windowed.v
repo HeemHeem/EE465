@@ -100,7 +100,7 @@ always @ *
     end
 
 // sum_level_6
-always @ 
+always @ *
     if (reset)
         for (i = 0; i <= 1 , i=i+1)
             sum_level_6[i] = 18'sd 0;
@@ -136,16 +136,16 @@ always @ *
 begin
 	case(sum_level_1[0])
 		19 'sd 0      :	LUT_out[0]  = 18'sd 0;
-		19 'sd 98304  :	LUT_out[0]  = -18'sd 32;
-		19 'sd 32768  :	LUT_out[0]  = -18'sd 11;
-		-19'sd 32768  :	LUT_out[0]  = 18'sd 11;
-		-19'sd 98304  :	LUT_out[0]  = 18'sd 32;
-		19 'sd 196608 :	LUT_out[0]  = -18'sd 65;
-		19 'sd 131072 :	LUT_out[0]  = -18'sd 43;
-		19 'sd 65536  :	LUT_out[0]  = -18'sd 22;
-		-19'sd 65536  :	LUT_out[0]  = 18'sd 22;
-		-19'sd 131072 :	LUT_out[0]  = 18'sd 43;
-		-19'sd 196608 :	LUT_out[0]  = 18'sd 65;
+		19 'sd 98304  :	LUT_out[0]  = -18'sd 105;
+		19 'sd 32768  :	LUT_out[0]  = -18'sd 35;
+		-19'sd 32768  :	LUT_out[0]  = 18'sd 35;
+		-19'sd 98304  :	LUT_out[0]  = 18'sd 105;
+		19 'sd 196608 :	LUT_out[0]  = -18'sd 211;
+		19 'sd 131072 :	LUT_out[0]  = -18'sd 141;
+		19 'sd 65536  :	LUT_out[0]  = -18'sd 70;
+		-19'sd 65536  :	LUT_out[0]  = 18'sd 70;
+		-19'sd 131072 :	LUT_out[0]  = 18'sd 141;
+		-19'sd 196608 :	LUT_out[0]  = 18'sd 211;
 		default     :	LUT_out[0]  = 18'sd 0;
 	endcase
 end
@@ -156,16 +156,16 @@ always @ *
 begin
 	case(sum_level_1[1])
 		19 'sd 0      :	LUT_out[1]  = 18'sd 0;
-		19 'sd 98304  :	LUT_out[1]  = -18'sd 22;
-		19 'sd 32768  :	LUT_out[1]  = -18'sd 7;
-		-19'sd 32768  :	LUT_out[1]  = 18'sd 7;
-		-19'sd 98304  :	LUT_out[1]  = 18'sd 22;
-		19 'sd 196608 :	LUT_out[1]  = -18'sd 44;
-		19 'sd 131072 :	LUT_out[1]  = -18'sd 29;
-		19 'sd 65536  :	LUT_out[1]  = -18'sd 15;
-		-19'sd 65536  :	LUT_out[1]  = 18'sd 15;
-		-19'sd 131072 :	LUT_out[1]  = 18'sd 29;
-		-19'sd 196608 :	LUT_out[1]  = 18'sd 44;
+		19 'sd 98304  :	LUT_out[1]  = -18'sd 71;
+		19 'sd 32768  :	LUT_out[1]  = -18'sd 24;
+		-19'sd 32768  :	LUT_out[1]  = 18'sd 24;
+		-19'sd 98304  :	LUT_out[1]  = 18'sd 71;
+		19 'sd 196608 :	LUT_out[1]  = -18'sd 142;
+		19 'sd 131072 :	LUT_out[1]  = -18'sd 95;
+		19 'sd 65536  :	LUT_out[1]  = -18'sd 47;
+		-19'sd 65536  :	LUT_out[1]  = 18'sd 47;
+		-19'sd 131072 :	LUT_out[1]  = 18'sd 95;
+		-19'sd 196608 :	LUT_out[1]  = 18'sd 142;
 		default     :	LUT_out[1]  = 18'sd 0;
 	endcase
 end
@@ -176,16 +176,16 @@ always @ *
 begin
 	case(sum_level_1[2])
 		19 'sd 0      :	LUT_out[2]  = 18'sd 0;
-		19 'sd 98304  :	LUT_out[2]  = 18'sd 8;
-		19 'sd 32768  :	LUT_out[2]  = 18'sd 3;
-		-19'sd 32768  :	LUT_out[2]  = -18'sd 3;
-		-19'sd 98304  :	LUT_out[2]  = -18'sd 8;
-		19 'sd 196608 :	LUT_out[2]  = 18'sd 17;
-		19 'sd 131072 :	LUT_out[2]  = 18'sd 11;
-		19 'sd 65536  :	LUT_out[2]  = 18'sd 6;
-		-19'sd 65536  :	LUT_out[2]  = -18'sd 6;
-		-19'sd 131072 :	LUT_out[2]  = -18'sd 11;
-		-19'sd 196608 :	LUT_out[2]  = -18'sd 17;
+		19 'sd 98304  :	LUT_out[2]  = 18'sd 27;
+		19 'sd 32768  :	LUT_out[2]  = 18'sd 9;
+		-19'sd 32768  :	LUT_out[2]  = -18'sd 9;
+		-19'sd 98304  :	LUT_out[2]  = -18'sd 27;
+		19 'sd 196608 :	LUT_out[2]  = 18'sd 54;
+		19 'sd 131072 :	LUT_out[2]  = 18'sd 36;
+		19 'sd 65536  :	LUT_out[2]  = 18'sd 18;
+		-19'sd 65536  :	LUT_out[2]  = -18'sd 18;
+		-19'sd 131072 :	LUT_out[2]  = -18'sd 36;
+		-19'sd 196608 :	LUT_out[2]  = -18'sd 54;
 		default     :	LUT_out[2]  = 18'sd 0;
 	endcase
 end
@@ -196,16 +196,16 @@ always @ *
 begin
 	case(sum_level_1[3])
 		19 'sd 0      :	LUT_out[3]  = 18'sd 0;
-		19 'sd 98304  :	LUT_out[3]  = 18'sd 39;
-		19 'sd 32768  :	LUT_out[3]  = 18'sd 13;
-		-19'sd 32768  :	LUT_out[3]  = -18'sd 13;
-		-19'sd 98304  :	LUT_out[3]  = -18'sd 39;
-		19 'sd 196608 :	LUT_out[3]  = 18'sd 78;
-		19 'sd 131072 :	LUT_out[3]  = 18'sd 52;
-		19 'sd 65536  :	LUT_out[3]  = 18'sd 26;
-		-19'sd 65536  :	LUT_out[3]  = -18'sd 26;
-		-19'sd 131072 :	LUT_out[3]  = -18'sd 52;
-		-19'sd 196608 :	LUT_out[3]  = -18'sd 78;
+		19 'sd 98304  :	LUT_out[3]  = 18'sd 128;
+		19 'sd 32768  :	LUT_out[3]  = 18'sd 43;
+		-19'sd 32768  :	LUT_out[3]  = -18'sd 43;
+		-19'sd 98304  :	LUT_out[3]  = -18'sd 128;
+		19 'sd 196608 :	LUT_out[3]  = 18'sd 256;
+		19 'sd 131072 :	LUT_out[3]  = 18'sd 170;
+		19 'sd 65536  :	LUT_out[3]  = 18'sd 85;
+		-19'sd 65536  :	LUT_out[3]  = -18'sd 85;
+		-19'sd 131072 :	LUT_out[3]  = -18'sd 170;
+		-19'sd 196608 :	LUT_out[3]  = -18'sd 256;
 		default     :	LUT_out[3]  = 18'sd 0;
 	endcase
 end
@@ -216,16 +216,16 @@ always @ *
 begin
 	case(sum_level_1[4])
 		19 'sd 0      :	LUT_out[4]  = 18'sd 0;
-		19 'sd 98304  :	LUT_out[4]  = 18'sd 48;
-		19 'sd 32768  :	LUT_out[4]  = 18'sd 16;
-		-19'sd 32768  :	LUT_out[4]  = -18'sd 16;
-		-19'sd 98304  :	LUT_out[4]  = -18'sd 48;
-		19 'sd 196608 :	LUT_out[4]  = 18'sd 95;
-		19 'sd 131072 :	LUT_out[4]  = 18'sd 64;
-		19 'sd 65536  :	LUT_out[4]  = 18'sd 32;
-		-19'sd 65536  :	LUT_out[4]  = -18'sd 32;
-		-19'sd 131072 :	LUT_out[4]  = -18'sd 64;
-		-19'sd 196608 :	LUT_out[4]  = -18'sd 95;
+		19 'sd 98304  :	LUT_out[4]  = 18'sd 155;
+		19 'sd 32768  :	LUT_out[4]  = 18'sd 52;
+		-19'sd 32768  :	LUT_out[4]  = -18'sd 52;
+		-19'sd 98304  :	LUT_out[4]  = -18'sd 155;
+		19 'sd 196608 :	LUT_out[4]  = 18'sd 310;
+		19 'sd 131072 :	LUT_out[4]  = 18'sd 207;
+		19 'sd 65536  :	LUT_out[4]  = 18'sd 103;
+		-19'sd 65536  :	LUT_out[4]  = -18'sd 103;
+		-19'sd 131072 :	LUT_out[4]  = -18'sd 207;
+		-19'sd 196608 :	LUT_out[4]  = -18'sd 310;
 		default     :	LUT_out[4]  = 18'sd 0;
 	endcase
 end
@@ -236,16 +236,16 @@ always @ *
 begin
 	case(sum_level_1[5])
 		19 'sd 0      :	LUT_out[5]  = 18'sd 0;
-		19 'sd 98304  :	LUT_out[5]  = 18'sd 22;
-		19 'sd 32768  :	LUT_out[5]  = 18'sd 7;
-		-19'sd 32768  :	LUT_out[5]  = -18'sd 7;
-		-19'sd 98304  :	LUT_out[5]  = -18'sd 22;
-		19 'sd 196608 :	LUT_out[5]  = 18'sd 44;
-		19 'sd 131072 :	LUT_out[5]  = 18'sd 29;
-		19 'sd 65536  :	LUT_out[5]  = 18'sd 15;
-		-19'sd 65536  :	LUT_out[5]  = -18'sd 15;
-		-19'sd 131072 :	LUT_out[5]  = -18'sd 29;
-		-19'sd 196608 :	LUT_out[5]  = -18'sd 44;
+		19 'sd 98304  :	LUT_out[5]  = 18'sd 72;
+		19 'sd 32768  :	LUT_out[5]  = 18'sd 24;
+		-19'sd 32768  :	LUT_out[5]  = -18'sd 24;
+		-19'sd 98304  :	LUT_out[5]  = -18'sd 72;
+		19 'sd 196608 :	LUT_out[5]  = 18'sd 144;
+		19 'sd 131072 :	LUT_out[5]  = 18'sd 96;
+		19 'sd 65536  :	LUT_out[5]  = 18'sd 48;
+		-19'sd 65536  :	LUT_out[5]  = -18'sd 48;
+		-19'sd 131072 :	LUT_out[5]  = -18'sd 96;
+		-19'sd 196608 :	LUT_out[5]  = -18'sd 144;
 		default     :	LUT_out[5]  = 18'sd 0;
 	endcase
 end
@@ -256,16 +256,16 @@ always @ *
 begin
 	case(sum_level_1[6])
 		19 'sd 0      :	LUT_out[6]  = 18'sd 0;
-		19 'sd 98304  :	LUT_out[6]  = -18'sd 26;
-		19 'sd 32768  :	LUT_out[6]  = -18'sd 9;
-		-19'sd 32768  :	LUT_out[6]  = 18'sd 9;
-		-19'sd 98304  :	LUT_out[6]  = 18'sd 26;
-		19 'sd 196608 :	LUT_out[6]  = -18'sd 52;
-		19 'sd 131072 :	LUT_out[6]  = -18'sd 35;
-		19 'sd 65536  :	LUT_out[6]  = -18'sd 17;
-		-19'sd 65536  :	LUT_out[6]  = 18'sd 17;
-		-19'sd 131072 :	LUT_out[6]  = 18'sd 35;
-		-19'sd 196608 :	LUT_out[6]  = 18'sd 52;
+		19 'sd 98304  :	LUT_out[6]  = -18'sd 85;
+		19 'sd 32768  :	LUT_out[6]  = -18'sd 28;
+		-19'sd 32768  :	LUT_out[6]  = 18'sd 28;
+		-19'sd 98304  :	LUT_out[6]  = 18'sd 85;
+		19 'sd 196608 :	LUT_out[6]  = -18'sd 169;
+		19 'sd 131072 :	LUT_out[6]  = -18'sd 113;
+		19 'sd 65536  :	LUT_out[6]  = -18'sd 56;
+		-19'sd 65536  :	LUT_out[6]  = 18'sd 56;
+		-19'sd 131072 :	LUT_out[6]  = 18'sd 113;
+		-19'sd 196608 :	LUT_out[6]  = 18'sd 169;
 		default     :	LUT_out[6]  = 18'sd 0;
 	endcase
 end
@@ -276,16 +276,16 @@ always @ *
 begin
 	case(sum_level_1[7])
 		19 'sd 0      :	LUT_out[7]  = 18'sd 0;
-		19 'sd 98304  :	LUT_out[7]  = -18'sd 66;
-		19 'sd 32768  :	LUT_out[7]  = -18'sd 22;
-		-19'sd 32768  :	LUT_out[7]  = 18'sd 22;
-		-19'sd 98304  :	LUT_out[7]  = 18'sd 66;
-		19 'sd 196608 :	LUT_out[7]  = -18'sd 132;
-		19 'sd 131072 :	LUT_out[7]  = -18'sd 88;
-		19 'sd 65536  :	LUT_out[7]  = -18'sd 44;
-		-19'sd 65536  :	LUT_out[7]  = 18'sd 44;
-		-19'sd 131072 :	LUT_out[7]  = 18'sd 88;
-		-19'sd 196608 :	LUT_out[7]  = 18'sd 132;
+		19 'sd 98304  :	LUT_out[7]  = -18'sd 214;
+		19 'sd 32768  :	LUT_out[7]  = -18'sd 71;
+		-19'sd 32768  :	LUT_out[7]  = 18'sd 71;
+		-19'sd 98304  :	LUT_out[7]  = 18'sd 214;
+		19 'sd 196608 :	LUT_out[7]  = -18'sd 429;
+		19 'sd 131072 :	LUT_out[7]  = -18'sd 286;
+		19 'sd 65536  :	LUT_out[7]  = -18'sd 143;
+		-19'sd 65536  :	LUT_out[7]  = 18'sd 143;
+		-19'sd 131072 :	LUT_out[7]  = 18'sd 286;
+		-19'sd 196608 :	LUT_out[7]  = 18'sd 429;
 		default     :	LUT_out[7]  = 18'sd 0;
 	endcase
 end
@@ -296,16 +296,16 @@ always @ *
 begin
 	case(sum_level_1[8])
 		19 'sd 0      :	LUT_out[8]  = 18'sd 0;
-		19 'sd 98304  :	LUT_out[8]  = -18'sd 66;
-		19 'sd 32768  :	LUT_out[8]  = -18'sd 22;
-		-19'sd 32768  :	LUT_out[8]  = 18'sd 22;
-		-19'sd 98304  :	LUT_out[8]  = 18'sd 66;
-		19 'sd 196608 :	LUT_out[8]  = -18'sd 132;
-		19 'sd 131072 :	LUT_out[8]  = -18'sd 88;
-		19 'sd 65536  :	LUT_out[8]  = -18'sd 44;
-		-19'sd 65536  :	LUT_out[8]  = 18'sd 44;
-		-19'sd 131072 :	LUT_out[8]  = 18'sd 88;
-		-19'sd 196608 :	LUT_out[8]  = 18'sd 132;
+		19 'sd 98304  :	LUT_out[8]  = -18'sd 215;
+		19 'sd 32768  :	LUT_out[8]  = -18'sd 72;
+		-19'sd 32768  :	LUT_out[8]  = 18'sd 72;
+		-19'sd 98304  :	LUT_out[8]  = 18'sd 215;
+		19 'sd 196608 :	LUT_out[8]  = -18'sd 431;
+		19 'sd 131072 :	LUT_out[8]  = -18'sd 287;
+		19 'sd 65536  :	LUT_out[8]  = -18'sd 144;
+		-19'sd 65536  :	LUT_out[8]  = 18'sd 144;
+		-19'sd 131072 :	LUT_out[8]  = 18'sd 287;
+		-19'sd 196608 :	LUT_out[8]  = 18'sd 431;
 		default     :	LUT_out[8]  = 18'sd 0;
 	endcase
 end
@@ -316,16 +316,16 @@ always @ *
 begin
 	case(sum_level_1[9])
 		19 'sd 0      :	LUT_out[9]  = 18'sd 0;
-		19 'sd 98304  :	LUT_out[9]  = -18'sd 18;
-		19 'sd 32768  :	LUT_out[9]  = -18'sd 6;
-		-19'sd 32768  :	LUT_out[9]  = 18'sd 6;
-		-19'sd 98304  :	LUT_out[9]  = 18'sd 18;
-		19 'sd 196608 :	LUT_out[9]  = -18'sd 36;
-		19 'sd 131072 :	LUT_out[9]  = -18'sd 24;
-		19 'sd 65536  :	LUT_out[9]  = -18'sd 12;
-		-19'sd 65536  :	LUT_out[9]  = 18'sd 12;
-		-19'sd 131072 :	LUT_out[9]  = 18'sd 24;
-		-19'sd 196608 :	LUT_out[9]  = 18'sd 36;
+		19 'sd 98304  :	LUT_out[9]  = -18'sd 59;
+		19 'sd 32768  :	LUT_out[9]  = -18'sd 20;
+		-19'sd 32768  :	LUT_out[9]  = 18'sd 20;
+		-19'sd 98304  :	LUT_out[9]  = 18'sd 59;
+		19 'sd 196608 :	LUT_out[9]  = -18'sd 119;
+		19 'sd 131072 :	LUT_out[9]  = -18'sd 79;
+		19 'sd 65536  :	LUT_out[9]  = -18'sd 40;
+		-19'sd 65536  :	LUT_out[9]  = 18'sd 40;
+		-19'sd 131072 :	LUT_out[9]  = 18'sd 79;
+		-19'sd 196608 :	LUT_out[9]  = 18'sd 119;
 		default     :	LUT_out[9]  = 18'sd 0;
 	endcase
 end
@@ -336,16 +336,16 @@ always @ *
 begin
 	case(sum_level_1[10])
 		19 'sd 0      :	LUT_out[10] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[10] = 18'sd 53;
-		19 'sd 32768  :	LUT_out[10] = 18'sd 18;
-		-19'sd 32768  :	LUT_out[10] = -18'sd 18;
-		-19'sd 98304  :	LUT_out[10] = -18'sd 53;
-		19 'sd 196608 :	LUT_out[10] = 18'sd 107;
-		19 'sd 131072 :	LUT_out[10] = 18'sd 71;
-		19 'sd 65536  :	LUT_out[10] = 18'sd 36;
-		-19'sd 65536  :	LUT_out[10] = -18'sd 36;
-		-19'sd 131072 :	LUT_out[10] = -18'sd 71;
-		-19'sd 196608 :	LUT_out[10] = -18'sd 107;
+		19 'sd 98304  :	LUT_out[10] = 18'sd 174;
+		19 'sd 32768  :	LUT_out[10] = 18'sd 58;
+		-19'sd 32768  :	LUT_out[10] = -18'sd 58;
+		-19'sd 98304  :	LUT_out[10] = -18'sd 174;
+		19 'sd 196608 :	LUT_out[10] = 18'sd 348;
+		19 'sd 131072 :	LUT_out[10] = 18'sd 232;
+		19 'sd 65536  :	LUT_out[10] = 18'sd 116;
+		-19'sd 65536  :	LUT_out[10] = -18'sd 116;
+		-19'sd 131072 :	LUT_out[10] = -18'sd 232;
+		-19'sd 196608 :	LUT_out[10] = -18'sd 348;
 		default     :	LUT_out[10] = 18'sd 0;
 	endcase
 end
@@ -356,16 +356,16 @@ always @ *
 begin
 	case(sum_level_1[11])
 		19 'sd 0      :	LUT_out[11] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[11] = 18'sd 102;
-		19 'sd 32768  :	LUT_out[11] = 18'sd 34;
-		-19'sd 32768  :	LUT_out[11] = -18'sd 34;
-		-19'sd 98304  :	LUT_out[11] = -18'sd 102;
-		19 'sd 196608 :	LUT_out[11] = 18'sd 204;
-		19 'sd 131072 :	LUT_out[11] = 18'sd 136;
-		19 'sd 65536  :	LUT_out[11] = 18'sd 68;
-		-19'sd 65536  :	LUT_out[11] = -18'sd 68;
-		-19'sd 131072 :	LUT_out[11] = -18'sd 136;
-		-19'sd 196608 :	LUT_out[11] = -18'sd 204;
+		19 'sd 98304  :	LUT_out[11] = 18'sd 332;
+		19 'sd 32768  :	LUT_out[11] = 18'sd 111;
+		-19'sd 32768  :	LUT_out[11] = -18'sd 111;
+		-19'sd 98304  :	LUT_out[11] = -18'sd 332;
+		19 'sd 196608 :	LUT_out[11] = 18'sd 663;
+		19 'sd 131072 :	LUT_out[11] = 18'sd 442;
+		19 'sd 65536  :	LUT_out[11] = 18'sd 221;
+		-19'sd 65536  :	LUT_out[11] = -18'sd 221;
+		-19'sd 131072 :	LUT_out[11] = -18'sd 442;
+		-19'sd 196608 :	LUT_out[11] = -18'sd 663;
 		default     :	LUT_out[11] = 18'sd 0;
 	endcase
 end
@@ -376,16 +376,16 @@ always @ *
 begin
 	case(sum_level_1[12])
 		19 'sd 0      :	LUT_out[12] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[12] = 18'sd 88;
-		19 'sd 32768  :	LUT_out[12] = 18'sd 29;
-		-19'sd 32768  :	LUT_out[12] = -18'sd 29;
-		-19'sd 98304  :	LUT_out[12] = -18'sd 88;
-		19 'sd 196608 :	LUT_out[12] = 18'sd 175;
-		19 'sd 131072 :	LUT_out[12] = 18'sd 117;
-		19 'sd 65536  :	LUT_out[12] = 18'sd 58;
-		-19'sd 65536  :	LUT_out[12] = -18'sd 58;
-		-19'sd 131072 :	LUT_out[12] = -18'sd 117;
-		-19'sd 196608 :	LUT_out[12] = -18'sd 175;
+		19 'sd 98304  :	LUT_out[12] = 18'sd 285;
+		19 'sd 32768  :	LUT_out[12] = 18'sd 95;
+		-19'sd 32768  :	LUT_out[12] = -18'sd 95;
+		-19'sd 98304  :	LUT_out[12] = -18'sd 285;
+		19 'sd 196608 :	LUT_out[12] = 18'sd 570;
+		19 'sd 131072 :	LUT_out[12] = 18'sd 380;
+		19 'sd 65536  :	LUT_out[12] = 18'sd 190;
+		-19'sd 65536  :	LUT_out[12] = -18'sd 190;
+		-19'sd 131072 :	LUT_out[12] = -18'sd 380;
+		-19'sd 196608 :	LUT_out[12] = -18'sd 570;
 		default     :	LUT_out[12] = 18'sd 0;
 	endcase
 end
@@ -396,16 +396,16 @@ always @ *
 begin
 	case(sum_level_1[13])
 		19 'sd 0      :	LUT_out[13] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[13] = 18'sd 8;
-		19 'sd 32768  :	LUT_out[13] = 18'sd 3;
-		-19'sd 32768  :	LUT_out[13] = -18'sd 3;
-		-19'sd 98304  :	LUT_out[13] = -18'sd 8;
-		19 'sd 196608 :	LUT_out[13] = 18'sd 16;
-		19 'sd 131072 :	LUT_out[13] = 18'sd 11;
-		19 'sd 65536  :	LUT_out[13] = 18'sd 5;
-		-19'sd 65536  :	LUT_out[13] = -18'sd 5;
-		-19'sd 131072 :	LUT_out[13] = -18'sd 11;
-		-19'sd 196608 :	LUT_out[13] = -18'sd 16;
+		19 'sd 98304  :	LUT_out[13] = 18'sd 26;
+		19 'sd 32768  :	LUT_out[13] = 18'sd 9;
+		-19'sd 32768  :	LUT_out[13] = -18'sd 9;
+		-19'sd 98304  :	LUT_out[13] = -18'sd 26;
+		19 'sd 196608 :	LUT_out[13] = 18'sd 53;
+		19 'sd 131072 :	LUT_out[13] = 18'sd 35;
+		19 'sd 65536  :	LUT_out[13] = 18'sd 18;
+		-19'sd 65536  :	LUT_out[13] = -18'sd 18;
+		-19'sd 131072 :	LUT_out[13] = -18'sd 35;
+		-19'sd 196608 :	LUT_out[13] = -18'sd 53;
 		default     :	LUT_out[13] = 18'sd 0;
 	endcase
 end
@@ -416,16 +416,16 @@ always @ *
 begin
 	case(sum_level_1[14])
 		19 'sd 0      :	LUT_out[14] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[14] = -18'sd 93;
-		19 'sd 32768  :	LUT_out[14] = -18'sd 31;
-		-19'sd 32768  :	LUT_out[14] = 18'sd 31;
-		-19'sd 98304  :	LUT_out[14] = 18'sd 93;
-		19 'sd 196608 :	LUT_out[14] = -18'sd 186;
-		19 'sd 131072 :	LUT_out[14] = -18'sd 124;
-		19 'sd 65536  :	LUT_out[14] = -18'sd 62;
-		-19'sd 65536  :	LUT_out[14] = 18'sd 62;
-		-19'sd 131072 :	LUT_out[14] = 18'sd 124;
-		-19'sd 196608 :	LUT_out[14] = 18'sd 186;
+		19 'sd 98304  :	LUT_out[14] = -18'sd 304;
+		19 'sd 32768  :	LUT_out[14] = -18'sd 101;
+		-19'sd 32768  :	LUT_out[14] = 18'sd 101;
+		-19'sd 98304  :	LUT_out[14] = 18'sd 304;
+		19 'sd 196608 :	LUT_out[14] = -18'sd 607;
+		19 'sd 131072 :	LUT_out[14] = -18'sd 405;
+		19 'sd 65536  :	LUT_out[14] = -18'sd 202;
+		-19'sd 65536  :	LUT_out[14] = 18'sd 202;
+		-19'sd 131072 :	LUT_out[14] = 18'sd 405;
+		-19'sd 196608 :	LUT_out[14] = 18'sd 607;
 		default     :	LUT_out[14] = 18'sd 0;
 	endcase
 end
@@ -436,16 +436,16 @@ always @ *
 begin
 	case(sum_level_1[15])
 		19 'sd 0      :	LUT_out[15] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[15] = -18'sd 149;
-		19 'sd 32768  :	LUT_out[15] = -18'sd 50;
-		-19'sd 32768  :	LUT_out[15] = 18'sd 50;
-		-19'sd 98304  :	LUT_out[15] = 18'sd 149;
-		19 'sd 196608 :	LUT_out[15] = -18'sd 298;
-		19 'sd 131072 :	LUT_out[15] = -18'sd 199;
-		19 'sd 65536  :	LUT_out[15] = -18'sd 99;
-		-19'sd 65536  :	LUT_out[15] = 18'sd 99;
-		-19'sd 131072 :	LUT_out[15] = 18'sd 199;
-		-19'sd 196608 :	LUT_out[15] = 18'sd 298;
+		19 'sd 98304  :	LUT_out[15] = -18'sd 485;
+		19 'sd 32768  :	LUT_out[15] = -18'sd 162;
+		-19'sd 32768  :	LUT_out[15] = 18'sd 162;
+		-19'sd 98304  :	LUT_out[15] = 18'sd 485;
+		19 'sd 196608 :	LUT_out[15] = -18'sd 971;
+		19 'sd 131072 :	LUT_out[15] = -18'sd 647;
+		19 'sd 65536  :	LUT_out[15] = -18'sd 324;
+		-19'sd 65536  :	LUT_out[15] = 18'sd 324;
+		-19'sd 131072 :	LUT_out[15] = 18'sd 647;
+		-19'sd 196608 :	LUT_out[15] = 18'sd 971;
 		default     :	LUT_out[15] = 18'sd 0;
 	endcase
 end
@@ -456,16 +456,16 @@ always @ *
 begin
 	case(sum_level_1[16])
 		19 'sd 0      :	LUT_out[16] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[16] = -18'sd 111;
-		19 'sd 32768  :	LUT_out[16] = -18'sd 37;
-		-19'sd 32768  :	LUT_out[16] = 18'sd 37;
-		-19'sd 98304  :	LUT_out[16] = 18'sd 111;
-		19 'sd 196608 :	LUT_out[16] = -18'sd 223;
-		19 'sd 131072 :	LUT_out[16] = -18'sd 149;
-		19 'sd 65536  :	LUT_out[16] = -18'sd 74;
-		-19'sd 65536  :	LUT_out[16] = 18'sd 74;
-		-19'sd 131072 :	LUT_out[16] = 18'sd 149;
-		-19'sd 196608 :	LUT_out[16] = 18'sd 223;
+		19 'sd 98304  :	LUT_out[16] = -18'sd 363;
+		19 'sd 32768  :	LUT_out[16] = -18'sd 121;
+		-19'sd 32768  :	LUT_out[16] = 18'sd 121;
+		-19'sd 98304  :	LUT_out[16] = 18'sd 363;
+		19 'sd 196608 :	LUT_out[16] = -18'sd 726;
+		19 'sd 131072 :	LUT_out[16] = -18'sd 484;
+		19 'sd 65536  :	LUT_out[16] = -18'sd 242;
+		-19'sd 65536  :	LUT_out[16] = 18'sd 242;
+		-19'sd 131072 :	LUT_out[16] = 18'sd 484;
+		-19'sd 196608 :	LUT_out[16] = 18'sd 726;
 		default     :	LUT_out[16] = 18'sd 0;
 	endcase
 end
@@ -476,16 +476,16 @@ always @ *
 begin
 	case(sum_level_1[17])
 		19 'sd 0      :	LUT_out[17] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[17] = 18'sd 11;
-		19 'sd 32768  :	LUT_out[17] = 18'sd 4;
-		-19'sd 32768  :	LUT_out[17] = -18'sd 4;
-		-19'sd 98304  :	LUT_out[17] = -18'sd 11;
-		19 'sd 196608 :	LUT_out[17] = 18'sd 22;
-		19 'sd 131072 :	LUT_out[17] = 18'sd 15;
-		19 'sd 65536  :	LUT_out[17] = 18'sd 7;
-		-19'sd 65536  :	LUT_out[17] = -18'sd 7;
-		-19'sd 131072 :	LUT_out[17] = -18'sd 15;
-		-19'sd 196608 :	LUT_out[17] = -18'sd 22;
+		19 'sd 98304  :	LUT_out[17] = 18'sd 36;
+		19 'sd 32768  :	LUT_out[17] = 18'sd 12;
+		-19'sd 32768  :	LUT_out[17] = -18'sd 12;
+		-19'sd 98304  :	LUT_out[17] = -18'sd 36;
+		19 'sd 196608 :	LUT_out[17] = 18'sd 72;
+		19 'sd 131072 :	LUT_out[17] = 18'sd 48;
+		19 'sd 65536  :	LUT_out[17] = 18'sd 24;
+		-19'sd 65536  :	LUT_out[17] = -18'sd 24;
+		-19'sd 131072 :	LUT_out[17] = -18'sd 48;
+		-19'sd 196608 :	LUT_out[17] = -18'sd 72;
 		default     :	LUT_out[17] = 18'sd 0;
 	endcase
 end
@@ -496,16 +496,16 @@ always @ *
 begin
 	case(sum_level_1[18])
 		19 'sd 0      :	LUT_out[18] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[18] = 18'sd 149;
-		19 'sd 32768  :	LUT_out[18] = 18'sd 50;
-		-19'sd 32768  :	LUT_out[18] = -18'sd 50;
-		-19'sd 98304  :	LUT_out[18] = -18'sd 149;
-		19 'sd 196608 :	LUT_out[18] = 18'sd 298;
-		19 'sd 131072 :	LUT_out[18] = 18'sd 199;
-		19 'sd 65536  :	LUT_out[18] = 18'sd 99;
-		-19'sd 65536  :	LUT_out[18] = -18'sd 99;
-		-19'sd 131072 :	LUT_out[18] = -18'sd 199;
-		-19'sd 196608 :	LUT_out[18] = -18'sd 298;
+		19 'sd 98304  :	LUT_out[18] = 18'sd 485;
+		19 'sd 32768  :	LUT_out[18] = 18'sd 162;
+		-19'sd 32768  :	LUT_out[18] = -18'sd 162;
+		-19'sd 98304  :	LUT_out[18] = -18'sd 485;
+		19 'sd 196608 :	LUT_out[18] = 18'sd 970;
+		19 'sd 131072 :	LUT_out[18] = 18'sd 647;
+		19 'sd 65536  :	LUT_out[18] = 18'sd 323;
+		-19'sd 65536  :	LUT_out[18] = -18'sd 323;
+		-19'sd 131072 :	LUT_out[18] = -18'sd 647;
+		-19'sd 196608 :	LUT_out[18] = -18'sd 970;
 		default     :	LUT_out[18] = 18'sd 0;
 	endcase
 end
@@ -516,16 +516,16 @@ always @ *
 begin
 	case(sum_level_1[19])
 		19 'sd 0      :	LUT_out[19] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[19] = 18'sd 210;
-		19 'sd 32768  :	LUT_out[19] = 18'sd 70;
-		-19'sd 32768  :	LUT_out[19] = -18'sd 70;
-		-19'sd 98304  :	LUT_out[19] = -18'sd 210;
-		19 'sd 196608 :	LUT_out[19] = 18'sd 419;
-		19 'sd 131072 :	LUT_out[19] = 18'sd 279;
-		19 'sd 65536  :	LUT_out[19] = 18'sd 140;
-		-19'sd 65536  :	LUT_out[19] = -18'sd 140;
-		-19'sd 131072 :	LUT_out[19] = -18'sd 279;
-		-19'sd 196608 :	LUT_out[19] = -18'sd 419;
+		19 'sd 98304  :	LUT_out[19] = 18'sd 683;
+		19 'sd 32768  :	LUT_out[19] = 18'sd 228;
+		-19'sd 32768  :	LUT_out[19] = -18'sd 228;
+		-19'sd 98304  :	LUT_out[19] = -18'sd 683;
+		19 'sd 196608 :	LUT_out[19] = 18'sd 1365;
+		19 'sd 131072 :	LUT_out[19] = 18'sd 910;
+		19 'sd 65536  :	LUT_out[19] = 18'sd 455;
+		-19'sd 65536  :	LUT_out[19] = -18'sd 455;
+		-19'sd 131072 :	LUT_out[19] = -18'sd 910;
+		-19'sd 196608 :	LUT_out[19] = -18'sd 1365;
 		default     :	LUT_out[19] = 18'sd 0;
 	endcase
 end
@@ -536,16 +536,16 @@ always @ *
 begin
 	case(sum_level_1[20])
 		19 'sd 0      :	LUT_out[20] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[20] = 18'sd 137;
-		19 'sd 32768  :	LUT_out[20] = 18'sd 46;
-		-19'sd 32768  :	LUT_out[20] = -18'sd 46;
-		-19'sd 98304  :	LUT_out[20] = -18'sd 137;
-		19 'sd 196608 :	LUT_out[20] = 18'sd 274;
-		19 'sd 131072 :	LUT_out[20] = 18'sd 183;
-		19 'sd 65536  :	LUT_out[20] = 18'sd 91;
-		-19'sd 65536  :	LUT_out[20] = -18'sd 91;
-		-19'sd 131072 :	LUT_out[20] = -18'sd 183;
-		-19'sd 196608 :	LUT_out[20] = -18'sd 274;
+		19 'sd 98304  :	LUT_out[20] = 18'sd 446;
+		19 'sd 32768  :	LUT_out[20] = 18'sd 149;
+		-19'sd 32768  :	LUT_out[20] = -18'sd 149;
+		-19'sd 98304  :	LUT_out[20] = -18'sd 446;
+		19 'sd 196608 :	LUT_out[20] = 18'sd 892;
+		19 'sd 131072 :	LUT_out[20] = 18'sd 595;
+		19 'sd 65536  :	LUT_out[20] = 18'sd 297;
+		-19'sd 65536  :	LUT_out[20] = -18'sd 297;
+		-19'sd 131072 :	LUT_out[20] = -18'sd 595;
+		-19'sd 196608 :	LUT_out[20] = -18'sd 892;
 		default     :	LUT_out[20] = 18'sd 0;
 	endcase
 end
@@ -556,16 +556,16 @@ always @ *
 begin
 	case(sum_level_1[21])
 		19 'sd 0      :	LUT_out[21] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[21] = -18'sd 43;
-		19 'sd 32768  :	LUT_out[21] = -18'sd 14;
-		-19'sd 32768  :	LUT_out[21] = 18'sd 14;
-		-19'sd 98304  :	LUT_out[21] = 18'sd 43;
-		19 'sd 196608 :	LUT_out[21] = -18'sd 85;
-		19 'sd 131072 :	LUT_out[21] = -18'sd 57;
-		19 'sd 65536  :	LUT_out[21] = -18'sd 28;
-		-19'sd 65536  :	LUT_out[21] = 18'sd 28;
-		-19'sd 131072 :	LUT_out[21] = 18'sd 57;
-		-19'sd 196608 :	LUT_out[21] = 18'sd 85;
+		19 'sd 98304  :	LUT_out[21] = -18'sd 139;
+		19 'sd 32768  :	LUT_out[21] = -18'sd 46;
+		-19'sd 32768  :	LUT_out[21] = 18'sd 46;
+		-19'sd 98304  :	LUT_out[21] = 18'sd 139;
+		19 'sd 196608 :	LUT_out[21] = -18'sd 278;
+		19 'sd 131072 :	LUT_out[21] = -18'sd 186;
+		19 'sd 65536  :	LUT_out[21] = -18'sd 93;
+		-19'sd 65536  :	LUT_out[21] = 18'sd 93;
+		-19'sd 131072 :	LUT_out[21] = 18'sd 186;
+		-19'sd 196608 :	LUT_out[21] = 18'sd 278;
 		default     :	LUT_out[21] = 18'sd 0;
 	endcase
 end
@@ -576,16 +576,16 @@ always @ *
 begin
 	case(sum_level_1[22])
 		19 'sd 0      :	LUT_out[22] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[22] = -18'sd 225;
-		19 'sd 32768  :	LUT_out[22] = -18'sd 75;
-		-19'sd 32768  :	LUT_out[22] = 18'sd 75;
-		-19'sd 98304  :	LUT_out[22] = 18'sd 225;
-		19 'sd 196608 :	LUT_out[22] = -18'sd 450;
-		19 'sd 131072 :	LUT_out[22] = -18'sd 300;
-		19 'sd 65536  :	LUT_out[22] = -18'sd 150;
-		-19'sd 65536  :	LUT_out[22] = 18'sd 150;
-		-19'sd 131072 :	LUT_out[22] = 18'sd 300;
-		-19'sd 196608 :	LUT_out[22] = 18'sd 450;
+		19 'sd 98304  :	LUT_out[22] = -18'sd 734;
+		19 'sd 32768  :	LUT_out[22] = -18'sd 245;
+		-19'sd 32768  :	LUT_out[22] = 18'sd 245;
+		-19'sd 98304  :	LUT_out[22] = 18'sd 734;
+		19 'sd 196608 :	LUT_out[22] = -18'sd 1467;
+		19 'sd 131072 :	LUT_out[22] = -18'sd 978;
+		19 'sd 65536  :	LUT_out[22] = -18'sd 489;
+		-19'sd 65536  :	LUT_out[22] = 18'sd 489;
+		-19'sd 131072 :	LUT_out[22] = 18'sd 978;
+		-19'sd 196608 :	LUT_out[22] = 18'sd 1467;
 		default     :	LUT_out[22] = 18'sd 0;
 	endcase
 end
@@ -596,16 +596,16 @@ always @ *
 begin
 	case(sum_level_1[23])
 		19 'sd 0      :	LUT_out[23] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[23] = -18'sd 286;
-		19 'sd 32768  :	LUT_out[23] = -18'sd 95;
-		-19'sd 32768  :	LUT_out[23] = 18'sd 95;
-		-19'sd 98304  :	LUT_out[23] = 18'sd 286;
-		19 'sd 196608 :	LUT_out[23] = -18'sd 572;
-		19 'sd 131072 :	LUT_out[23] = -18'sd 382;
-		19 'sd 65536  :	LUT_out[23] = -18'sd 191;
-		-19'sd 65536  :	LUT_out[23] = 18'sd 191;
-		-19'sd 131072 :	LUT_out[23] = 18'sd 382;
-		-19'sd 196608 :	LUT_out[23] = 18'sd 572;
+		19 'sd 98304  :	LUT_out[23] = -18'sd 932;
+		19 'sd 32768  :	LUT_out[23] = -18'sd 311;
+		-19'sd 32768  :	LUT_out[23] = 18'sd 311;
+		-19'sd 98304  :	LUT_out[23] = 18'sd 932;
+		19 'sd 196608 :	LUT_out[23] = -18'sd 1865;
+		19 'sd 131072 :	LUT_out[23] = -18'sd 1243;
+		19 'sd 65536  :	LUT_out[23] = -18'sd 622;
+		-19'sd 65536  :	LUT_out[23] = 18'sd 622;
+		-19'sd 131072 :	LUT_out[23] = 18'sd 1243;
+		-19'sd 196608 :	LUT_out[23] = 18'sd 1865;
 		default     :	LUT_out[23] = 18'sd 0;
 	endcase
 end
@@ -616,16 +616,16 @@ always @ *
 begin
 	case(sum_level_1[24])
 		19 'sd 0      :	LUT_out[24] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[24] = -18'sd 163;
-		19 'sd 32768  :	LUT_out[24] = -18'sd 54;
-		-19'sd 32768  :	LUT_out[24] = 18'sd 54;
-		-19'sd 98304  :	LUT_out[24] = 18'sd 163;
-		19 'sd 196608 :	LUT_out[24] = -18'sd 326;
-		19 'sd 131072 :	LUT_out[24] = -18'sd 218;
-		19 'sd 65536  :	LUT_out[24] = -18'sd 109;
-		-19'sd 65536  :	LUT_out[24] = 18'sd 109;
-		-19'sd 131072 :	LUT_out[24] = 18'sd 218;
-		-19'sd 196608 :	LUT_out[24] = 18'sd 326;
+		19 'sd 98304  :	LUT_out[24] = -18'sd 532;
+		19 'sd 32768  :	LUT_out[24] = -18'sd 177;
+		-19'sd 32768  :	LUT_out[24] = 18'sd 177;
+		-19'sd 98304  :	LUT_out[24] = 18'sd 532;
+		19 'sd 196608 :	LUT_out[24] = -18'sd 1064;
+		19 'sd 131072 :	LUT_out[24] = -18'sd 709;
+		19 'sd 65536  :	LUT_out[24] = -18'sd 355;
+		-19'sd 65536  :	LUT_out[24] = 18'sd 355;
+		-19'sd 131072 :	LUT_out[24] = 18'sd 709;
+		-19'sd 196608 :	LUT_out[24] = 18'sd 1064;
 		default     :	LUT_out[24] = 18'sd 0;
 	endcase
 end
@@ -636,16 +636,16 @@ always @ *
 begin
 	case(sum_level_1[25])
 		19 'sd 0      :	LUT_out[25] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[25] = 18'sd 92;
-		19 'sd 32768  :	LUT_out[25] = 18'sd 31;
-		-19'sd 32768  :	LUT_out[25] = -18'sd 31;
-		-19'sd 98304  :	LUT_out[25] = -18'sd 92;
-		19 'sd 196608 :	LUT_out[25] = 18'sd 184;
-		19 'sd 131072 :	LUT_out[25] = 18'sd 122;
-		19 'sd 65536  :	LUT_out[25] = 18'sd 61;
-		-19'sd 65536  :	LUT_out[25] = -18'sd 61;
-		-19'sd 131072 :	LUT_out[25] = -18'sd 122;
-		-19'sd 196608 :	LUT_out[25] = -18'sd 184;
+		19 'sd 98304  :	LUT_out[25] = 18'sd 299;
+		19 'sd 32768  :	LUT_out[25] = 18'sd 100;
+		-19'sd 32768  :	LUT_out[25] = -18'sd 100;
+		-19'sd 98304  :	LUT_out[25] = -18'sd 299;
+		19 'sd 196608 :	LUT_out[25] = 18'sd 598;
+		19 'sd 131072 :	LUT_out[25] = 18'sd 399;
+		19 'sd 65536  :	LUT_out[25] = 18'sd 199;
+		-19'sd 65536  :	LUT_out[25] = -18'sd 199;
+		-19'sd 131072 :	LUT_out[25] = -18'sd 399;
+		-19'sd 196608 :	LUT_out[25] = -18'sd 598;
 		default     :	LUT_out[25] = 18'sd 0;
 	endcase
 end
@@ -656,16 +656,16 @@ always @ *
 begin
 	case(sum_level_1[26])
 		19 'sd 0      :	LUT_out[26] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[26] = 18'sd 328;
-		19 'sd 32768  :	LUT_out[26] = 18'sd 109;
-		-19'sd 32768  :	LUT_out[26] = -18'sd 109;
-		-19'sd 98304  :	LUT_out[26] = -18'sd 328;
-		19 'sd 196608 :	LUT_out[26] = 18'sd 657;
-		19 'sd 131072 :	LUT_out[26] = 18'sd 438;
-		19 'sd 65536  :	LUT_out[26] = 18'sd 219;
-		-19'sd 65536  :	LUT_out[26] = -18'sd 219;
-		-19'sd 131072 :	LUT_out[26] = -18'sd 438;
-		-19'sd 196608 :	LUT_out[26] = -18'sd 657;
+		19 'sd 98304  :	LUT_out[26] = 18'sd 1070;
+		19 'sd 32768  :	LUT_out[26] = 18'sd 357;
+		-19'sd 32768  :	LUT_out[26] = -18'sd 357;
+		-19'sd 98304  :	LUT_out[26] = -18'sd 1070;
+		19 'sd 196608 :	LUT_out[26] = 18'sd 2140;
+		19 'sd 131072 :	LUT_out[26] = 18'sd 1427;
+		19 'sd 65536  :	LUT_out[26] = 18'sd 713;
+		-19'sd 65536  :	LUT_out[26] = -18'sd 713;
+		-19'sd 131072 :	LUT_out[26] = -18'sd 1427;
+		-19'sd 196608 :	LUT_out[26] = -18'sd 2140;
 		default     :	LUT_out[26] = 18'sd 0;
 	endcase
 end
@@ -676,16 +676,16 @@ always @ *
 begin
 	case(sum_level_1[27])
 		19 'sd 0      :	LUT_out[27] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[27] = 18'sd 384;
-		19 'sd 32768  :	LUT_out[27] = 18'sd 128;
-		-19'sd 32768  :	LUT_out[27] = -18'sd 128;
-		-19'sd 98304  :	LUT_out[27] = -18'sd 384;
-		19 'sd 196608 :	LUT_out[27] = 18'sd 767;
-		19 'sd 131072 :	LUT_out[27] = 18'sd 511;
-		19 'sd 65536  :	LUT_out[27] = 18'sd 256;
-		-19'sd 65536  :	LUT_out[27] = -18'sd 256;
-		-19'sd 131072 :	LUT_out[27] = -18'sd 511;
-		-19'sd 196608 :	LUT_out[27] = -18'sd 767;
+		19 'sd 98304  :	LUT_out[27] = 18'sd 1250;
+		19 'sd 32768  :	LUT_out[27] = 18'sd 417;
+		-19'sd 32768  :	LUT_out[27] = -18'sd 417;
+		-19'sd 98304  :	LUT_out[27] = -18'sd 1250;
+		19 'sd 196608 :	LUT_out[27] = 18'sd 2499;
+		19 'sd 131072 :	LUT_out[27] = 18'sd 1666;
+		19 'sd 65536  :	LUT_out[27] = 18'sd 833;
+		-19'sd 65536  :	LUT_out[27] = -18'sd 833;
+		-19'sd 131072 :	LUT_out[27] = -18'sd 1666;
+		-19'sd 196608 :	LUT_out[27] = -18'sd 2499;
 		default     :	LUT_out[27] = 18'sd 0;
 	endcase
 end
@@ -696,16 +696,16 @@ always @ *
 begin
 	case(sum_level_1[28])
 		19 'sd 0      :	LUT_out[28] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[28] = 18'sd 189;
-		19 'sd 32768  :	LUT_out[28] = 18'sd 63;
-		-19'sd 32768  :	LUT_out[28] = -18'sd 63;
-		-19'sd 98304  :	LUT_out[28] = -18'sd 189;
-		19 'sd 196608 :	LUT_out[28] = 18'sd 379;
-		19 'sd 131072 :	LUT_out[28] = 18'sd 252;
-		19 'sd 65536  :	LUT_out[28] = 18'sd 126;
-		-19'sd 65536  :	LUT_out[28] = -18'sd 126;
-		-19'sd 131072 :	LUT_out[28] = -18'sd 252;
-		-19'sd 196608 :	LUT_out[28] = -18'sd 379;
+		19 'sd 98304  :	LUT_out[28] = 18'sd 617;
+		19 'sd 32768  :	LUT_out[28] = 18'sd 206;
+		-19'sd 32768  :	LUT_out[28] = -18'sd 206;
+		-19'sd 98304  :	LUT_out[28] = -18'sd 617;
+		19 'sd 196608 :	LUT_out[28] = 18'sd 1233;
+		19 'sd 131072 :	LUT_out[28] = 18'sd 822;
+		19 'sd 65536  :	LUT_out[28] = 18'sd 411;
+		-19'sd 65536  :	LUT_out[28] = -18'sd 411;
+		-19'sd 131072 :	LUT_out[28] = -18'sd 822;
+		-19'sd 196608 :	LUT_out[28] = -18'sd 1233;
 		default     :	LUT_out[28] = 18'sd 0;
 	endcase
 end
@@ -716,16 +716,16 @@ always @ *
 begin
 	case(sum_level_1[29])
 		19 'sd 0      :	LUT_out[29] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[29] = -18'sd 166;
-		19 'sd 32768  :	LUT_out[29] = -18'sd 55;
-		-19'sd 32768  :	LUT_out[29] = 18'sd 55;
-		-19'sd 98304  :	LUT_out[29] = 18'sd 166;
-		19 'sd 196608 :	LUT_out[29] = -18'sd 331;
-		19 'sd 131072 :	LUT_out[29] = -18'sd 221;
-		19 'sd 65536  :	LUT_out[29] = -18'sd 110;
-		-19'sd 65536  :	LUT_out[29] = 18'sd 110;
-		-19'sd 131072 :	LUT_out[29] = 18'sd 221;
-		-19'sd 196608 :	LUT_out[29] = 18'sd 331;
+		19 'sd 98304  :	LUT_out[29] = -18'sd 539;
+		19 'sd 32768  :	LUT_out[29] = -18'sd 180;
+		-19'sd 32768  :	LUT_out[29] = 18'sd 180;
+		-19'sd 98304  :	LUT_out[29] = 18'sd 539;
+		19 'sd 196608 :	LUT_out[29] = -18'sd 1079;
+		19 'sd 131072 :	LUT_out[29] = -18'sd 719;
+		19 'sd 65536  :	LUT_out[29] = -18'sd 360;
+		-19'sd 65536  :	LUT_out[29] = 18'sd 360;
+		-19'sd 131072 :	LUT_out[29] = 18'sd 719;
+		-19'sd 196608 :	LUT_out[29] = 18'sd 1079;
 		default     :	LUT_out[29] = 18'sd 0;
 	endcase
 end
@@ -736,16 +736,16 @@ always @ *
 begin
 	case(sum_level_1[30])
 		19 'sd 0      :	LUT_out[30] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[30] = -18'sd 469;
-		19 'sd 32768  :	LUT_out[30] = -18'sd 156;
-		-19'sd 32768  :	LUT_out[30] = 18'sd 156;
-		-19'sd 98304  :	LUT_out[30] = 18'sd 469;
-		19 'sd 196608 :	LUT_out[30] = -18'sd 939;
-		19 'sd 131072 :	LUT_out[30] = -18'sd 626;
-		19 'sd 65536  :	LUT_out[30] = -18'sd 313;
-		-19'sd 65536  :	LUT_out[30] = 18'sd 313;
-		-19'sd 131072 :	LUT_out[30] = 18'sd 626;
-		-19'sd 196608 :	LUT_out[30] = 18'sd 939;
+		19 'sd 98304  :	LUT_out[30] = -18'sd 1529;
+		19 'sd 32768  :	LUT_out[30] = -18'sd 510;
+		-19'sd 32768  :	LUT_out[30] = 18'sd 510;
+		-19'sd 98304  :	LUT_out[30] = 18'sd 1529;
+		19 'sd 196608 :	LUT_out[30] = -18'sd 3059;
+		19 'sd 131072 :	LUT_out[30] = -18'sd 2039;
+		19 'sd 65536  :	LUT_out[30] = -18'sd 1020;
+		-19'sd 65536  :	LUT_out[30] = 18'sd 1020;
+		-19'sd 131072 :	LUT_out[30] = 18'sd 2039;
+		-19'sd 196608 :	LUT_out[30] = 18'sd 3059;
 		default     :	LUT_out[30] = 18'sd 0;
 	endcase
 end
@@ -756,16 +756,16 @@ always @ *
 begin
 	case(sum_level_1[31])
 		19 'sd 0      :	LUT_out[31] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[31] = -18'sd 510;
-		19 'sd 32768  :	LUT_out[31] = -18'sd 170;
-		-19'sd 32768  :	LUT_out[31] = 18'sd 170;
-		-19'sd 98304  :	LUT_out[31] = 18'sd 510;
-		19 'sd 196608 :	LUT_out[31] = -18'sd 1019;
-		19 'sd 131072 :	LUT_out[31] = -18'sd 679;
-		19 'sd 65536  :	LUT_out[31] = -18'sd 340;
-		-19'sd 65536  :	LUT_out[31] = 18'sd 340;
-		-19'sd 131072 :	LUT_out[31] = 18'sd 679;
-		-19'sd 196608 :	LUT_out[31] = 18'sd 1019;
+		19 'sd 98304  :	LUT_out[31] = -18'sd 1660;
+		19 'sd 32768  :	LUT_out[31] = -18'sd 553;
+		-19'sd 32768  :	LUT_out[31] = 18'sd 553;
+		-19'sd 98304  :	LUT_out[31] = 18'sd 1660;
+		19 'sd 196608 :	LUT_out[31] = -18'sd 3320;
+		19 'sd 131072 :	LUT_out[31] = -18'sd 2213;
+		19 'sd 65536  :	LUT_out[31] = -18'sd 1107;
+		-19'sd 65536  :	LUT_out[31] = 18'sd 1107;
+		-19'sd 131072 :	LUT_out[31] = 18'sd 2213;
+		-19'sd 196608 :	LUT_out[31] = 18'sd 3320;
 		default     :	LUT_out[31] = 18'sd 0;
 	endcase
 end
@@ -776,16 +776,16 @@ always @ *
 begin
 	case(sum_level_1[32])
 		19 'sd 0      :	LUT_out[32] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[32] = -18'sd 214;
-		19 'sd 32768  :	LUT_out[32] = -18'sd 71;
-		-19'sd 32768  :	LUT_out[32] = 18'sd 71;
-		-19'sd 98304  :	LUT_out[32] = 18'sd 214;
-		19 'sd 196608 :	LUT_out[32] = -18'sd 428;
-		19 'sd 131072 :	LUT_out[32] = -18'sd 285;
-		19 'sd 65536  :	LUT_out[32] = -18'sd 143;
-		-19'sd 65536  :	LUT_out[32] = 18'sd 143;
-		-19'sd 131072 :	LUT_out[32] = 18'sd 285;
-		-19'sd 196608 :	LUT_out[32] = 18'sd 428;
+		19 'sd 98304  :	LUT_out[32] = -18'sd 697;
+		19 'sd 32768  :	LUT_out[32] = -18'sd 232;
+		-19'sd 32768  :	LUT_out[32] = 18'sd 232;
+		-19'sd 98304  :	LUT_out[32] = 18'sd 697;
+		19 'sd 196608 :	LUT_out[32] = -18'sd 1394;
+		19 'sd 131072 :	LUT_out[32] = -18'sd 929;
+		19 'sd 65536  :	LUT_out[32] = -18'sd 465;
+		-19'sd 65536  :	LUT_out[32] = 18'sd 465;
+		-19'sd 131072 :	LUT_out[32] = 18'sd 929;
+		-19'sd 196608 :	LUT_out[32] = 18'sd 1394;
 		default     :	LUT_out[32] = 18'sd 0;
 	endcase
 end
@@ -796,16 +796,16 @@ always @ *
 begin
 	case(sum_level_1[33])
 		19 'sd 0      :	LUT_out[33] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[33] = 18'sd 277;
-		19 'sd 32768  :	LUT_out[33] = 18'sd 92;
-		-19'sd 32768  :	LUT_out[33] = -18'sd 92;
-		-19'sd 98304  :	LUT_out[33] = -18'sd 277;
-		19 'sd 196608 :	LUT_out[33] = 18'sd 554;
-		19 'sd 131072 :	LUT_out[33] = 18'sd 369;
-		19 'sd 65536  :	LUT_out[33] = 18'sd 185;
-		-19'sd 65536  :	LUT_out[33] = -18'sd 185;
-		-19'sd 131072 :	LUT_out[33] = -18'sd 369;
-		-19'sd 196608 :	LUT_out[33] = -18'sd 554;
+		19 'sd 98304  :	LUT_out[33] = 18'sd 902;
+		19 'sd 32768  :	LUT_out[33] = 18'sd 301;
+		-19'sd 32768  :	LUT_out[33] = -18'sd 301;
+		-19'sd 98304  :	LUT_out[33] = -18'sd 902;
+		19 'sd 196608 :	LUT_out[33] = 18'sd 1804;
+		19 'sd 131072 :	LUT_out[33] = 18'sd 1203;
+		19 'sd 65536  :	LUT_out[33] = 18'sd 601;
+		-19'sd 65536  :	LUT_out[33] = -18'sd 601;
+		-19'sd 131072 :	LUT_out[33] = -18'sd 1203;
+		-19'sd 196608 :	LUT_out[33] = -18'sd 1804;
 		default     :	LUT_out[33] = 18'sd 0;
 	endcase
 end
@@ -816,16 +816,16 @@ always @ *
 begin
 	case(sum_level_1[34])
 		19 'sd 0      :	LUT_out[34] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[34] = 18'sd 668;
-		19 'sd 32768  :	LUT_out[34] = 18'sd 223;
-		-19'sd 32768  :	LUT_out[34] = -18'sd 223;
-		-19'sd 98304  :	LUT_out[34] = -18'sd 668;
-		19 'sd 196608 :	LUT_out[34] = 18'sd 1336;
-		19 'sd 131072 :	LUT_out[34] = 18'sd 891;
-		19 'sd 65536  :	LUT_out[34] = 18'sd 445;
-		-19'sd 65536  :	LUT_out[34] = -18'sd 445;
-		-19'sd 131072 :	LUT_out[34] = -18'sd 891;
-		-19'sd 196608 :	LUT_out[34] = -18'sd 1336;
+		19 'sd 98304  :	LUT_out[34] = 18'sd 2176;
+		19 'sd 32768  :	LUT_out[34] = 18'sd 725;
+		-19'sd 32768  :	LUT_out[34] = -18'sd 725;
+		-19'sd 98304  :	LUT_out[34] = -18'sd 2176;
+		19 'sd 196608 :	LUT_out[34] = 18'sd 4352;
+		19 'sd 131072 :	LUT_out[34] = 18'sd 2901;
+		19 'sd 65536  :	LUT_out[34] = 18'sd 1451;
+		-19'sd 65536  :	LUT_out[34] = -18'sd 1451;
+		-19'sd 131072 :	LUT_out[34] = -18'sd 2901;
+		-19'sd 196608 :	LUT_out[34] = -18'sd 4352;
 		default     :	LUT_out[34] = 18'sd 0;
 	endcase
 end
@@ -836,16 +836,16 @@ always @ *
 begin
 	case(sum_level_1[35])
 		19 'sd 0      :	LUT_out[35] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[35] = 18'sd 680;
-		19 'sd 32768  :	LUT_out[35] = 18'sd 227;
-		-19'sd 32768  :	LUT_out[35] = -18'sd 227;
-		-19'sd 98304  :	LUT_out[35] = -18'sd 680;
-		19 'sd 196608 :	LUT_out[35] = 18'sd 1360;
-		19 'sd 131072 :	LUT_out[35] = 18'sd 906;
-		19 'sd 65536  :	LUT_out[35] = 18'sd 453;
-		-19'sd 65536  :	LUT_out[35] = -18'sd 453;
-		-19'sd 131072 :	LUT_out[35] = -18'sd 906;
-		-19'sd 196608 :	LUT_out[35] = -18'sd 1360;
+		19 'sd 98304  :	LUT_out[35] = 18'sd 2215;
+		19 'sd 32768  :	LUT_out[35] = 18'sd 738;
+		-19'sd 32768  :	LUT_out[35] = -18'sd 738;
+		-19'sd 98304  :	LUT_out[35] = -18'sd 2215;
+		19 'sd 196608 :	LUT_out[35] = 18'sd 4430;
+		19 'sd 131072 :	LUT_out[35] = 18'sd 2953;
+		19 'sd 65536  :	LUT_out[35] = 18'sd 1477;
+		-19'sd 65536  :	LUT_out[35] = -18'sd 1477;
+		-19'sd 131072 :	LUT_out[35] = -18'sd 2953;
+		-19'sd 196608 :	LUT_out[35] = -18'sd 4430;
 		default     :	LUT_out[35] = 18'sd 0;
 	endcase
 end
@@ -856,16 +856,16 @@ always @ *
 begin
 	case(sum_level_1[36])
 		19 'sd 0      :	LUT_out[36] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[36] = 18'sd 236;
-		19 'sd 32768  :	LUT_out[36] = 18'sd 79;
-		-19'sd 32768  :	LUT_out[36] = -18'sd 79;
-		-19'sd 98304  :	LUT_out[36] = -18'sd 236;
-		19 'sd 196608 :	LUT_out[36] = 18'sd 472;
-		19 'sd 131072 :	LUT_out[36] = 18'sd 315;
-		19 'sd 65536  :	LUT_out[36] = 18'sd 157;
-		-19'sd 65536  :	LUT_out[36] = -18'sd 157;
-		-19'sd 131072 :	LUT_out[36] = -18'sd 315;
-		-19'sd 196608 :	LUT_out[36] = -18'sd 472;
+		19 'sd 98304  :	LUT_out[36] = 18'sd 769;
+		19 'sd 32768  :	LUT_out[36] = 18'sd 256;
+		-19'sd 32768  :	LUT_out[36] = -18'sd 256;
+		-19'sd 98304  :	LUT_out[36] = -18'sd 769;
+		19 'sd 196608 :	LUT_out[36] = 18'sd 1538;
+		19 'sd 131072 :	LUT_out[36] = 18'sd 1025;
+		19 'sd 65536  :	LUT_out[36] = 18'sd 513;
+		-19'sd 65536  :	LUT_out[36] = -18'sd 513;
+		-19'sd 131072 :	LUT_out[36] = -18'sd 1025;
+		-19'sd 196608 :	LUT_out[36] = -18'sd 1538;
 		default     :	LUT_out[36] = 18'sd 0;
 	endcase
 end
@@ -876,16 +876,16 @@ always @ *
 begin
 	case(sum_level_1[37])
 		19 'sd 0      :	LUT_out[37] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[37] = -18'sd 451;
-		19 'sd 32768  :	LUT_out[37] = -18'sd 150;
-		-19'sd 32768  :	LUT_out[37] = 18'sd 150;
-		-19'sd 98304  :	LUT_out[37] = 18'sd 451;
-		19 'sd 196608 :	LUT_out[37] = -18'sd 901;
-		19 'sd 131072 :	LUT_out[37] = -18'sd 601;
-		19 'sd 65536  :	LUT_out[37] = -18'sd 300;
-		-19'sd 65536  :	LUT_out[37] = 18'sd 300;
-		-19'sd 131072 :	LUT_out[37] = 18'sd 601;
-		-19'sd 196608 :	LUT_out[37] = 18'sd 901;
+		19 'sd 98304  :	LUT_out[37] = -18'sd 1468;
+		19 'sd 32768  :	LUT_out[37] = -18'sd 489;
+		-19'sd 32768  :	LUT_out[37] = 18'sd 489;
+		-19'sd 98304  :	LUT_out[37] = 18'sd 1468;
+		19 'sd 196608 :	LUT_out[37] = -18'sd 2936;
+		19 'sd 131072 :	LUT_out[37] = -18'sd 1957;
+		19 'sd 65536  :	LUT_out[37] = -18'sd 979;
+		-19'sd 65536  :	LUT_out[37] = 18'sd 979;
+		-19'sd 131072 :	LUT_out[37] = 18'sd 1957;
+		-19'sd 196608 :	LUT_out[37] = 18'sd 2936;
 		default     :	LUT_out[37] = 18'sd 0;
 	endcase
 end
@@ -896,16 +896,16 @@ always @ *
 begin
 	case(sum_level_1[38])
 		19 'sd 0      :	LUT_out[38] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[38] = -18'sd 966;
-		19 'sd 32768  :	LUT_out[38] = -18'sd 322;
-		-19'sd 32768  :	LUT_out[38] = 18'sd 322;
-		-19'sd 98304  :	LUT_out[38] = 18'sd 966;
-		19 'sd 196608 :	LUT_out[38] = -18'sd 1932;
-		19 'sd 131072 :	LUT_out[38] = -18'sd 1288;
-		19 'sd 65536  :	LUT_out[38] = -18'sd 644;
-		-19'sd 65536  :	LUT_out[38] = 18'sd 644;
-		-19'sd 131072 :	LUT_out[38] = 18'sd 1288;
-		-19'sd 196608 :	LUT_out[38] = 18'sd 1932;
+		19 'sd 98304  :	LUT_out[38] = -18'sd 3148;
+		19 'sd 32768  :	LUT_out[38] = -18'sd 1049;
+		-19'sd 32768  :	LUT_out[38] = 18'sd 1049;
+		-19'sd 98304  :	LUT_out[38] = 18'sd 3148;
+		19 'sd 196608 :	LUT_out[38] = -18'sd 6295;
+		19 'sd 131072 :	LUT_out[38] = -18'sd 4197;
+		19 'sd 65536  :	LUT_out[38] = -18'sd 2098;
+		-19'sd 65536  :	LUT_out[38] = 18'sd 2098;
+		-19'sd 131072 :	LUT_out[38] = 18'sd 4197;
+		-19'sd 196608 :	LUT_out[38] = 18'sd 6295;
 		default     :	LUT_out[38] = 18'sd 0;
 	endcase
 end
@@ -916,16 +916,16 @@ always @ *
 begin
 	case(sum_level_1[39])
 		19 'sd 0      :	LUT_out[39] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[39] = -18'sd 931;
-		19 'sd 32768  :	LUT_out[39] = -18'sd 310;
-		-19'sd 32768  :	LUT_out[39] = 18'sd 310;
-		-19'sd 98304  :	LUT_out[39] = 18'sd 931;
-		19 'sd 196608 :	LUT_out[39] = -18'sd 1862;
-		19 'sd 131072 :	LUT_out[39] = -18'sd 1241;
-		19 'sd 65536  :	LUT_out[39] = -18'sd 621;
-		-19'sd 65536  :	LUT_out[39] = 18'sd 621;
-		-19'sd 131072 :	LUT_out[39] = 18'sd 1241;
-		-19'sd 196608 :	LUT_out[39] = 18'sd 1862;
+		19 'sd 98304  :	LUT_out[39] = -18'sd 3033;
+		19 'sd 32768  :	LUT_out[39] = -18'sd 1011;
+		-19'sd 32768  :	LUT_out[39] = 18'sd 1011;
+		-19'sd 98304  :	LUT_out[39] = 18'sd 3033;
+		19 'sd 196608 :	LUT_out[39] = -18'sd 6065;
+		19 'sd 131072 :	LUT_out[39] = -18'sd 4044;
+		19 'sd 65536  :	LUT_out[39] = -18'sd 2022;
+		-19'sd 65536  :	LUT_out[39] = 18'sd 2022;
+		-19'sd 131072 :	LUT_out[39] = 18'sd 4044;
+		-19'sd 196608 :	LUT_out[39] = 18'sd 6065;
 		default     :	LUT_out[39] = 18'sd 0;
 	endcase
 end
@@ -936,16 +936,16 @@ always @ *
 begin
 	case(sum_level_1[40])
 		19 'sd 0      :	LUT_out[40] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[40] = -18'sd 254;
-		19 'sd 32768  :	LUT_out[40] = -18'sd 85;
-		-19'sd 32768  :	LUT_out[40] = 18'sd 85;
-		-19'sd 98304  :	LUT_out[40] = 18'sd 254;
-		19 'sd 196608 :	LUT_out[40] = -18'sd 509;
-		19 'sd 131072 :	LUT_out[40] = -18'sd 339;
-		19 'sd 65536  :	LUT_out[40] = -18'sd 170;
-		-19'sd 65536  :	LUT_out[40] = 18'sd 170;
-		-19'sd 131072 :	LUT_out[40] = 18'sd 339;
-		-19'sd 196608 :	LUT_out[40] = 18'sd 509;
+		19 'sd 98304  :	LUT_out[40] = -18'sd 829;
+		19 'sd 32768  :	LUT_out[40] = -18'sd 276;
+		-19'sd 32768  :	LUT_out[40] = 18'sd 276;
+		-19'sd 98304  :	LUT_out[40] = 18'sd 829;
+		19 'sd 196608 :	LUT_out[40] = -18'sd 1658;
+		19 'sd 131072 :	LUT_out[40] = -18'sd 1105;
+		19 'sd 65536  :	LUT_out[40] = -18'sd 553;
+		-19'sd 65536  :	LUT_out[40] = 18'sd 553;
+		-19'sd 131072 :	LUT_out[40] = 18'sd 1105;
+		-19'sd 196608 :	LUT_out[40] = 18'sd 1658;
 		default     :	LUT_out[40] = 18'sd 0;
 	endcase
 end
@@ -956,16 +956,16 @@ always @ *
 begin
 	case(sum_level_1[41])
 		19 'sd 0      :	LUT_out[41] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[41] = 18'sd 748;
-		19 'sd 32768  :	LUT_out[41] = 18'sd 249;
-		-19'sd 32768  :	LUT_out[41] = -18'sd 249;
-		-19'sd 98304  :	LUT_out[41] = -18'sd 748;
-		19 'sd 196608 :	LUT_out[41] = 18'sd 1495;
-		19 'sd 131072 :	LUT_out[41] = 18'sd 997;
-		19 'sd 65536  :	LUT_out[41] = 18'sd 498;
-		-19'sd 65536  :	LUT_out[41] = -18'sd 498;
-		-19'sd 131072 :	LUT_out[41] = -18'sd 997;
-		-19'sd 196608 :	LUT_out[41] = -18'sd 1495;
+		19 'sd 98304  :	LUT_out[41] = 18'sd 2436;
+		19 'sd 32768  :	LUT_out[41] = 18'sd 812;
+		-19'sd 32768  :	LUT_out[41] = -18'sd 812;
+		-19'sd 98304  :	LUT_out[41] = -18'sd 2436;
+		19 'sd 196608 :	LUT_out[41] = 18'sd 4871;
+		19 'sd 131072 :	LUT_out[41] = 18'sd 3247;
+		19 'sd 65536  :	LUT_out[41] = 18'sd 1624;
+		-19'sd 65536  :	LUT_out[41] = -18'sd 1624;
+		-19'sd 131072 :	LUT_out[41] = -18'sd 3247;
+		-19'sd 196608 :	LUT_out[41] = -18'sd 4871;
 		default     :	LUT_out[41] = 18'sd 0;
 	endcase
 end
@@ -976,16 +976,16 @@ always @ *
 begin
 	case(sum_level_1[42])
 		19 'sd 0      :	LUT_out[42] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[42] = 18'sd 1475;
-		19 'sd 32768  :	LUT_out[42] = 18'sd 492;
-		-19'sd 32768  :	LUT_out[42] = -18'sd 492;
-		-19'sd 98304  :	LUT_out[42] = -18'sd 1475;
-		19 'sd 196608 :	LUT_out[42] = 18'sd 2949;
-		19 'sd 131072 :	LUT_out[42] = 18'sd 1966;
-		19 'sd 65536  :	LUT_out[42] = 18'sd 983;
-		-19'sd 65536  :	LUT_out[42] = -18'sd 983;
-		-19'sd 131072 :	LUT_out[42] = -18'sd 1966;
-		-19'sd 196608 :	LUT_out[42] = -18'sd 2949;
+		19 'sd 98304  :	LUT_out[42] = 18'sd 4804;
+		19 'sd 32768  :	LUT_out[42] = 18'sd 1601;
+		-19'sd 32768  :	LUT_out[42] = -18'sd 1601;
+		-19'sd 98304  :	LUT_out[42] = -18'sd 4804;
+		19 'sd 196608 :	LUT_out[42] = 18'sd 9608;
+		19 'sd 131072 :	LUT_out[42] = 18'sd 6405;
+		19 'sd 65536  :	LUT_out[42] = 18'sd 3203;
+		-19'sd 65536  :	LUT_out[42] = -18'sd 3203;
+		-19'sd 131072 :	LUT_out[42] = -18'sd 6405;
+		-19'sd 196608 :	LUT_out[42] = -18'sd 9608;
 		default     :	LUT_out[42] = 18'sd 0;
 	endcase
 end
@@ -996,16 +996,16 @@ always @ *
 begin
 	case(sum_level_1[43])
 		19 'sd 0      :	LUT_out[43] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[43] = 18'sd 1366;
-		19 'sd 32768  :	LUT_out[43] = 18'sd 455;
-		-19'sd 32768  :	LUT_out[43] = -18'sd 455;
-		-19'sd 98304  :	LUT_out[43] = -18'sd 1366;
-		19 'sd 196608 :	LUT_out[43] = 18'sd 2732;
-		19 'sd 131072 :	LUT_out[43] = 18'sd 1821;
-		19 'sd 65536  :	LUT_out[43] = 18'sd 911;
-		-19'sd 65536  :	LUT_out[43] = -18'sd 911;
-		-19'sd 131072 :	LUT_out[43] = -18'sd 1821;
-		-19'sd 196608 :	LUT_out[43] = -18'sd 2732;
+		19 'sd 98304  :	LUT_out[43] = 18'sd 4450;
+		19 'sd 32768  :	LUT_out[43] = 18'sd 1483;
+		-19'sd 32768  :	LUT_out[43] = -18'sd 1483;
+		-19'sd 98304  :	LUT_out[43] = -18'sd 4450;
+		19 'sd 196608 :	LUT_out[43] = 18'sd 8900;
+		19 'sd 131072 :	LUT_out[43] = 18'sd 5933;
+		19 'sd 65536  :	LUT_out[43] = 18'sd 2967;
+		-19'sd 65536  :	LUT_out[43] = -18'sd 2967;
+		-19'sd 131072 :	LUT_out[43] = -18'sd 5933;
+		-19'sd 196608 :	LUT_out[43] = -18'sd 8900;
 		default     :	LUT_out[43] = 18'sd 0;
 	endcase
 end
@@ -1016,16 +1016,16 @@ always @ *
 begin
 	case(sum_level_1[44])
 		19 'sd 0      :	LUT_out[44] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[44] = 18'sd 268;
-		19 'sd 32768  :	LUT_out[44] = 18'sd 89;
-		-19'sd 32768  :	LUT_out[44] = -18'sd 89;
-		-19'sd 98304  :	LUT_out[44] = -18'sd 268;
-		19 'sd 196608 :	LUT_out[44] = 18'sd 537;
-		19 'sd 131072 :	LUT_out[44] = 18'sd 358;
-		19 'sd 65536  :	LUT_out[44] = 18'sd 179;
-		-19'sd 65536  :	LUT_out[44] = -18'sd 179;
-		-19'sd 131072 :	LUT_out[44] = -18'sd 358;
-		-19'sd 196608 :	LUT_out[44] = -18'sd 537;
+		19 'sd 98304  :	LUT_out[44] = 18'sd 874;
+		19 'sd 32768  :	LUT_out[44] = 18'sd 291;
+		-19'sd 32768  :	LUT_out[44] = -18'sd 291;
+		-19'sd 98304  :	LUT_out[44] = -18'sd 874;
+		19 'sd 196608 :	LUT_out[44] = 18'sd 1749;
+		19 'sd 131072 :	LUT_out[44] = 18'sd 1166;
+		19 'sd 65536  :	LUT_out[44] = 18'sd 583;
+		-19'sd 65536  :	LUT_out[44] = -18'sd 583;
+		-19'sd 131072 :	LUT_out[44] = -18'sd 1166;
+		-19'sd 196608 :	LUT_out[44] = -18'sd 1749;
 		default     :	LUT_out[44] = 18'sd 0;
 	endcase
 end
@@ -1036,16 +1036,16 @@ always @ *
 begin
 	case(sum_level_1[45])
 		19 'sd 0      :	LUT_out[45] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[45] = -18'sd 1367;
-		19 'sd 32768  :	LUT_out[45] = -18'sd 456;
-		-19'sd 32768  :	LUT_out[45] = 18'sd 456;
-		-19'sd 98304  :	LUT_out[45] = 18'sd 1367;
-		19 'sd 196608 :	LUT_out[45] = -18'sd 2734;
-		19 'sd 131072 :	LUT_out[45] = -18'sd 1822;
-		19 'sd 65536  :	LUT_out[45] = -18'sd 911;
-		-19'sd 65536  :	LUT_out[45] = 18'sd 911;
-		-19'sd 131072 :	LUT_out[45] = 18'sd 1822;
-		-19'sd 196608 :	LUT_out[45] = 18'sd 2734;
+		19 'sd 98304  :	LUT_out[45] = -18'sd 4453;
+		19 'sd 32768  :	LUT_out[45] = -18'sd 1484;
+		-19'sd 32768  :	LUT_out[45] = 18'sd 1484;
+		-19'sd 98304  :	LUT_out[45] = 18'sd 4453;
+		19 'sd 196608 :	LUT_out[45] = -18'sd 8906;
+		19 'sd 131072 :	LUT_out[45] = -18'sd 5937;
+		19 'sd 65536  :	LUT_out[45] = -18'sd 2969;
+		-19'sd 65536  :	LUT_out[45] = 18'sd 2969;
+		-19'sd 131072 :	LUT_out[45] = 18'sd 5937;
+		-19'sd 196608 :	LUT_out[45] = 18'sd 8906;
 		default     :	LUT_out[45] = 18'sd 0;
 	endcase
 end
@@ -1056,16 +1056,16 @@ always @ *
 begin
 	case(sum_level_1[46])
 		19 'sd 0      :	LUT_out[46] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[46] = -18'sd 2601;
-		19 'sd 32768  :	LUT_out[46] = -18'sd 867;
-		-19'sd 32768  :	LUT_out[46] = 18'sd 867;
-		-19'sd 98304  :	LUT_out[46] = 18'sd 2601;
-		19 'sd 196608 :	LUT_out[46] = -18'sd 5202;
-		19 'sd 131072 :	LUT_out[46] = -18'sd 3468;
-		19 'sd 65536  :	LUT_out[46] = -18'sd 1734;
-		-19'sd 65536  :	LUT_out[46] = 18'sd 1734;
-		-19'sd 131072 :	LUT_out[46] = 18'sd 3468;
-		-19'sd 196608 :	LUT_out[46] = 18'sd 5202;
+		19 'sd 98304  :	LUT_out[46] = -18'sd 8473;
+		19 'sd 32768  :	LUT_out[46] = -18'sd 2824;
+		-19'sd 32768  :	LUT_out[46] = 18'sd 2824;
+		-19'sd 98304  :	LUT_out[46] = 18'sd 8473;
+		19 'sd 196608 :	LUT_out[46] = -18'sd 16947;
+		19 'sd 131072 :	LUT_out[46] = -18'sd 11298;
+		19 'sd 65536  :	LUT_out[46] = -18'sd 5649;
+		-19'sd 65536  :	LUT_out[46] = 18'sd 5649;
+		-19'sd 131072 :	LUT_out[46] = 18'sd 11298;
+		-19'sd 196608 :	LUT_out[46] = 18'sd 16947;
 		default     :	LUT_out[46] = 18'sd 0;
 	endcase
 end
@@ -1076,16 +1076,16 @@ always @ *
 begin
 	case(sum_level_1[47])
 		19 'sd 0      :	LUT_out[47] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[47] = -18'sd 2423;
-		19 'sd 32768  :	LUT_out[47] = -18'sd 808;
-		-19'sd 32768  :	LUT_out[47] = 18'sd 808;
-		-19'sd 98304  :	LUT_out[47] = 18'sd 2423;
-		19 'sd 196608 :	LUT_out[47] = -18'sd 4846;
-		19 'sd 131072 :	LUT_out[47] = -18'sd 3231;
-		19 'sd 65536  :	LUT_out[47] = -18'sd 1615;
-		-19'sd 65536  :	LUT_out[47] = 18'sd 1615;
-		-19'sd 131072 :	LUT_out[47] = 18'sd 3231;
-		-19'sd 196608 :	LUT_out[47] = 18'sd 4846;
+		19 'sd 98304  :	LUT_out[47] = -18'sd 7894;
+		19 'sd 32768  :	LUT_out[47] = -18'sd 2631;
+		-19'sd 32768  :	LUT_out[47] = 18'sd 2631;
+		-19'sd 98304  :	LUT_out[47] = 18'sd 7894;
+		19 'sd 196608 :	LUT_out[47] = -18'sd 15788;
+		19 'sd 131072 :	LUT_out[47] = -18'sd 10526;
+		19 'sd 65536  :	LUT_out[47] = -18'sd 5263;
+		-19'sd 65536  :	LUT_out[47] = 18'sd 5263;
+		-19'sd 131072 :	LUT_out[47] = 18'sd 10526;
+		-19'sd 196608 :	LUT_out[47] = 18'sd 15788;
 		default     :	LUT_out[47] = 18'sd 0;
 	endcase
 end
@@ -1096,16 +1096,16 @@ always @ *
 begin
 	case(sum_level_1[48])
 		19 'sd 0      :	LUT_out[48] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[48] = -18'sd 277;
-		19 'sd 32768  :	LUT_out[48] = -18'sd 92;
-		-19'sd 32768  :	LUT_out[48] = 18'sd 92;
-		-19'sd 98304  :	LUT_out[48] = 18'sd 277;
-		19 'sd 196608 :	LUT_out[48] = -18'sd 554;
-		19 'sd 131072 :	LUT_out[48] = -18'sd 369;
-		19 'sd 65536  :	LUT_out[48] = -18'sd 185;
-		-19'sd 65536  :	LUT_out[48] = 18'sd 185;
-		-19'sd 131072 :	LUT_out[48] = 18'sd 369;
-		-19'sd 196608 :	LUT_out[48] = 18'sd 554;
+		19 'sd 98304  :	LUT_out[48] = -18'sd 903;
+		19 'sd 32768  :	LUT_out[48] = -18'sd 301;
+		-19'sd 32768  :	LUT_out[48] = 18'sd 301;
+		-19'sd 98304  :	LUT_out[48] = 18'sd 903;
+		19 'sd 196608 :	LUT_out[48] = -18'sd 1805;
+		19 'sd 131072 :	LUT_out[48] = -18'sd 1203;
+		19 'sd 65536  :	LUT_out[48] = -18'sd 602;
+		-19'sd 65536  :	LUT_out[48] = 18'sd 602;
+		-19'sd 131072 :	LUT_out[48] = 18'sd 1203;
+		-19'sd 196608 :	LUT_out[48] = 18'sd 1805;
 		default     :	LUT_out[48] = 18'sd 0;
 	endcase
 end
@@ -1116,16 +1116,16 @@ always @ *
 begin
 	case(sum_level_1[49])
 		19 'sd 0      :	LUT_out[49] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[49] = 18'sd 3570;
-		19 'sd 32768  :	LUT_out[49] = 18'sd 1190;
-		-19'sd 32768  :	LUT_out[49] = -18'sd 1190;
-		-19'sd 98304  :	LUT_out[49] = -18'sd 3570;
-		19 'sd 196608 :	LUT_out[49] = 18'sd 7140;
-		19 'sd 131072 :	LUT_out[49] = 18'sd 4760;
-		19 'sd 65536  :	LUT_out[49] = 18'sd 2380;
-		-19'sd 65536  :	LUT_out[49] = -18'sd 2380;
-		-19'sd 131072 :	LUT_out[49] = -18'sd 4760;
-		-19'sd 196608 :	LUT_out[49] = -18'sd 7140;
+		19 'sd 98304  :	LUT_out[49] = 18'sd 11629;
+		19 'sd 32768  :	LUT_out[49] = 18'sd 3876;
+		-19'sd 32768  :	LUT_out[49] = -18'sd 3876;
+		-19'sd 98304  :	LUT_out[49] = -18'sd 11629;
+		19 'sd 196608 :	LUT_out[49] = 18'sd 23259;
+		19 'sd 131072 :	LUT_out[49] = 18'sd 15506;
+		19 'sd 65536  :	LUT_out[49] = 18'sd 7753;
+		-19'sd 65536  :	LUT_out[49] = -18'sd 7753;
+		-19'sd 131072 :	LUT_out[49] = -18'sd 15506;
+		-19'sd 196608 :	LUT_out[49] = -18'sd 23259;
 		default     :	LUT_out[49] = 18'sd 0;
 	endcase
 end
@@ -1136,16 +1136,16 @@ always @ *
 begin
 	case(sum_level_1[50])
 		19 'sd 0      :	LUT_out[50] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[50] = 18'sd 8025;
-		19 'sd 32768  :	LUT_out[50] = 18'sd 2675;
-		-19'sd 32768  :	LUT_out[50] = -18'sd 2675;
-		-19'sd 98304  :	LUT_out[50] = -18'sd 8025;
-		19 'sd 196608 :	LUT_out[50] = 18'sd 16050;
-		19 'sd 131072 :	LUT_out[50] = 18'sd 10700;
-		19 'sd 65536  :	LUT_out[50] = 18'sd 5350;
-		-19'sd 65536  :	LUT_out[50] = -18'sd 5350;
-		-19'sd 131072 :	LUT_out[50] = -18'sd 10700;
-		-19'sd 196608 :	LUT_out[50] = -18'sd 16050;
+		19 'sd 98304  :	LUT_out[50] = 18'sd 26144;
+		19 'sd 32768  :	LUT_out[50] = 18'sd 8715;
+		-19'sd 32768  :	LUT_out[50] = -18'sd 8715;
+		-19'sd 98304  :	LUT_out[50] = -18'sd 26144;
+		19 'sd 196608 :	LUT_out[50] = 18'sd 52287;
+		19 'sd 131072 :	LUT_out[50] = 18'sd 34858;
+		19 'sd 65536  :	LUT_out[50] = 18'sd 17429;
+		-19'sd 65536  :	LUT_out[50] = -18'sd 17429;
+		-19'sd 131072 :	LUT_out[50] = -18'sd 34858;
+		-19'sd 196608 :	LUT_out[50] = -18'sd 52287;
 		default     :	LUT_out[50] = 18'sd 0;
 	endcase
 end
@@ -1156,16 +1156,16 @@ always @ *
 begin
 	case(sum_level_1[51])
 		19 'sd 0      :	LUT_out[51] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[51] = 18'sd 11577;
-		19 'sd 32768  :	LUT_out[51] = 18'sd 3859;
-		-19'sd 32768  :	LUT_out[51] = -18'sd 3859;
-		-19'sd 98304  :	LUT_out[51] = -18'sd 11577;
-		19 'sd 196608 :	LUT_out[51] = 18'sd 23154;
-		19 'sd 131072 :	LUT_out[51] = 18'sd 15436;
-		19 'sd 65536  :	LUT_out[51] = 18'sd 7718;
-		-19'sd 65536  :	LUT_out[51] = -18'sd 7718;
-		-19'sd 131072 :	LUT_out[51] = -18'sd 15436;
-		-19'sd 196608 :	LUT_out[51] = -18'sd 23154;
+		19 'sd 98304  :	LUT_out[51] = 18'sd 37714;
+		19 'sd 32768  :	LUT_out[51] = 18'sd 12571;
+		-19'sd 32768  :	LUT_out[51] = -18'sd 12571;
+		-19'sd 98304  :	LUT_out[51] = -18'sd 37714;
+		19 'sd 196608 :	LUT_out[51] = 18'sd 75429;
+		19 'sd 131072 :	LUT_out[51] = 18'sd 50286;
+		19 'sd 65536  :	LUT_out[51] = 18'sd 25143;
+		-19'sd 65536  :	LUT_out[51] = -18'sd 25143;
+		-19'sd 131072 :	LUT_out[51] = -18'sd 50286;
+		-19'sd 196608 :	LUT_out[51] = -18'sd 75429;
 		default     :	LUT_out[51] = 18'sd 0;
 	endcase
 end
@@ -1176,10 +1176,10 @@ always @ *
 begin
 	case(sum_level_1[52])
 		19 'sd 0      :	LUT_out[52] = 18'sd 0;
-		19 'sd 98304  :	LUT_out[52] = 18'sd 12930;
-		19 'sd 32768  :	LUT_out[52] = 18'sd 4310;
-		-19'sd 32768  :	LUT_out[52] = -18'sd 4310;
-		-19'sd 98304  :	LUT_out[52] = -18'sd 12930;
+		19 'sd 98304  :	LUT_out[52] = 18'sd 42122;
+		19 'sd 32768  :	LUT_out[52] = 18'sd 14041;
+		-19'sd 32768  :	LUT_out[52] = -18'sd 14041;
+		-19'sd 98304  :	LUT_out[52] = -18'sd 42122;
 		default     :	LUT_out[52] = 18'sd 0;
 	endcase
 end

@@ -63,49 +63,49 @@ always @ *
 // sum_level_2
 always @ *
     if (reset)
-        for (i = 0; i <= 25 , i=i+1)
+        for (i = 0; i <= 25 ;i=i+1)
             sum_level_2[i] = 18'sd 0;
     else
-        for (i = 0; i <= 25, i=i+1)
+        for (i = 0; i <= 25; i=i+1)
             sum_level_2[i] = LUT_out[2*i] + LUT_out[2*i+1];
 
 
 // sum_level_3 sum_level_3[12] is left alone
 always @ *
     if (reset)
-        for (i = 0; i <= 12 , i=i+1)
+        for (i = 0; i <= 12; i=i+1)
             sum_level_3[i] = 18'sd 0;
     else begin
-        for (i = 0; i <= 12, i=i+1)
+        for (i = 0; i <= 12; i=i+1)
              sum_level_3[i] = sum_level_2[2*i] + sum_level_2[2*i+1];
     end
 // sum_level_4 
 always @ *
     if (reset)
-        for (i = 0; i <= 5 , i=i+1)
+        for (i = 0; i <= 5 ; i=i+1)
             sum_level_4[i] = 18'sd 0;
     else 
-        for (i = 0; i <= 5, i=i+1)
+        for (i = 0; i <= 5 ; i=i+1)
              sum_level_4[i] = sum_level_3[2*i] + sum_level_3[2*i+1];
         
 // sum_level_5 - add sum_level_3[12] and LUT_52 here
 always @ *
     if (reset)
-        for (i = 0; i <= 3 , i=i+1)
+        for (i = 0; i <= 3 ; i=i+1)
             sum_level_5[i] = 18'sd 0;
     else begin
-        for (i = 0; i <= 2, i=i+1)
+        for (i = 0; i <= 2; i=i+1)
             sum_level_5[i] = sum_level_4[2*i] + sum_level_4[2*i+1];
         sum_level_5[3] = sum_level_3[12] + LUT_out[52];
     end
 
 // sum_level_6
-always @ 
+always @ *
     if (reset)
-        for (i = 0; i <= 1 , i=i+1)
+        for (i = 0; i <= 1 ; i=i+1)
             sum_level_6[i] = 18'sd 0;
     else begin
-        for (i = 0; i <= 1, i=i+1)
+        for (i = 0; i <= 1 ; i=i+1)
         sum_level_6[i] = sum_level_5[2*i] + sum_level_5[2*i+1];
     end
 
@@ -125,8 +125,6 @@ always @ (posedge clk or posedge reset)
         y <= sum_level_7;
 	else
 		y <= y;
-
-
  
 
 

@@ -30,8 +30,11 @@ vmap work rtl_work
 
 # compile source files
 vlog -sv -work work ${SOURCE_DIR}/clocks.v
-vlog -sv -work work ${SOURCE_DIR}/LFSR.v
+#vlog -sv -work work ${SOURCE_DIR}/LFSR.v
 vlog -sv -work work ${SOURCE_DIR}/tbench.sv
+vlog -sv -work work ${SOURCE_DIR}/upsampler.v
+vlog -sv -work work ${SOURCE_DIR}/downsampler.v
+
 
 
 

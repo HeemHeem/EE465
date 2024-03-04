@@ -246,13 +246,13 @@ h_srrc_tx_gs_scld_verilog = round(h_srrc_tx_gs_scld*2^18); % coeff fits into 0s1
 
 % make room for h_srrc_tx reshaping for pract
 h_tx_initial_shape = zeros(1,152);
-h_tx_initial_shape(1:length(h_srrc_prac_sim)) = h_srrc_prac_sim; 
+h_tx_initial_shape(1:length(h_srrc_wind_sim)) = h_srrc_wind_sim; 
 h_tx_reshape = reshape(h_tx_initial_shape, 4, [])';
-%h_tx_pract_scale_factor = sum(abs(h_tx_reshape))
-%h_tx_pract_scale_factor = max(sum(abs(h_tx_reshape))); % get max value
-h_tx_pract_scale_factor = sum(abs(h_srrc_prac_sim))
+h_tx_pract_scale_factor = sum(abs(h_tx_reshape))
+h_tx_pract_scale_factor = max(sum(abs(h_tx_reshape))); % get max value
+% h_tx_pract_scale_factor = sum(abs(h_srrc_prac_sim))
 
-h_srrc_tx_pract_scld = h_srrc_prac_sim/h_tx_pract_scale_factor;
+h_srrc_tx_pract_scld = h_srrc_wind_sim/h_tx_pract_scale_factor;
 h_srrc_tx_pract_scld_verilog = round(h_srrc_tx_pract_scld*2^18); % coeff fits into 0s18 number
 
 

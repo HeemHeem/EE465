@@ -45,12 +45,63 @@ begin
   reset = 0;
 end
 
-initial begin
+// initial begin
 
-load_data = 0;
-#20  load_data = 1; 
+// load_data = 0;
+// #20  load_data = 1; 
+
+// end
+
+integer file_in;
+
+initial
+begin
+  file_in = $fopen("up_samp_test.txt", "r");
+  // file_in = $fopen("impulse_input.txt", "r");
+  // file_in = $fopen("impulse_3_zero.txt", "r");
 
 end
+
+// always @ (posedge clk)
+//   if (reset)
+//     x_in <= 18'sd0;
+//   else if (sym_clk_ena)
+//     if(count + 1 == 7)
+//     begin
+//         $fseek(file_in, 0,0); // restart file reading position
+//         $fscanf(file_in, "%d\n", x_in);
+//     end
+//     else
+//         $fscanf(file_in, "%d\n", x_in);
+
+always @ (posedge sym_clk_ena or posedge reset)
+  if(reset)
+        x_in <= 18'sd0;
+  else if (sym_clk_ena)
+    if(count + 1 == 7)
+    begin
+        $fseek(file_in, 0,0); // restart file reading position
+        $fscanf(file_in, "%d\n", x_in);
+    end
+    else
+        $fscanf(file_in, "%d\n", x_in);
+
+
+
+
+always @ (posedge sym_clk_ena or posedge reset)
+  if(reset)
+    count <= 0;
+  else if (count == 6 && sym_clk_ena)
+    count <= 0;
+  else if (sym_clk_ena)
+    count++;
+  else
+    count <= count;
+
+
+
+
 
 clocks test_clocks(
 
@@ -61,14 +112,30 @@ clocks test_clocks(
     .clk_phase(clk_phase)
 );
 
-
-LFSR lfsr(
-    .clk(sys_clk),
-    .sam_clk_ena(sam_clk_ena),
-    .load_data(load_data),
-    .q(q),
-    .LFSR_2_BITS(lfsr_2_bits)
+upsampler up_samp(
+  .sys_clk(sys_clk),
+  .sym_clk_en(sym_clk_ena),
+  .sam_clk_en(sam_clk_ena),
+  .symb_in(x_in),
+  .sig_out(y_inter),
+  .reset(reset)
 );
+
+downsampler downsamp(
+  .sys_clk(sys_clk),
+  .sym_clk_en(sym_clk_ena),
+  .sig_in(y_inter),
+  .sym_out(y),
+  .reset(reset)
+);
+
+// LFSR lfsr(
+//     .clk(sys_clk),
+//     .sam_clk_ena(sam_clk_ena),
+//     .load_data(load_data),
+//     .q(q),
+//     .LFSR_2_BITS(lfsr_2_bits)
+// );
 
 
 endmodule
