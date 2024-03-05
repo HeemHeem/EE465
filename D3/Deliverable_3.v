@@ -20,16 +20,18 @@ module Deliverable_3(
 	
 	
 	// filters
-	output wire signed [17:0] tx_out, symbol_into_upsam, y_into_down_sam
+	output wire signed [17:0] tx_out, symbol_into_upsam, y_into_down_sam, y_into_delay
 );
 
-wire signed [17:0] isi_in;
+wire [31:0] isi_in;
 wire [49:0] acc_error;
 wire [35:0] sqr_error;
-//ISI isi_probes(
-//	.probe(isi_in),
-//	.source(isi_in)
-//);
+
+
+MER isi_probes(
+.probe(isi_in),
+.source(isi_in)
+);
 
 
 
@@ -80,7 +82,7 @@ upsampler upsam(
 
 );
 
-tx_gs_filter filt1(
+tx_pract_filter filt1(
 
 	.clk(sys_clk),
 	.reset(~load_data),
@@ -98,8 +100,18 @@ rx_gs_filter filt2(
 	.sym_clk_en(sym_clk_ena),
 	.sam_clk_en(sam_clk_ena),
 	.x_in(tx_out),
-	.y(y_into_down_sam)
+	.y(y_into_delay)
 	//.y(decision_variable)
+);
+
+filter_delay filt_delay(
+	.sys_clk(sys_clk),
+	.reset(~load_data),
+	.sam_clk_en(sam_clk_ena),
+	.sig_in(y_into_delay),
+	.sig_out(y_into_down_sam),
+	.delay_change(isi_in[1:0])
+
 );
 
 downsampler downsam(
@@ -200,11 +212,12 @@ accumulated_dc_error acc_dc_error(
 
 
 delay dl(
-	.sym_clk_ena(sym_clk_ena),
-	.sam_clk_ena(sam_clk_ena),
-	.symb_in(LFSR_2_BITS),
+	.sym_clk_en(sym_clk_ena),
+	.sam_clk_en(sam_clk_ena),
+	.sig_in(LFSR_2_BITS),
 	.symb_a(symb_a),
-	.clk(sys_clk)
+	.sys_clk(sys_clk),
+	.delay_change(isi_in[5:2])
 );
 
 
