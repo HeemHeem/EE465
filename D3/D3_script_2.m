@@ -287,3 +287,7 @@ legend('Tx_{pract}', 'Rx', 'Tx')
 hold off
 
 
+h_prc_rx_cov = conv(h_srrc_tx_pract_scld, h_rx_scld);
+figure(3)
+% plot(length(h_prc_rx_cov), h_prc_rx_cov)
+stem(h_prc_rx_cov)
