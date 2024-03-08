@@ -89,7 +89,8 @@ MER_pract = 0;
 N_start = 101; % length start
 MER_pract = 30;
 % loop through parameters to find best MER and OB1 to match
-for N_rx = 81:Nsps:201 
+% for N_rx = 81:Nsps:201 
+for N_rx = 81:Nsps:201
         hsrrc_gs_rx = firrcos(N_rx-1, samp_rate/8, beta, samp_rate, 'rolloff', 'sqrt');
     for N_tx = 105: Nsps:201
         for samp_rate_divider = 7:0.1:8
@@ -156,6 +157,7 @@ Hsrrc_gs_rx_sim = freqz(hsrrc_gs_rx_sim, 1, 2*pi*f);
 x_N_tx_gs_best = 0;
 x_samp_divider_best_gs = 0;
 x_beta_pract_best_gs = 0;
+% for N_rx_gs = 81:Nsps:201
 for N_rx_gs = 81:Nsps:201
     hsrrc_gs_rx_sim = firrcos(N_rx_gs-1, samp_rate/8, beta, samp_rate, 'rolloff', 'sqrt');
     for N_tx_gs = 65:Nsps:201
@@ -230,7 +232,7 @@ MER_pract_test = 10*log10(P_avg_sig_pract_test/P_avg_error_pract_test);
 
 
 % make room for h_srrc_tx reshaping for gs
-h_tx_initial_shape = zeros(1,80);
+h_tx_initial_shape = zeros(1,68);
 h_tx_initial_shape(1:length(hsrrc_tx_gs)) = hsrrc_tx_gs; 
 h_tx_reshape = reshape(h_tx_initial_shape, 4, [])';
 h_tx_gs_scale_factor = sum(abs(h_tx_reshape))
@@ -245,7 +247,7 @@ h_srrc_tx_gs_scld_verilog = round(h_srrc_tx_gs_scld*2^18); % coeff fits into 0s1
 
 
 % make room for h_srrc_tx reshaping for pract
-h_tx_initial_shape = zeros(1,152);
+h_tx_initial_shape = zeros(1,108);
 h_tx_initial_shape(1:length(h_srrc_wind_sim)) = h_srrc_wind_sim; 
 h_tx_reshape = reshape(h_tx_initial_shape, 4, [])';
 h_tx_pract_scale_factor = sum(abs(h_tx_reshape))
@@ -256,7 +258,7 @@ h_srrc_tx_pract_scld = h_srrc_wind_sim/h_tx_pract_scale_factor;
 h_srrc_tx_pract_scld_verilog = round(h_srrc_tx_pract_scld*2^18); % coeff fits into 0s18 number
 
 
-h_tx_initial_shape_test = zeros(1,152);
+h_tx_initial_shape_test = zeros(1,108);
 h_tx_initial_shape_test(1:length(h_srrc_prac_sim)) = h_srrc_tx_pract_scld; 
 h_tx_reshape_test = reshape(h_tx_initial_shape_test, 4, [])';
 h_tx_pract_scale_factor_test = sum(abs(h_tx_reshape_test))

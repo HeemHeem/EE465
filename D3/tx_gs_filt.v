@@ -1,5 +1,5 @@
 module tx_pract_filter #(
-    parameter COEFF_LEN = 105,
+    parameter COEFF_LEN = 65,
     parameter HALF_COEFF_LEN = (COEFF_LEN-1)/2
 )
 ( input clk, reset, sym_clk_en, sam_clk_en,
