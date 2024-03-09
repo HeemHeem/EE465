@@ -32,8 +32,10 @@ vmap work rtl_work
 vlog -sv -work work ${SOURCE_DIR}/clocks.v
 #vlog -sv -work work ${SOURCE_DIR}/LFSR.v
 vlog -sv -work work ${SOURCE_DIR}/tbench.sv
-vlog -sv -work work ${SOURCE_DIR}/upsampler.v
-vlog -sv -work work ${SOURCE_DIR}/downsampler.v
+#vlog -sv -work work ${SOURCE_DIR}/test_timesharing2.v
+vlog -sv -work work ${SOURCE_DIR}/test_timesharing3.v
+#vlog -sv -work work ${SOURCE_DIR}/upsampler.v
+#vlog -sv -work work ${SOURCE_DIR}/downsampler.v
 
 
 

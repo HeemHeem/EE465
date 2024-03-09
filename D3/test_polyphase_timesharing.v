@@ -201,7 +201,7 @@ always @ (posedge clk or posedge reset)
     if(reset)
         y <= 18'sd0;
     else if(sam_clk_en)
-        y <= y_temp[34:17]; // 1s17
+        y <= y_temp[35:18]; // 1s17
     else
         y <= y;
 

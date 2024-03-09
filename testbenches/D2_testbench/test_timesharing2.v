@@ -23,19 +23,31 @@ reg signed [17:0] hm0, hm1, hm2, hm3, hm4, hm5, hm6, hm7, hm8, hm9, hm10, hm11, 
 reg signed [17:0] xm0, xm1, xm2, xm3, xm4, xm5, xm6, xm7, xm8, xm9, xm10, xm11, xm12, xm13, xm14, xm15, xm16, xm17, xm18, xm19; // hm's- 0s18, xm's 1s17
 reg signed [35:0] m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20; // 1s35s
 reg signed [35:0] m0_out, m1_out, m2_out, m3_out, m4_out, m5_out, m6_out, m7_out, m8_out, m9_out, m10_out; // 1s35
-reg signed [35:0] m0_acc, m1_acc, m2_acc, m3_acc, m4_acc, m5_acc, m6_acc, m7_acc, m8_acc, m9_acc, m10_acc; // 1s35
+reg signed [35:0] m0_acc, m1_acc, m2_acc, m3_acc, m4_acc, m5_acc, m6_acc, m7_acc, m8_acc, m9_acc, m10_acc, m11_acc, m12_acc, m13_acc, m14_acc, m15_acc, m16_acc; // 1s35
 
 reg signed [35:0] m0_acc_reg, m1_acc_reg, m2_acc_reg, m3_acc_reg, m4_acc_reg, m5_acc_reg, m6_acc_reg, m7_acc_reg, m8_acc_reg, m9_acc_reg, m10_acc_reg; // 1s35
 
 reg signed [35:0] y_temp; // 1s35
 //reg [1:0] counter;
+reg [1:0] sub_counter;
+initial begin
+counter <= 2'd0;
+sub_counter <= 2'd0;
+end
 
+always @ (posedge clk or posedge reset)
+	if(reset)
+		sub_counter <= 2'd0;
+	else if (sub_counter == 2'd2)
+		sub_counter <= 2'd0;
+	else
+		sub_counter <= sub_counter + 2'd1;
 
 
 always @ (posedge clk or posedge reset)
 	if(reset)
 		counter <= 2'd0;
-	else if (sam_clk_en)
+	else if (counter == 2'd3)
 		counter <= 2'd0;
 	else
 		counter <= counter + 2'd1;
@@ -123,7 +135,7 @@ always @ (posedge clk or posedge reset)
 		m1 <= xm1 * hm1;
 
 // sum mult outputs
-always @ *
+always @ (posedge clk)
 	if(reset)
 		m0_out = 36'sd0;
 	else
@@ -132,16 +144,26 @@ always @ *
 always @ (posedge clk or posedge reset)
 	if(reset)
 		m0_acc <= m0_out;
-	else if (sam_clk_en)
+	else if (sub_counter == 2'd2)
 		m0_acc <= m0_out;
 	else
 		m0_acc <= m0_acc + m0_out;
 
+// reg signed [35:0] m0_acc_delay[2:0];
+// always @ (posedge clk) begin
+// 	m0_acc_delay[0] <= m0_acc;
+// 	m0_acc_delay[1] <= m0_acc_delay[0];
+// 	m0_acc_delay[2] <= m0_acc_delay[1];
+// end
+
+
 // acc reg
 always @ (posedge clk or posedge reset)
 	if(reset)
+		// m0_acc_reg <= m0_acc_delay[2];
 		m0_acc_reg <= m0_acc;
 	else if (sam_clk_en)
+		// m0_acc_reg <= m0_acc_delay[2];
 		m0_acc_reg <= m0_acc;
 	else
 		m0_acc_reg <= m0_acc_reg;
@@ -151,13 +173,13 @@ always @ (posedge clk or posedge reset)
 
 
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m2 <= 36'sd0;
 	else
 		m2 <= xm2 * hm2;
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m3 <= 36'sd0;
 	else
@@ -178,25 +200,36 @@ always @ (posedge clk or posedge reset)
 	else
 		m1_acc <= m1_acc + m1_out;
 
+
+
+// reg signed [35:0] m1_acc_delay[2:0];
+// always @ (posedge clk) begin
+// 	m1_acc_delay[0] <= m1_acc;
+// 	m1_acc_delay[1] <= m1_acc_delay[0];
+// 	m1_acc_delay[2] <= m1_acc_delay[1];
+// end
+
 // acc reg
 always @ (posedge clk or posedge reset)
 	if(reset)
 		m1_acc_reg <= m1_acc;
+		// m1_acc_reg <= m1_acc_delay[2];
 	else if (sam_clk_en)
 		m1_acc_reg <= m1_acc;
+		// m1_acc_reg <= m1_acc_delay[2];
 	else
 		m1_acc_reg <= m1_acc_reg;
 
 /************************************************************m4-5**************************************/
 
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m4 <= 36'sd0;
 	else
 		m4 <= xm4 * hm4;
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m5 <= 36'sd0;
 	else
@@ -218,12 +251,22 @@ always @ (posedge clk or posedge reset)
 	else
 		m2_acc <= m2_acc + m2_out;
 
+
+// reg signed [35:0] m2_acc_delay[2:0];
+// always @ (posedge clk) begin
+// 	m2_acc_delay[0] <= m2_acc;
+// 	m2_acc_delay[1] <= m2_acc_delay[0];
+// 	m2_acc_delay[2] <= m2_acc_delay[1];
+// end
+
 // acc reg
 always @ (posedge clk or posedge reset)
 	if(reset)
 		m2_acc_reg <= m2_acc;
+		// m2_acc_reg <= m2_acc_delay[2];
 	else if (sam_clk_en)
 		m2_acc_reg <= m2_acc;
+		// m2_acc_reg <= m2_acc_delay[2];
 	else
 		m2_acc_reg <= m2_acc_reg;
 
@@ -231,13 +274,13 @@ always @ (posedge clk or posedge reset)
 /************************************************************m6-7**************************************/
 
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m6 <= 36'sd0;
 	else
 		m6 <= xm6 * hm6;
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m7 <= 36'sd0;
 	else
@@ -258,26 +301,34 @@ always @ (posedge clk or posedge reset)
 	else
 		m3_acc <= m3_acc + m3_out;
 
+// reg signed [35:0] m3_acc_delay[2:0];
+// always @ (posedge clk) begin
+// 	m3_acc_delay[0] <= m3_acc;
+// 	m3_acc_delay[1] <= m3_acc_delay[0];
+// 	m3_acc_delay[2] <= m3_acc_delay[1];
+// end
 
 // acc reg
 always @ (posedge clk or posedge reset)
 	if(reset)
 		m3_acc_reg <= m3_acc;
+		// m3_acc_reg <= m3_acc_delay[2];
 	else if (sam_clk_en)
 		m3_acc_reg <= m3_acc;
+		// m3_acc_reg <= m3_acc_delay[2];
 	else
 		m3_acc_reg <= m3_acc_reg;
 
 
 /************************************************************m8-9**************************************/
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m8 <= 36'sd0;
 	else
 		m8 <= xm8 * hm8;
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m9 <= 36'sd0;
 	else
@@ -301,25 +352,33 @@ always @ (posedge clk or posedge reset)
 	else
 		m4_acc <= m4_acc + m4_out;
 
+// reg signed [35:0] m4_acc_delay[2:0];
+// always @ (posedge clk) begin
+// 	m4_acc_delay[0] <= m4_acc;
+// 	m4_acc_delay[1] <= m4_acc_delay[0];
+// 	m4_acc_delay[2] <= m4_acc_delay[1];
+// end
 
 // acc reg
 always @ (posedge clk or posedge reset)
 	if(reset)
 		m4_acc_reg <= m4_acc;
+		// m4_acc_reg <= m4_acc_delay[2];
 	else if (sam_clk_en)
 		m4_acc_reg <= m4_acc;
+		// m4_acc_reg <= m4_acc_delay[2];
 	else
 		m4_acc_reg <= m4_acc_reg;
 
 /************************************************************m10-11**************************************/
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m10 <= 36'sd0;
 	else
 		m10 <= xm10 * hm10;
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m11 <= 36'sd0;
 	else
@@ -341,6 +400,12 @@ always @ (posedge clk or posedge reset)
 	else
 		m5_acc <= m5_acc + m5_out;
 
+// reg signed [35:0] m5_acc_delay[2:0];
+// always @ (posedge clk) begin
+// 	m5_acc_delay[0] <= m5_acc;
+// 	m5_acc_delay[1] <= m5_acc_delay[0];
+// 	m5_acc_delay[2] <= m5_acc_delay[1];
+// end
 
 // acc reg
 always @ (posedge clk or posedge reset)
@@ -354,13 +419,13 @@ always @ (posedge clk or posedge reset)
 /************************************************************m12-13**************************************/
 
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m12 <= 36'sd0;
 	else
 		m12 <= xm12 * hm12;
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m13 <= 36'sd0;
 	else
@@ -382,25 +447,35 @@ always @ (posedge clk or posedge reset)
 	else
 		m6_acc <= m6_acc + m6_out;
 
+
+// reg signed [35:0] m6_acc_delay[2:0];
+// always @ (posedge clk) begin
+// 	m6_acc_delay[0] <= m6_acc;
+// 	m6_acc_delay[1] <= m6_acc_delay[0];
+// 	m6_acc_delay[2] <= m6_acc_delay[1];
+// end
+
 // acc reg
 always @ (posedge clk or posedge reset)
 	if(reset)
 		m6_acc_reg <= m6_acc;
+		// m6_acc_reg <= m6_acc_delay[2];
 	else if (sam_clk_en)
 		m6_acc_reg <= m6_acc;
+		// m6_acc_reg <= m6_acc_delay[2];
 	else
 		m6_acc_reg <= m6_acc_reg;
 
 
 /************************************************************m14-15**************************************/
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m14 <= 36'sd0;
 	else
 		m14 <= xm14 * hm14;
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m15 <= 36'sd0;
 	else
@@ -423,25 +498,34 @@ always @ (posedge clk or posedge reset)
 		m7_acc <= m7_acc + m7_out;
 
 
+// reg signed [35:0] m7_acc_delay[2:0];
+// always @ (posedge clk) begin
+// 	m7_acc_delay[0] <= m7_acc;
+// 	m7_acc_delay[1] <= m7_acc_delay[0];
+// 	m7_acc_delay[2] <= m7_acc_delay[1];
+// end
+
 // acc reg
 always @ (posedge clk or posedge reset)
 	if(reset)
 		m7_acc_reg <= m7_acc;
+		// m7_acc_reg <= m7_acc_delay[2];
 	else if (sam_clk_en)
 		m7_acc_reg <= m7_acc;
+		// m7_acc_reg <= m7_acc_delay[2];
 	else
 		m7_acc_reg <= m7_acc_reg;
 
 
 /************************************************************m16-17**************************************/
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m16 <= 36'sd0;
 	else
 		m16 <= xm16 * hm16;
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m17 <= 36'sd0;
 	else
@@ -464,24 +548,35 @@ always @ (posedge clk or posedge reset)
 	else
 		m8_acc <= m8_acc + m8_out;
 
+// reg signed [35:0] m8_acc_delay[2:0];
+// always @ (posedge clk) begin
+// 	m8_acc_delay[0] <= m8_acc;
+// 	m8_acc_delay[1] <= m8_acc_delay[0];
+// 	m8_acc_delay[2] <= m8_acc_delay[1];
+// end
+
+
 // acc reg
 always @ (posedge clk or posedge reset)
 	if(reset)
 		m8_acc_reg <= m8_acc;
+		// m8_acc_reg <= m8_acc_delay[2];
 	else if (sam_clk_en)
 		m8_acc_reg <= m8_acc;
+		// m8_acc_reg <= m8_acc_delay[2];
+
 	else
 		m8_acc_reg <= m8_acc_reg;
 
 /************************************************************m18-19**************************************/
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m18 <= 36'sd0;
 	else
 		m18 <= xm18 * hm18;
 
-always @ (posedge clk or posedge reset)
+always @ *//(posedge clk or posedge reset)
 	if(reset)
 		m19 <= 36'sd0;
 	else
@@ -504,12 +599,26 @@ always @ (posedge clk or posedge reset)
 	else
 		m9_acc <= m9_acc + m9_out;
 
+
+
+// reg signed [35:0] m9_acc_delay[2:0];
+// always @ (posedge clk) begin
+// 	m9_acc_delay[0] <= m9_acc;
+// 	m9_acc_delay[1] <= m9_acc_delay[0];
+// 	m9_acc_delay[2] <= m9_acc_delay[1];
+// end
+
+
+
 // acc reg
 always @ (posedge clk or posedge reset)
 	if(reset)
 		m9_acc_reg <= m9_acc;
+		// m9_acc_reg <= m9_acc_delay[2];
 	else if (sam_clk_en)
 		m9_acc_reg <= m9_acc;
+		// m9_acc_reg <= m9_acc_delay[2];
+
 	else
 		m9_acc_reg <= m9_acc_reg;
 
@@ -517,15 +626,22 @@ always @ (posedge clk or posedge reset)
 
 wire signed [17:0] h80;
 
-assign h80 = 18'sd 166;
+assign h80 = 18'sd 1;//166;
 
-always @ (posedge clk)
+always @ (posedge clk or posedge reset)
 	if(reset)
-		m20 <= 36'd0;
+		m20 <= 36'sd0;
 	else if (sam_clk_en)
 		m20 <= x[80] * h80;
 	else
 		m20 <= m20;
+
+// reg signed [35:0] m20_delay;
+// always @ (posedge clk)
+// 	if(sam_clk_en)
+// 		m20_delay <= m20;
+// 	else
+// 		m20_delay <= m20_delay;
 
 
 /************************************************adder tree *********************************/
@@ -603,6 +719,32 @@ always @ (posedge clk or posedge reset)
 		y <= y_temp[35:18];
 	else
 		y <= y;
+
+
+// initial begin
+// 	hm0 = 18'sd1;
+// 	hm1 = 18'sd1;
+// 	hm2 = 18'sd1;
+// 	hm3 = 18'sd1;
+// 	hm4 = 18'sd1;
+// 	hm5 = 18'sd1;
+// 	hm6 = 18'sd1;
+// 	hm7 = 18'sd1;
+// 	hm8 = 18'sd1;
+// 	hm9 = 18'sd1;
+// 	hm10 = 18'sd1;
+// 	hm11= 18'sd1;
+// 	hm12 = 18'sd1;
+// 	hm13 = 18'sd1;
+// 	hm14 = 18'sd1;
+// 	hm15 = 18'sd1;
+// 	hm16 = 18'sd1;
+// 	hm17 = 18'sd1;
+// 	hm18 = 18'sd1;
+// 	hm19 = 18'sd1;
+
+
+// end
 
 
 

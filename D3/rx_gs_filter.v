@@ -75,7 +75,7 @@ else
 
 always @ (posedge clk or posedge reset)
     if(reset)
-        y <= 0;
+        y <= 18'sd0;
     else if(sam_clk_en)
         y <= sum_out[HALF_COEFF_LEN-1];
 	else
