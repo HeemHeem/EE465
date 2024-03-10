@@ -33,7 +33,9 @@ vlog -sv -work work ${SOURCE_DIR}/clocks.v
 #vlog -sv -work work ${SOURCE_DIR}/LFSR.v
 vlog -sv -work work ${SOURCE_DIR}/tbench.sv
 #vlog -sv -work work ${SOURCE_DIR}/test_timesharing2.v
-vlog -sv -work work ${SOURCE_DIR}/test_timesharing3.v
+#vlog -sv -work work ${SOURCE_DIR}/tx_pract_with_Luts.v
+#vlog -sv -work work ${SOURCE_DIR}/test_timesharing3.v
+vlog -sv -work work ${SOURCE_DIR}/test_polyphase_timesharing.v
 #vlog -sv -work work ${SOURCE_DIR}/upsampler.v
 #vlog -sv -work work ${SOURCE_DIR}/downsampler.v
 
@@ -52,7 +54,7 @@ vlog -sv -work work ${TB_DIR}/${TB_MODULE}.sv
 vsim -voptargs="+acc" -t 1ns -L work ${TB_MODULE}
 
 # open waveform viewer and populate with saved list of signals
-do wave.do
-
+#do wave.do
+do polyphase_timeshare.do
 # run simulation for specified amount of time
 run ${SIMULATION_LENGTH}

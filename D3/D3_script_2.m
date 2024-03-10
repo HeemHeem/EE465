@@ -293,3 +293,16 @@ h_prc_rx_cov = conv(h_srrc_tx_pract_scld, h_rx_scld);
 figure(3)
 % plot(length(h_prc_rx_cov), h_prc_rx_cov)
 stem(h_prc_rx_cov)
+
+
+
+Peak_idx_gs = (length(h_prc_rx_cov)-1)/2 + 1; 
+P_avg_sig_gs = abs(h_prc_rx_cov(Peak_idx_gs))^2;
+P_avg_error_gs = sum(abs(h_prc_rx_cov(1:Nsps:end)).^2)- P_avg_sig_gs;
+
+% mer calc
+MER_cov = 10*log10(P_avg_sig_gs/P_avg_error_gs);
+
+
+
+

@@ -3,7 +3,7 @@ function create_time_sharing_polyphase_verilog_file(h, coeff_bits, counter_bits,
     copyfile(template_fileName, new_fileName);
 
     fid = fopen(new_fileName, 'a+');
-    mux_inputs = 4;
+    mux_inputs = 16;
     % lut_groups = (length(h)-1)/16;
     lut_groups = (length(h)-1)/mux_inputs;
 
@@ -27,25 +27,42 @@ function create_time_sharing_polyphase_verilog_file(h, coeff_bits, counter_bits,
         fprintf(fid, "/************************* m[%d]******************/\n\n", lut);
         fprintf(fid, "always @ *\n");
         fprintf(fid, "\tif(reset)\n");
-        fprintf(fid, "\t\tm[%d] <= 36'sd0;\n", lut);
+        fprintf(fid, "\t\tm[%d] = 36'sd0;\n", lut);
         fprintf(fid, "\telse\n");
-        fprintf(fid, "\t\tm[%d] <= xm[%d] * h[%d];\n\n", lut, lut, lut);
+        fprintf(fid, "\t\tm[%d] = xm[%d] * h[%d];\n\n", lut, lut, lut);
 
-
-
+        
+        % acc
         fprintf(fid, "always @ (posedge clk or posedge reset)\n");
+        % fprintf(fid, "always @ *\n");
         fprintf(fid, "\tif(reset)\n");
-        fprintf(fid, "\t\tm_acc[%d] <= m[%d];\n", lut, lut);
-        fprintf(fid, "\telse if (counter == 2'd3)\n");
+        % fprintf(fid, "\t\tm_acc[%d] <= m[%d];\n", lut, lut);
+        fprintf(fid, "\t\tm_acc[%d] <= 36'sd0;\n", lut);
+        fprintf(fid, "\telse if (counter == 2'd0)\n");
+        % fprintf(fid, "\telse if (sam_clk_en)\n");
         fprintf(fid, "\t\tm_acc[%d] <= m[%d];\n", lut, lut);
         fprintf(fid, "\telse\n");
         fprintf(fid, "\t\tm_acc[%d] <= m_acc[%d] + m[%d];\n\n", lut, lut, lut);
 
+        fprintf(fid, "reg signed [35:0] m%d_acc_delay[2:0];\n\n", lut);
+
+        %acc delay
+        fprintf(fid, "always @ (posedge clk)\n");
+        fprintf(fid, "\t\tbegin\n");
+        fprintf(fid, "\t\tm%d_acc_delay[0] <= m_acc[%d];\n", lut, lut);
+        fprintf(fid, "\t\tm%d_acc_delay[1] <= m%d_acc_delay[0];\n", lut, lut);
+        fprintf(fid, "\t\tm%d_acc_delay[2] <= m%d_acc_delay[1];\n", lut, lut);
+        fprintf(fid, "\t\tend\n\n");
+        
+        %acc reg
         fprintf(fid, "always @ (posedge clk or posedge reset)\n");
         fprintf(fid, "\tif(reset)\n");
-        fprintf(fid, "\t\tm_acc_reg[%d] <= m_acc[%d];\n", lut, lut);
+        % fprintf(fid, "\t\tm_acc_reg[%d] <= m_acc[%d];\n", lut, lut);
+        % fprintf(fid, "\t\tm_acc_reg[%d] <= m%d_acc_delay[2];\n", lut, lut);
+        fprintf(fid, "\t\tm_acc_reg[%d] <= 36'sd0;\n", lut);
         fprintf(fid, "\telse if (sam_clk_en)\n");
-        fprintf(fid, "\t\tm_acc_reg[%d] <= m_acc[%d];\n", lut, lut);
+        % fprintf(fid, "\t\tm_acc_reg[%d] <= m_acc[%d];\n", lut, lut);
+        fprintf(fid, "\t\tm_acc_reg[%d] <= m%d_acc_delay[2];\n", lut, lut);
         fprintf(fid, "\telse\n");
         fprintf(fid, "\t\tm_acc_reg[%d] <= m_acc_reg[%d];\n\n", lut, lut);
 
@@ -56,6 +73,7 @@ function create_time_sharing_polyphase_verilog_file(h, coeff_bits, counter_bits,
     % case statement groups
     for lut = 0:lut_groups-1
         fprintf(fid, "always @ *\n");
+        % fprintf(fid, "always @ (posedge clk)\n");
         fprintf(fid, "begin\n");
         fprintf(fid, "\tcase(counter)\n");
         cnt = 0;
@@ -70,9 +88,9 @@ function create_time_sharing_polyphase_verilog_file(h, coeff_bits, counter_bits,
         end
         cnt = 0;
         if(h((lut)*mux_inputs+1) < 0)
-            fprintf(fid, "\t\tdefault: h[%d] = -%d'sd %d;\n", lut, coeff_bits, abs(h((lut))*mux_inputs+1));
+            fprintf(fid, "\t\tdefault: h[%d] = -%d'sd %d;\n", lut, coeff_bits, abs(h(lut*mux_inputs+1)));
         else
-            fprintf(fid, "\t\tdefault: h[%d] = %d'sd %d;\n", lut, coeff_bits, abs(h((lut)*mux_inputs+1)));
+            fprintf(fid, "\t\tdefault: h[%d] = %d'sd %d;\n", lut, coeff_bits, abs(h((lut*mux_inputs+1))));
         end
         fprintf(fid, "\tendcase\n");
         fprintf(fid, "end\n");
@@ -81,6 +99,7 @@ function create_time_sharing_polyphase_verilog_file(h, coeff_bits, counter_bits,
     % case of x inputs
     for lut = 0:lut_groups-1
         fprintf(fid, "always @ *\n");
+        % fprintf(fid, "always @ (posedge clk)\n");
         fprintf(fid, "begin\n");
         fprintf(fid, "\tcase(counter)\n");
         cnt = 0;
