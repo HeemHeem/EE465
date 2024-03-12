@@ -122,7 +122,7 @@ always @ *
 	else
 		y_temp = sum_level_4[0] + sum_level_4[1];
 
-always @ (posedge clk or reset)
+always @ (posedge clk or posedge reset)
 	if(reset)
 		y <= y_temp;
 	else if (sam_clk_en)

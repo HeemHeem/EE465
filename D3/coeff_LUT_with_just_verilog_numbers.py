@@ -257,7 +257,7 @@ def generate_filter_script(base_file_name: str, new_file_name:str, num_LUT_bits:
 # for i in lut_inpt_verilog:
 #     hex_val.append(hex(i))
 # print(hex_val)
-coeff_list = get_coeff_from_txt("tx_gs_coeff.txt")
+coeff_list = get_coeff_from_txt("tx_pract_coeff2.txt")
 print(coeff_list)
 
 # LUTs = LUT_outputs(symbols, coeff_list, 3)
@@ -267,4 +267,4 @@ print(LUTs)
 
 
 #generate_filter_script("srrc_filter_LUT_base_template.v", "tx_pract_with_Luts_test.v", 37, 19, symbols, coeff_list, 17)
-generate_filter_script("srrc_filter_LUT_base_template.v", "tx_gs_filt.v", 18, LUTs, 19, symbols_list_verilog)            
+generate_filter_script("srrc_filter_LUT_base_template.v", "tx_pract_filt2.v", 18, LUTs, 19, symbols_list_verilog)            

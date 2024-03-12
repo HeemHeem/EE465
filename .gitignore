@@ -77,3 +77,8 @@ testbenches/D2_testbench/rtl_work/@_opt/_lib6_0.qtl
 testbenches/D2_testbench/rtl_work/@_opt/_data/exempt5sWGXj
 testbenches/D2_testbench/rtl_work/@_opt/_data/exempth04Wmc
 testbenches/D2_testbench/rtl_work/@_opt/_data/exemptOEu8sf
+testbenches/D2_testbench/D2_test.cr.mti
+testbenches/D2_testbench/D2_test.mpf
+testbenches/D2_testbench/impulse_input.txt
+testbenches/D2_testbench/polyphase_timeshare.do
+testbenches/D2_testbench/rtl_work/

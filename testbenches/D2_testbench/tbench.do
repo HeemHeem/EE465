@@ -35,7 +35,10 @@ vlog -sv -work work ${SOURCE_DIR}/tbench.sv
 #vlog -sv -work work ${SOURCE_DIR}/test_timesharing2.v
 #vlog -sv -work work ${SOURCE_DIR}/tx_pract_with_Luts.v
 #vlog -sv -work work ${SOURCE_DIR}/test_timesharing3.v
-vlog -sv -work work ${SOURCE_DIR}/test_polyphase_timesharing.v
+#vlog -sv -work work ${SOURCE_DIR}/test_timesharing5.v
+vlog -sv -work work ${SOURCE_DIR}/test_timesharing6.v
+
+#vlog -sv -work work ${SOURCE_DIR}/test_polyphase_timesharing.v
 #vlog -sv -work work ${SOURCE_DIR}/upsampler.v
 #vlog -sv -work work ${SOURCE_DIR}/downsampler.v
 

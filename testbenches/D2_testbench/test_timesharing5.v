@@ -1,5 +1,5 @@
-module rx_gs_filter #(
-    parameter COEFF_LEN = 65,
+module test_timesharing5 #(
+    parameter COEFF_LEN = 81,
     parameter HALF_COEFF_LEN = (COEFF_LEN-1)/2
 )
 ( input clk, reset, sym_clk_en, sam_clk_en,
@@ -12,18 +12,18 @@ module rx_gs_filter #(
 // create array of vectors
 integer  i;
 reg signed [17:0] xd[COEFF_LEN-1:0]; // for 81 coefficients
-reg signed [17:0] x[HALF_COEFF_LEN:0]; //2s16
-reg signed [17:0] xm[7:0]; // 1s17
-reg signed [17:0] h[7:0]; // 0s18
-reg signed [35:0] m[7:0]; // 1s35
-reg signed [35:0] m_acc[7:0]; // 1s35
-reg signed [35:0] m_acc_reg[7:0]; //1s35
-reg signed [35:0] sum_level_1[3:0]; // 1s35
+reg signed [17:0] x[HALF_COEFF_LEN:0];
+reg signed [17:0] xm[9:0]; // 1s17
+reg signed [17:0] h[9:0]; // 0s18
+reg signed [35:0] m[9:0]; // 1s35
+reg signed [35:0] m_acc[9:0]; // 1s35
+reg signed [35:0] m_acc_reg[9:0]; //1s35
+reg signed [35:0] sum_level_1[4:0]; // 1s35
 reg signed [35:0] sum_level_2[1:0]; // 1s35
-reg signed [35:0] sum_level_3; //[1:0]; // 1s35 only add sum_level_2[0:3]
+reg signed [35:0] sum_level_3[1:0]; // 1s35 only add sum_level_2[0:3]
 // reg signed [35:0] sum_level_4[1:0]; // add sum_level3 and sum_level_2[4] with mout_21
 reg signed [35:0] y_temp; // add sum_level4
-reg signed [35:0] mout9, mout9_reg, mout9_reg2;
+reg signed [35:0] mout11, mout11_reg, mout11_reg2;
 
 always @ (posedge clk or posedge reset)
 	if (reset)
@@ -34,9 +34,9 @@ always @ (posedge clk or posedge reset)
 	else
 		counter <= counter + 2'd1;
 
-//initial begin
-//	counter = 2'd0;
-//end
+initial begin
+	counter = 2'd0;
+end
 
 
 
@@ -84,16 +84,16 @@ always @ *
 /************************sum_level***********************/
 
 // s1
-always @ *//(posedge clk or posedge reset)
+always @ (posedge clk or posedge reset)
 	if(reset)
-		for(i=0; i<4; i = i+1)
+		for(i=0; i<5; i = i+1)
 			sum_level_1[i] = 36'sd0;
 	else
-		for(i=0; i<4; i = i+1)
+		for(i=0; i<5; i = i+1)
 			sum_level_1[i] = m_acc_reg[2*i] + m_acc_reg[2*i+1];
  
  // s2
-always @ *//(posedge clk or posedge reset)
+always @ (posedge clk or posedge reset)
 
 	if(reset)
 		for(i=0; i<2; i = i + 1)
@@ -103,13 +103,15 @@ always @ *//(posedge clk or posedge reset)
 			sum_level_2[i] = sum_level_1[2*i] + sum_level_1[2*i+1];
 
 // s3
-always @ *//(posedge clk or posedge reset)
+always @ (posedge clk or posedge reset)
 
 	if(reset)
-			sum_level_3 = 36'sd0;
-	else
-		// sum_level_3[0] = sum_level_2[0] + sum_level_2[1];
-		sum_level_3 = sum_level_2[0] + sum_level_2[1];
+		for(i=0; i<2; i = i + 1)
+			sum_level_3[i] = 36'sd0;
+	else begin
+		sum_level_3[0] = sum_level_2[0] + sum_level_2[1];
+		sum_level_3[1] = sum_level_1[4] + mout11_reg2;
+	end
 
 		// for(i = 0; i<2; i = i + 1)
 			// sum_level_3[i] = sum_level_2[2*i] + sum_level_2[2*i+1];
@@ -133,9 +135,9 @@ always @ *
 	if(reset)
 		y_temp = 36'sd0;
 	else
-		y_temp = sum_level_3 + mout9_reg2;
+		y_temp = sum_level_3[0] + sum_level_3[1];
 
-always @ (posedge clk or posedge reset)
+always @ (posedge clk or reset)
 	if(reset)
 		y <= y_temp[34:17];
 	else if (sam_clk_en)
@@ -144,31 +146,30 @@ always @ (posedge clk or posedge reset)
 		y <= y;
 /********************** single coeff ***************/
 
-wire signed [17:0] h32;
+wire signed [17:0] h40;
 
-assign h32 = 18'sd 36468;
+assign h40 = 18'sd 36068;
 
 always @ *
-	mout9 = x[32] * h32;
+	mout11 = x[40] * h40;
 
 always @ (posedge clk or posedge reset)
 	if (reset)
 		// mout11_reg <= mout11;
-		mout9_reg <= 18'sd0;
+		mout11_reg <= 18'sd0;
 	else if (sam_clk_en)
-		mout9_reg <= mout9;
+		mout11_reg <= mout11;
 	else
-		mout9_reg <= mout9_reg;
+		mout11_reg <= mout11_reg;
 
 always @ (posedge clk or posedge reset)
 	if (reset)
 		// mout21_reg2 <= mout21_reg;
-		mout9_reg2 <= 18'sd0;
+		mout11_reg2 <= 18'sd0;
 	else if (sam_clk_en)
-		mout9_reg2 <= mout9_reg;
+		mout11_reg2 <= mout11_reg;
 	else
-		mout9_reg2 <= mout9_reg2;
-
+		mout11_reg2 <= mout11_reg2;
 
 /************************* m[0]******************/
 
@@ -434,86 +435,172 @@ always @ (posedge clk or posedge reset)
 	else
 		m_acc_reg[7] <= m_acc_reg[7];
 
+/************************* m[8]******************/
+
+always @ *
+	if(reset)
+		m[8] = 36'sd0;
+	else
+		m[8] = xm[8] * h[8];
+
+always @ (posedge clk or posedge reset)
+	if(reset)
+		m_acc[8] <= 36'sd0;
+	else if (counter == 2'd0)
+		m_acc[8] <= m[8];
+	else
+		m_acc[8] <= m_acc[8] + m[8];
+
+reg signed [35:0] m8_acc_delay[2:0];
+
+always @ (posedge clk)
+		begin
+		m8_acc_delay[0] <= m_acc[8];
+		m8_acc_delay[1] <= m8_acc_delay[0];
+		m8_acc_delay[2] <= m8_acc_delay[1];
+		end
+
+always @ (posedge clk or posedge reset)
+	if(reset)
+		m_acc_reg[8] <= 36'sd0;
+	else if (sam_clk_en)
+		m_acc_reg[8] <= m8_acc_delay[2];
+	else
+		m_acc_reg[8] <= m_acc_reg[8];
+
+/************************* m[9]******************/
+
+always @ *
+	if(reset)
+		m[9] = 36'sd0;
+	else
+		m[9] = xm[9] * h[9];
+
+always @ (posedge clk or posedge reset)
+	if(reset)
+		m_acc[9] <= 36'sd0;
+	else if (counter == 2'd0)
+		m_acc[9] <= m[9];
+	else
+		m_acc[9] <= m_acc[9] + m[9];
+
+reg signed [35:0] m9_acc_delay[2:0];
+
+always @ (posedge clk)
+		begin
+		m9_acc_delay[0] <= m_acc[9];
+		m9_acc_delay[1] <= m9_acc_delay[0];
+		m9_acc_delay[2] <= m9_acc_delay[1];
+		end
+
+always @ (posedge clk or posedge reset)
+	if(reset)
+		m_acc_reg[9] <= 36'sd0;
+	else if (sam_clk_en)
+		m_acc_reg[9] <= m9_acc_delay[2];
+	else
+		m_acc_reg[9] <= m_acc_reg[9];
+
 /************************** LUTS ********************/
 
 always @ *
 begin
 	case(counter)
-		2'd0 : h[0] = 18'sd 402;
-		2'd1 : h[0] = 18'sd 165;
-		2'd2 : h[0] = -18'sd 259;
-		2'd3 : h[0] = -18'sd 581;
-		default: h[0] = 18'sd 402;
+		2'd0 : h[0] = 18'sd 166;
+		2'd1 : h[0] = 18'sd 194;
+		2'd2 : h[0] = 18'sd 61;
+		2'd3 : h[0] = -18'sd 149;
+		default: h[0] = 18'sd 166;
 	endcase
 end
 always @ *
 begin
 	case(counter)
-		2'd0 : h[1] = -18'sd 535;
-		2'd1 : h[1] = -18'sd 74;
-		2'd2 : h[1] = 18'sd 546;
-		2'd3 : h[1] = 18'sd 899;
-		default: h[1] = -18'sd 535;
+		2'd0 : h[1] = -18'sd 275;
+		2'd1 : h[1] = -18'sd 198;
+		2'd2 : h[1] = 18'sd 62;
+		2'd3 : h[1] = 18'sd 332;
+		default: h[1] = -18'sd 275;
 	endcase
 end
 always @ *
 begin
 	case(counter)
-		2'd0 : h[2] = 18'sd 669;
-		2'd1 : h[2] = -18'sd 97;
-		2'd2 : h[2] = -18'sd 957;
-		2'd3 : h[2] = -18'sd 1310;
-		default: h[2] = 18'sd 669;
+		2'd0 : h[2] = 18'sd 398;
+		2'd1 : h[2] = 18'sd 163;
+		2'd2 : h[2] = -18'sd 256;
+		2'd3 : h[2] = -18'sd 575;
+		default: h[2] = 18'sd 398;
 	endcase
 end
 always @ *
 begin
 	case(counter)
-		2'd0 : h[3] = -18'sd 799;
-		2'd1 : h[3] = 18'sd 387;
-		2'd2 : h[3] = 18'sd 1546;
-		2'd3 : h[3] = 18'sd 1854;
-		default: h[3] = -18'sd 799;
+		2'd0 : h[3] = -18'sd 529;
+		2'd1 : h[3] = -18'sd 73;
+		2'd2 : h[3] = 18'sd 540;
+		2'd3 : h[3] = 18'sd 889;
+		default: h[3] = -18'sd 529;
 	endcase
 end
 always @ *
 begin
 	case(counter)
-		2'd0 : h[4] = 18'sd 918;
-		2'd1 : h[4] = -18'sd 866;
-		2'd2 : h[4] = -18'sd 2429;
-		2'd3 : h[4] = -18'sd 2629;
-		default: h[4] = 18'sd 918;
+		2'd0 : h[4] = 18'sd 662;
+		2'd1 : h[4] = -18'sd 96;
+		2'd2 : h[4] = -18'sd 946;
+		2'd3 : h[4] = -18'sd 1295;
+		default: h[4] = 18'sd 662;
 	endcase
 end
 always @ *
 begin
 	case(counter)
-		2'd0 : h[5] = -18'sd 1018;
-		2'd1 : h[5] = 18'sd 1706;
-		2'd2 : h[5] = 18'sd 3914;
-		2'd3 : h[5] = 18'sd 3921;
-		default: h[5] = -18'sd 1018;
+		2'd0 : h[5] = -18'sd 791;
+		2'd1 : h[5] = 18'sd 382;
+		2'd2 : h[5] = 18'sd 1529;
+		2'd3 : h[5] = 18'sd 1833;
+		default: h[5] = -18'sd 791;
 	endcase
 end
 always @ *
 begin
 	case(counter)
-		2'd0 : h[6] = 18'sd 1094;
-		2'd1 : h[6] = -18'sd 3463;
-		2'd2 : h[6] = -18'sd 7134;
-		2'd3 : h[6] = -18'sd 6946;
-		default: h[6] = 18'sd 1094;
+		2'd0 : h[6] = 18'sd 908;
+		2'd1 : h[6] = -18'sd 857;
+		2'd2 : h[6] = -18'sd 2403;
+		2'd3 : h[6] = -18'sd 2601;
+		default: h[6] = 18'sd 908;
 	endcase
 end
 always @ *
 begin
 	case(counter)
-		2'd0 : h[7] = -18'sd 1142;
-		2'd1 : h[7] = 18'sd 9656;
-		2'd2 : h[7] = 18'sd 22358;
-		2'd3 : h[7] = 18'sd 32565;
-		default: h[7] = -18'sd 1142;
+		2'd0 : h[7] = -18'sd 1007;
+		2'd1 : h[7] = 18'sd 1688;
+		2'd2 : h[7] = 18'sd 3871;
+		2'd3 : h[7] = 18'sd 3878;
+		default: h[7] = -18'sd 1007;
+	endcase
+end
+always @ *
+begin
+	case(counter)
+		2'd0 : h[8] = 18'sd 1082;
+		2'd1 : h[8] = -18'sd 3425;
+		2'd2 : h[8] = -18'sd 7056;
+		2'd3 : h[8] = -18'sd 6870;
+		default: h[8] = 18'sd 1082;
+	endcase
+end
+always @ *
+begin
+	case(counter)
+		2'd0 : h[9] = -18'sd 1129;
+		2'd1 : h[9] = 18'sd 9550;
+		2'd2 : h[9] = 18'sd 22113;
+		2'd3 : h[9] = 18'sd 32208;
+		default: h[9] = -18'sd 1129;
 	endcase
 end
 always @ *
@@ -594,6 +681,26 @@ begin
 		2'd2 : xm[7] = x[30];
 		2'd3 : xm[7] = x[31];
 		default: xm[7] = x[28];
+	endcase
+end
+always @ *
+begin
+	case(counter)
+		2'd0 : xm[8] = x[32];
+		2'd1 : xm[8] = x[33];
+		2'd2 : xm[8] = x[34];
+		2'd3 : xm[8] = x[35];
+		default: xm[8] = x[32];
+	endcase
+end
+always @ *
+begin
+	case(counter)
+		2'd0 : xm[9] = x[36];
+		2'd1 : xm[9] = x[37];
+		2'd2 : xm[9] = x[38];
+		2'd3 : xm[9] = x[39];
+		default: xm[9] = x[36];
 	endcase
 end
 endmodule

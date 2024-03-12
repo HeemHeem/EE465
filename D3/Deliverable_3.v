@@ -20,8 +20,9 @@ module Deliverable_3(
 	
 	
 	// filters
-	output wire signed [17:0] tx_out, symbol_into_upsam, y_into_down_sam, y_into_delay
-);
+	output wire signed [17:0] tx_out, symbol_into_upsam, y_into_down_sam, y_into_delay,
+	output wire [1:0] time_share_counter
+	);
 
 wire [31:0] isi_in;
 wire [49:0] acc_error;
@@ -82,7 +83,18 @@ upsampler upsam(
 
 );
 
-tx_pract_filter filt1(
+//tx_pract_filter2 pract(
+//
+//	.clk(sys_clk),
+//	.reset(~load_data),
+//	.sym_clk_en(sym_clk_ena),
+//	.sam_clk_en(sam_clk_ena),
+//	.x_in(symbol_into_filter),
+//	.y(tx_out)
+//
+//);
+
+tx_gs_filter2 gs(
 
 	.clk(sys_clk),
 	.reset(~load_data),
@@ -104,13 +116,27 @@ rx_gs_filter filt2(
 	//.y(decision_variable)
 );
 
-filter_delay filt_delay(
+
+//test_timesharing5 filt2(
+//
+//	.clk(sys_clk),
+//	.reset(~load_data),
+//	.sym_clk_en(sym_clk_ena),
+//	.sam_clk_en(sam_clk_ena),
+//	.x_in(tx_out),
+//	.y(y_into_delay),
+//	.counter(time_share_counter)
+//	//.y(decision_variable)
+//);
+
+
+filter_delay #(.DELAY(10)) filt_delay(
 	.sys_clk(sys_clk),
 	.reset(~load_data),
 	.sam_clk_en(sam_clk_ena),
 	.sig_in(y_into_delay),
 	.sig_out(y_into_down_sam),
-	.delay_change(isi_in[1:0])
+	.delay_change(isi_in[3:0])
 
 );
 
@@ -217,7 +243,7 @@ delay dl(
 	.sig_in(LFSR_2_BITS),
 	.symb_a(symb_a),
 	.sys_clk(sys_clk),
-	.delay_change(isi_in[5:2])
+	.delay_change(isi_in[7:4])
 );
 
 

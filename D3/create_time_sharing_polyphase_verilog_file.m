@@ -3,7 +3,7 @@ function create_time_sharing_polyphase_verilog_file(h, coeff_bits, counter_bits,
     copyfile(template_fileName, new_fileName);
 
     fid = fopen(new_fileName, 'a+');
-    mux_inputs = 16;
+    mux_inputs = 4;
     % lut_groups = (length(h)-1)/16;
     lut_groups = (length(h)-1)/mux_inputs;
 

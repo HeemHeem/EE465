@@ -1,4 +1,4 @@
-module rx_gs_filter #(
+module test_timesharing6 #(
     parameter COEFF_LEN = 65,
     parameter HALF_COEFF_LEN = (COEFF_LEN-1)/2
 )
@@ -34,9 +34,9 @@ always @ (posedge clk or posedge reset)
 	else
 		counter <= counter + 2'd1;
 
-//initial begin
-//	counter = 2'd0;
-//end
+initial begin
+	counter = 2'd0;
+end
 
 
 
@@ -84,7 +84,7 @@ always @ *
 /************************sum_level***********************/
 
 // s1
-always @ *//(posedge clk or posedge reset)
+always @ (posedge clk or posedge reset)
 	if(reset)
 		for(i=0; i<4; i = i+1)
 			sum_level_1[i] = 36'sd0;
@@ -93,23 +93,23 @@ always @ *//(posedge clk or posedge reset)
 			sum_level_1[i] = m_acc_reg[2*i] + m_acc_reg[2*i+1];
  
  // s2
-always @ *//(posedge clk or posedge reset)
+always @ (posedge clk or posedge reset)
 
 	if(reset)
-		for(i=0; i<2; i = i + 1)
+		for(i=0; i<1; i = i + 1)
 			sum_level_2[i] = 36'sd0;
 	else
-		for(i=0; i<2; i = i+1)
+		for(i=0; i<1; i = i+1)
 			sum_level_2[i] = sum_level_1[2*i] + sum_level_1[2*i+1];
 
 // s3
-always @ *//(posedge clk or posedge reset)
+always @ (posedge clk or posedge reset)
 
 	if(reset)
 			sum_level_3 = 36'sd0;
 	else
 		// sum_level_3[0] = sum_level_2[0] + sum_level_2[1];
-		sum_level_3 = sum_level_2[0] + sum_level_2[1];
+		sum_level_3[1] = sum_level_2[0] + sum_level_2[1];
 
 		// for(i = 0; i<2; i = i + 1)
 			// sum_level_3[i] = sum_level_2[2*i] + sum_level_2[2*i+1];
@@ -135,7 +135,7 @@ always @ *
 	else
 		y_temp = sum_level_3 + mout9_reg2;
 
-always @ (posedge clk or posedge reset)
+always @ (posedge clk or reset)
 	if(reset)
 		y <= y_temp[34:17];
 	else if (sam_clk_en)

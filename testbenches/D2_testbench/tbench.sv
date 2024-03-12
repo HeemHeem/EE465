@@ -154,7 +154,7 @@ clocks test_clocks(
 // );
 
 
-test_polyphase_time_share SUT(
+test_timesharing5 SUT(
   .clk(sys_clk),
   .sam_clk_en(sam_clk_ena),
   .sym_clk_en(sym_clk_ena),
