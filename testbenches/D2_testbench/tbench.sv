@@ -102,7 +102,8 @@ always @ (posedge sam_clk_ena or posedge reset)
 always @ (posedge sam_clk_ena)
   // if(i > 100 && i < 150)
   if(i == 200)
-    x_in <= 18'sd131071;
+    // x_in <= 18'sd131071;
+    x_in <= 18'sd98304;
     // x_in <= 18'sd1;
   else
     x_in <= 18'sd0;
@@ -132,15 +133,15 @@ clocks test_clocks(
 
 
 
-// tx_pract_filter tx(
-//   .clk(sys_clk),
-//   .sam_clk_en(sam_clk_ena),
-//   .sym_clk_en(sym_clk_ena),
-//   .x_in(x_in),
-//   .y(y_inter),
-//   // .counter(counter),
-//   .reset(reset)
-// );
+tx_pract_filter2 tx(
+  .clk(sys_clk),
+  .sam_clk_en(sam_clk_ena),
+  .sym_clk_en(sym_clk_ena),
+  .x_in(x_in),
+  .y(y_inter),
+  // .counter(counter),
+  .reset(reset)
+);
 
 
 // test_timesharing3 SUT(
@@ -154,11 +155,11 @@ clocks test_clocks(
 // );
 
 
-test_timesharing5 SUT(
+test_timesharing6 SUT(
   .clk(sys_clk),
   .sam_clk_en(sam_clk_ena),
   .sym_clk_en(sym_clk_ena),
-  .x_in(x_in),
+  .x_in(y_inter),
   .y(y),
   // .counter(counter),
   .reset(reset)
