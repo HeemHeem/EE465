@@ -1,4 +1,4 @@
-module tx_pract_filter #(
+module tx_pract_filter2 #(
     parameter COEFF_LEN = 113,
     parameter HALF_COEFF_LEN = (COEFF_LEN-1)/2
 )
@@ -15,6 +15,15 @@ reg signed [17:0] x[COEFF_LEN-1:0]; // for 21 coefficients 0s18
 reg signed [18:0] sum_level_1[HALF_COEFF_LEN:0];
 reg signed [17:0] sum_out[HALF_COEFF_LEN-1:0];
 reg signed [17:0] LUT_out[HALF_COEFF_LEN:0]; // 1s17 out
+
+// sum levels
+reg signed [17:0] s2[27:0];
+reg signed [17:0] s3[13:0];
+reg signed [17:0] s4[6:0];
+reg signed [17:0] s5[3:0];
+reg signed [17:0] s6[1:0];
+reg signed [17:0] s7;
+// reg signed [17:0] y_temp;
 // reg signed [17:0] b[10:0]; // coefficients
 
 always @ (posedge clk or posedge reset)
@@ -53,31 +62,83 @@ always @ *
     sum_level_1[HALF_COEFF_LEN] <= {x[HALF_COEFF_LEN][17], x[HALF_COEFF_LEN]};
 
 
-// multiply by coefficients
-// always @ *
-// begin
-//     for(i=0; i <= 10; i=i+1)
-//     mult_out[i] <= sum_level_1[i] * b[i]; 
-// end
 
-// sum up mutlipliers
+// sum_levels
+
+// s2
 always @ *
-if (reset)
-    for (i = 0; i <=HALF_COEFF_LEN-1; i=i+1)
-        sum_out[i] = 18'sd 0;
-else
-    begin
-        sum_out[0] = LUT_out[0] + LUT_out[1];
-        for(i = 0; i <= HALF_COEFF_LEN-2 ; i=i+1)
-            sum_out[i+1] <= sum_out[i] + LUT_out[i+2]; 
-    end
+	if(reset)
+		for(i=0; i<=27; i=i+1)
+			s2[i] = 18'sd0;
+	else
+		for(i=0; i<=27; i=i+1)
+			s2[i] = LUT_out[2*i] + LUT_out[2*i+1];
+
+// s3
+always @ *
+	if(reset)
+		for(i=0; i<=13; i=i+1)
+			s3[i] = 18'sd0;
+	else
+		for(i=0; i<=13; i=i+1)
+			s3[i] = s2[2*i] + s2[2*i+1];
+
+// s4
+always @ *
+	if(reset)
+		for(i=0; i<=6; i=i+1)
+			s4[i] = 18'sd0;
+	else
+		for(i=0; i<=6; i=i+1)
+			s4[i] = s3[2*i] + s3[2*i+1];
+
+// s5
+always @ *
+	if(reset)
+		for(i=0; i<=3; i=i+1)
+			s5[i] = 18'sd0;
+	else begin
+		s5[3] = s4[6] + LUT_out[56];
+		for(i=0; i<=2; i=i+1)
+			s5[i] = s4[2*i] + s4[2*i+1];
+	end
+
+// s6
+always @ *
+	if(reset)
+		for(i=0; i<=1; i=i+1)
+			s6[i] = 18'sd0;
+	else
+		for(i=0; i<=1; i=i+1)
+			s6[i] = s5[2*i] + s5[2*i+1];
+
+// s7
+always @ *
+	if(reset)
+		s7 = 18'sd0;
+	else
+		s7 = s6[0] + s6[1];
+
+
+
+
+// always @ *
+// if (reset)
+//     for (i = 0; i <=HALF_COEFF_LEN-1; i=i+1)
+//         sum_out[i] = 18'sd 0;
+// else
+//     begin
+//         sum_out[0] = LUT_out[0] + LUT_out[1];
+//         for(i = 0; i <= HALF_COEFF_LEN-2 ; i=i+1)
+//             sum_out[i+1] <= sum_out[i] + LUT_out[i+2]; 
+//     end
     
 
 always @ (posedge clk or posedge reset)
     if(reset)
         y <= 0;
     else if (sam_clk_en)
-        y <= sum_out[HALF_COEFF_LEN-1];
+        y <= s7;
 	else
 		y <= y;
 
