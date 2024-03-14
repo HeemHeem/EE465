@@ -308,6 +308,7 @@ MER_cov = 10*log10(P_avg_sig_gs/P_avg_error_gs);
 
 %% Interpolator
 L = 2;
+FS_new = 12.5*10^6;
 f_stop_upsam = f_stop/L;
 f_trans_width = (1/L - f_stop*(1/L)) - f_stop/L
 Atten = abs(20*log10(abs(H_srrc_tx_pract_scld(find(f==f_stop)))))
@@ -321,12 +322,13 @@ win_lpf = kaiser(M_lpf_ord+1, beta_lpf );
 hd_lpf = 2*1/4*sinc(2*1/4*(n_lpf-M_lpf_ord/2));
 
 h_lpf = hd_lpf .* win_lpf.';
-
-H_lpf = freqz(h_lpf, 1, 2*pi*f);
-figure(1)
+h_tx_prac_upsamp = upsample(h_srrc_tx_pract_scld, 2);
+h_up_conv = conv(h_tx_prac_upsamp, h_lpf);
+H_lpf = freqz(h_up_conv, 1, 2*pi*f);
+figure(4)
 stem(n_lpf,h_lpf)
 
-figure(2)
-plot(f, abs(H_lpf))
+figure(5)
+plot(f*FS_new, 20*log10(abs(H_lpf)))
 
 
