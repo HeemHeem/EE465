@@ -308,7 +308,7 @@ MER_cov = 10*log10(P_avg_sig_gs/P_avg_error_gs);
 
 %% Interpolator
 L = 2;
-FS_new = 12.5*10^6;
+FS_new = samp_rate*L;
 f_stop_upsam = f_stop/L;
 f_trans_width = (1/L - f_stop*(1/L)) - f_stop/L
 Atten = abs(20*log10(abs(H_srrc_tx_pract_scld(find(f==f_stop)))))
@@ -319,10 +319,10 @@ beta_lpf = 0.5842*(Atten - 21)^0.4 + 0.07886*(Atten -21);
 n_lpf = 0:M_lpf_ord;
 
 win_lpf = kaiser(M_lpf_ord+1, beta_lpf );
-hd_lpf = 2*1/4*sinc(2*1/4*(n_lpf-M_lpf_ord/2));
+hd_lpf = 2*1/4*sinc(2*1/(4)*(n_lpf-M_lpf_ord/2));
 
 h_lpf = hd_lpf .* win_lpf.';
-h_tx_prac_upsamp = upsample(h_srrc_tx_pract_scld, 2);
+h_tx_prac_upsamp = upsample(h_srrc_tx_pract_scld, L);
 h_up_conv = conv(h_tx_prac_upsamp, h_lpf);
 H_lpf = freqz(h_up_conv, 1, 2*pi*f);
 figure(4)
@@ -330,5 +330,29 @@ stem(n_lpf,h_lpf)
 
 figure(5)
 plot(f*FS_new, 20*log10(abs(H_lpf)))
+
+
+FS_new2 = FS_new * L;
+f_stop_upsamp2 = f_stop_upsam/L;
+f_trans_width2 = (1/(L) - f_stop_upsamp2*(1\L) - f_stop_upsamp2/L);
+
+M_lpf_ord2 = round((Atten-8)/(2.285*2*pi*(f_trans_width2))) + 2
+
+
+n_lpf2 = 0:M_lpf_ord2;
+
+win_lpf2 = kaiser(M_lpf_ord2+1, beta_lpf );
+hd_lpf2 = 2*1/4*sinc(2*1/(4)*(n_lpf2-M_lpf_ord2/2));
+
+h_lpf2 = hd_lpf2 .* win_lpf2.';
+h_tx_prac_upsamp2 = upsample(h_up_conv, L);
+h_up_conv2 = conv(h_tx_prac_upsamp2, h_lpf2);
+H_lpf2 = freqz(h_up_conv2, 1, 2*pi*f);
+figure(6)
+stem(n_lpf2,h_lpf2)
+
+figure(7)
+plot(f*FS_new2, 20*log10(abs(H_lpf2)))
+
 
 
