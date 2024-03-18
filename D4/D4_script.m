@@ -328,6 +328,8 @@ H_lpf = freqz(h_up_conv, 1, 2*pi*f);
 figure(4)
 stem(n_lpf,h_lpf)
 
+freqz(h_up_conv, 1, 2*pi*f)
+% H_upsam = freqz(h_tx_prac_upsamp, 1, 2*pi*f);
 figure(5)
 plot(f*FS_new, 20*log10(abs(H_lpf)))
 
