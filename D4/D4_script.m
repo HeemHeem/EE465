@@ -205,9 +205,9 @@ H_srrc_prac_sim = freqz(h_srrc_wind_sim, 1, 2*pi*f);
 
 
 figure(1)
-plot(f*samp_rate, 20*log10(abs(H_srrc_prac_sim)), 'r', linewidth=2)
-    % f*samp_rate, 20*log10(abs(Hsrrc_gs_rx_sim)), 'b',...
-    % f*samp_rate, 20*log10(abs(Hsrrc_tx_gs)), 'g')
+plot(f*samp_rate, 20*log10(abs(H_srrc_prac_sim)), 'r', ...
+    f*samp_rate, 20*log10(abs(Hsrrc_gs_rx_sim)), 'b',...
+    f*samp_rate, 20*log10(abs(Hsrrc_tx_gs)), 'g')
 xline(875000);
 xline(1095000);
 xline(2625000);
@@ -277,9 +277,9 @@ h_rx_scld_verilog = round(h_rx_scld * 2^18); % coeff fits into 0s18
 
 
 figure(2)
-plot(f*samp_rate, 20*log10(abs(H_srrc_tx_pract_scld)), 'r'); %,...
-    % f*samp_rate, 20*log10(abs(Hsrrc_gs_rx_sim)), 'b',...
-    % f*samp_rate, 20*log10(abs(Hsrrc_tx_gs)), 'g')
+plot(f*samp_rate, 20*log10(abs(H_srrc_tx_pract_scld)), 'r', ...
+    f*samp_rate, 20*log10(abs(Hsrrc_gs_rx_sim)), 'b',...
+    f*samp_rate, 20*log10(abs(Hsrrc_tx_gs)), 'g')
 xline(875000);
 xline(1095000);
 xline(2625000);
@@ -327,13 +327,15 @@ h_up_conv = conv(h_tx_prac_upsamp, h_lpf);
 H_lpf = freqz(h_up_conv, 1, 2*pi*f);
 figure(4)
 stem(n_lpf,h_lpf)
+title("h_{lpf}")
 
-freqz(h_up_conv, 1, 2*pi*f)
+% freqz(h_up_conv, 1, 2*pi*f)
 % H_upsam = freqz(h_tx_prac_upsamp, 1, 2*pi*f);
 figure(5)
 plot(f*FS_new, 20*log10(abs(H_lpf)))
+title("H_{lpf} Initial Up Sample by 2")
 
-
+% UPSAMPLE BY 2 AGAIN
 FS_new2 = FS_new * L;
 f_stop_upsamp2 = f_stop_upsam/L;
 f_trans_width2 = (1/(L) - f_stop_upsamp2*(1\L) - f_stop_upsamp2/L);
@@ -352,9 +354,50 @@ h_up_conv2 = conv(h_tx_prac_upsamp2, h_lpf2);
 H_lpf2 = freqz(h_up_conv2, 1, 2*pi*f);
 figure(6)
 stem(n_lpf2,h_lpf2)
+title("h_{lpf}")
 
 figure(7)
 plot(f*FS_new2, 20*log10(abs(H_lpf2)))
+title("H_{lpf} Second Up Sample by 2")
+% 
+% L = 4;
+% h_tx_upsamp2 = upsample(h_srrc_tx_pract_scld, L);
+% 
+% freqz(h_tx_upsamp2, 1, 2*pi*f)
+
+% filter after carrier shift
+M_down = 2;
+h_lpf3 = h_lpf2;
+h_rx_down_1 = downsample(conv(h_up_conv2, h_lpf3), M_down);
+
+H_rx_down_1 = abs(freqz(h_rx_down_1, 1, 2*pi*f));
+
+figure(8)
+plot(f*FS_new, 20*log10(H_rx_down_1))
+
+% downsample by 2 again
+h_rx_down_2 = downsample(conv(h_rx_down_1,h_lpf3), M_down);
+
+H_rx_down_2 = abs(freqz(h_rx_down_2, 1, 2*pi*f));
+
+figure(9)
+plot(f*samp_rate, 20*log10(H_rx_down_2));
+
+% convolve with matched filter
+h_rx_final = conv(h_rx_down_2, h_rx_scld);
+
+H_rx_final = abs(freqz(h_rx_final, 1, 2*pi*f));
+
+figure(10)
+plot(f*samp_rate, 20*log10(H_rx_final));
+
+
+
+
+
+
+
+
 
 
 
