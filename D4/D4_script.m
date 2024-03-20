@@ -313,91 +313,145 @@ f_stop_upsam = f_stop/L;
 f_trans_width = (1/L - f_stop*(1/L)) - f_stop/L
 Atten = abs(20*log10(abs(H_srrc_tx_pract_scld(find(f==f_stop)))))
 
-M_lpf_ord = round((Atten-8)/(2.285*2*pi*(f_trans_width))) + 1
+% M_lpf_ord = round((Atten-8)/(2.285*2*pi*(f_trans_width))) + 3
+for M_lpf = 8:Nsps:100
+    for beta_kaiser_lpf = 3.95:-0.01:1
 
-beta_lpf = 0.5842*(Atten - 21)^0.4 + 0.07886*(Atten -21);
-n_lpf = 0:M_lpf_ord;
+% M_lpf_ord = 28;
 
-win_lpf = kaiser(M_lpf_ord+1, beta_lpf );
-hd_lpf = 2*1/4*sinc(2*1/(4)*(n_lpf-M_lpf_ord/2));
+% beta_lpf = 0.5842*(Atten - 21)^0.4 + 0.07886*(Atten -21);
+    n_lpf = 0:M_lpf;
 
-h_lpf = hd_lpf .* win_lpf.';
-h_tx_prac_upsamp = upsample(h_srrc_tx_pract_scld, L);
-h_up_conv = conv(h_tx_prac_upsamp, h_lpf);
-H_lpf = freqz(h_up_conv, 1, 2*pi*f);
-figure(4)
-stem(n_lpf,h_lpf)
-title("h_{lpf}")
+    win_lpf = kaiser(M_lpf+1, beta_kaiser_lpf );
+    hd_lpf = 2*1/4*sinc(2*1/(4)*(n_lpf-M_lpf/2));
+    
+    h_lpf = hd_lpf .* win_lpf.';
+    h_tx_prac_upsamp = upsample(h_srrc_tx_pract_scld, L);
+    h_up_conv = conv(h_tx_prac_upsamp, h_lpf);
+% H_lpf = freqz(h_up_conv, 1, 2*pi*f);
+% figure(4)
+% stem(n_lpf,h_lpf)
+% title("h_{lpf}")
 
 % freqz(h_up_conv, 1, 2*pi*f)
 % H_upsam = freqz(h_tx_prac_upsamp, 1, 2*pi*f);
-figure(5)
-plot(f*FS_new, 20*log10(abs(H_lpf)))
-title("H_{lpf} Initial Up Sample by 2")
+% figure(5)
+% plot(f*FS_new, 20*log10(abs(H_lpf)))
+% title("H_{lpf} Initial Up Sample by 2")
 
 % UPSAMPLE BY 2 AGAIN
-FS_new2 = FS_new * L;
-f_stop_upsamp2 = f_stop_upsam/L;
-f_trans_width2 = (1/(L) - f_stop_upsamp2*(1\L) - f_stop_upsamp2/L);
+% FS_new2 = FS_new * L;
+% f_stop_upsamp2 = f_stop_upsam/L;
+% f_trans_width2 = (1/(L) - f_stop_upsamp2*(1\L) - f_stop_upsamp2/L);
 
-M_lpf_ord2 = round((Atten-8)/(2.285*2*pi*(f_trans_width2))) + 2
+% M_lpf_ord2 = round((Atten-8)/(2.285*2*pi*(f_trans_width2))) + 4
+% M_lpf_ord2 = 28;
+
+% n_lpf2 = 0:M_lpf_ord2;
+
+    % win_lpf2 = kaiser(M_lpf_ord2+1, beta_lpf );
+    % hd_lpf2 = 2*1/4*sinc(2*1/(4)*(n_lpf2-M_lpf_ord2/2));
+    
+    % h_lpf2 = hd_lpf2 .* win_lpf2.';
+    h_tx_prac_upsamp2 = upsample(h_up_conv, L);
+    h_up_conv2 = conv(h_tx_prac_upsamp2, h_lpf);
+    H_tx_prac_upsamp2 = freqz(h_up_conv2, 1, 2*pi*f);
+    % figure(6)
+    % stem(n_lpf2,h_lpf2)
+    % title("h_{lpf}")
+    
+    % figure(7)
+    % plot(f*FS_new2, 20*log10(abs(H_lpf2)))
+    % title("H_{lpf} Second Up Sample by 2")
+    % 
+    % L = 4;
+    % h_tx_upsamp2 = upsample(h_srrc_tx_pract_scld, L);
+    % 
+    % freqz(h_tx_upsamp2, 1, 2*pi*f)
+    
+    % filter after carrier shift
+    M_down = 2;
+    % h_lpf3 = h_lpf2;
+    h_rx_down_1 = downsample(conv(h_up_conv2, h_lpf), M_down);
+    
+    H_rx_down_1 = abs(freqz(h_rx_down_1, 1, 2*pi*f));
+    
+    % figure(8)
+    % plot(f*FS_new, 20*log10(H_rx_down_1))
+    
+    % downsample by 2 again
+    h_rx_down_2 = downsample(conv(h_rx_down_1,h_lpf), M_down);
+    
+    H_rx_down_2 = abs(freqz(h_rx_down_2, 1, 2*pi*f));
+    
+    % figure(9)
+    % plot(f*samp_rate, 20*log10(H_rx_down_2));
+    
+    % convolve with matched filter
+    h_rx_final = conv(h_rx_down_2, h_rx_scld);
+    
+    H_rx_final = abs(freqz(h_rx_final, 1, 2*pi*f));
+    
+    % figure(10)
+    % plot(f*samp_rate, 20*log10(H_rx_final));
+    
+    
+    % figure(11)
+    % stem(h_rx_final)
+    
+    
+    % % find idx of peak val
+    % Peak_idx_final_test = (length(h_rx_final)-1)/2 + 1;
+    % P_avg_sig_final_test = abs(h_rx_final(Peak_idx_final_test))^2;
+    % P_avg_error_final_test = (sum(abs(h_rx_final(Peak_idx_final_test:Nsps:end)).^2)- P_avg_sig_final_test)*2;
+    % 
+    % % MER Calc
+    % MER_final_test = 10*log10(P_avg_sig_final_test/P_avg_error_final_test);
+
+    MER_final_test = MER_calc(h_rx_final, Nsps);
+    if(MER_final_test >= 40)
+        break
+    end
 
 
-n_lpf2 = 0:M_lpf_ord2;
+    end
+    if(MER_final_test >= 40)
+        break
+    end
 
-win_lpf2 = kaiser(M_lpf_ord2+1, beta_lpf );
-hd_lpf2 = 2*1/4*sinc(2*1/(4)*(n_lpf2-M_lpf_ord2/2));
+end
 
-h_lpf2 = hd_lpf2 .* win_lpf2.';
-h_tx_prac_upsamp2 = upsample(h_up_conv, L);
-h_up_conv2 = conv(h_tx_prac_upsamp2, h_lpf2);
-H_lpf2 = freqz(h_up_conv2, 1, 2*pi*f);
-figure(6)
-stem(n_lpf2,h_lpf2)
-title("h_{lpf}")
 
-figure(7)
-plot(f*FS_new2, 20*log10(abs(H_lpf2)))
-title("H_{lpf} Second Up Sample by 2")
-% 
-% L = 4;
-% h_tx_upsamp2 = upsample(h_srrc_tx_pract_scld, L);
-% 
-% freqz(h_tx_upsamp2, 1, 2*pi*f)
-
-% filter after carrier shift
-M_down = 2;
-h_lpf3 = h_lpf2;
-h_rx_down_1 = downsample(conv(h_up_conv2, h_lpf3), M_down);
-
-H_rx_down_1 = abs(freqz(h_rx_down_1, 1, 2*pi*f));
-
-figure(8)
-plot(f*FS_new, 20*log10(H_rx_down_1))
-
-% downsample by 2 again
-h_rx_down_2 = downsample(conv(h_rx_down_1,h_lpf3), M_down);
-
-H_rx_down_2 = abs(freqz(h_rx_down_2, 1, 2*pi*f));
-
-figure(9)
-plot(f*samp_rate, 20*log10(H_rx_down_2));
-
-% convolve with matched filter
-h_rx_final = conv(h_rx_down_2, h_rx_scld);
-
-H_rx_final = abs(freqz(h_rx_final, 1, 2*pi*f));
-
-figure(10)
+figure(4)
 plot(f*samp_rate, 20*log10(H_rx_final));
 
 
+figure(5)
+stem(h_rx_final)
+
+figure(6)
+plot(f, 20*log10(abs(freqz(h_lpf, 1, 2*pi*f))))
+
+
+figure(7)
+plot(f, 20*log10(abs(H_tx_prac_upsamp2)))
+
+% calculate OB's
+fs_idx_up = find(f==f_stop/4);
+fOB1_start_idx_up = fs_idx_up + 1; % grab the next index
+fOB1_stop_idx_up = find(f==fOB1_stop/4); % grab index of ob1 stop freq
+fOB2_start_idx_up = fOB1_stop_idx_up + 1; % grab index of the next start
+fOB2_stop_idx_up = find(f==fOB2_stop/4); % grab index of the ob2 stop freq
 
 
 
+P_sig_chan_up = sum(abs(H_tx_prac_upsamp2(1:fs_idx_up)).^2)*2;
+P_OB1_up = sum(abs(H_tx_prac_upsamp2(fOB1_start_idx_up:fOB1_stop_idx_up)).^2);
+P_OB2_up = sum(abs(H_tx_prac_upsamp2(fOB2_start_idx_up:fOB2_stop_idx_up)).^2);
+
+P_diff_OB1_up = 10*log10(P_sig_chan_up/P_OB1_up);
+P_diff_OB2_up = 10*log10(P_sig_chan_up/P_OB2_up);
 
 
-
-
-
+    
 
