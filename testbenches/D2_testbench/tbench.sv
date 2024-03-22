@@ -11,7 +11,7 @@ int count;
 
 reg signed [17:0] x_in, y, y_inter;
 
-reg sys_clk, sam_clk_ena, sym_clk_ena, load_data;
+reg sys_clk, sam_clk_ena, sym_clk_ena, load_data, clock_12_5_en;
 reg [21:0] q;
 reg [2:1] lfsr_2_bits;
 reg [3:0] clk_phase;
@@ -91,7 +91,7 @@ integer file_in;
 //         $fscanf(file_in, "%d\n", x_in);
 
 
-always @ (posedge sam_clk_ena or posedge reset)
+always @ (posedge sys_clk or posedge reset)
   if(reset)
     i = 0;
   else if(i == 1000)
@@ -99,11 +99,11 @@ always @ (posedge sam_clk_ena or posedge reset)
   else
     i++;
 
-always @ (posedge sam_clk_ena)
+always @ (posedge sys_clk)
   // if(i > 100 && i < 150)
   if(i == 200)
-    // x_in <= 18'sd131071;
-    x_in <= 18'sd98304;
+    x_in <= 18'sd131071;
+    // x_in <= 18'sd98304;
     // x_in <= 18'sd1;
   else
     x_in <= 18'sd0;
@@ -128,20 +128,42 @@ clocks test_clocks(
     .sys_clk(sys_clk),
     .sam_clk_ena(sam_clk_ena),
     .sym_clk_ena(sym_clk_ena),
-    .clk_phase(clk_phase)
+    .clk_phase(clk_phase),
+    .clock_12_5_ena(clock_12_5_en)
 );
 
 
-
-tx_pract_filter2 tx(
-  .clk(sys_clk),
+halfband_filter HB2(
+  // .clk(sys_clk),
+  .clk(clock_12_5_en),
   .sam_clk_en(sam_clk_ena),
   .sym_clk_en(sym_clk_ena),
+  .clock_12_5_en(clock_12_5_en),
   .x_in(x_in),
-  .y(y_inter),
-  // .counter(counter),
+  .y(y),
   .reset(reset)
 );
+
+// halfband_filter HB2(
+//   .clk(sys_clk),
+//   .sam_clk_en(clock_12_5_en),
+//   .sym_clk_en(sym_clk_ena),
+//   .clock_12_5_en(sys_clk),
+//   .x_in(x_in),
+//   .y(y),
+//   .reset(reset)
+// );
+
+
+// tx_pract_filter2 tx(
+//   .clk(sys_clk),
+//   .sam_clk_en(sam_clk_ena),
+//   .sym_clk_en(sym_clk_ena),
+//   .x_in(x_in),
+//   .y(y_inter),
+//   // .counter(counter),
+//   .reset(reset)
+// );
 
 
 // test_timesharing3 SUT(
@@ -155,15 +177,15 @@ tx_pract_filter2 tx(
 // );
 
 
-test_timesharing6 SUT(
-  .clk(sys_clk),
-  .sam_clk_en(sam_clk_ena),
-  .sym_clk_en(sym_clk_ena),
-  .x_in(y_inter),
-  .y(y),
-  // .counter(counter),
-  .reset(reset)
-);
+// test_timesharing6 SUT(
+//   .clk(sys_clk),
+//   .sam_clk_en(sam_clk_ena),
+//   .sym_clk_en(sym_clk_ena),
+//   .x_in(y_inter),
+//   .y(y),
+//   // .counter(counter),
+//   .reset(reset)
+// );
 
 
 // upsampler up_samp(

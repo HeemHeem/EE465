@@ -436,6 +436,9 @@ plot(f, 20*log10(abs(freqz(h_lpf, 1, 2*pi*f))))
 figure(7)
 plot(f, 20*log10(abs(H_tx_prac_upsamp2)))
 
+figure(8)
+stem(h_lpf);
+
 % calculate OB's
 fs_idx_up = find(f==f_stop/4);
 fOB1_start_idx_up = fs_idx_up + 1; % grab the next index
@@ -453,5 +456,6 @@ P_diff_OB1_up = 10*log10(P_sig_chan_up/P_OB1_up);
 P_diff_OB2_up = 10*log10(P_sig_chan_up/P_OB2_up);
 
 
+h_lpf_verilog = round(h_lpf*2^18);
     
 
