@@ -172,23 +172,23 @@ halfband_filter_decim HB4(
   .sym_clk_en(sym_clk_ena),
   .clock_12_5_en(sys_clk),
   .x_in(y_inter2),
-  .y(y_inter3),
-  .reset(reset)
-);
-
-always @ (posedge clock_12_5_en)
-  y_inter3_delay <= y_inter3;
-
-halfband_filter_decim HB3(
-  // .clk(sys_clk),
-  .clk(clock_12_5_en),
-  .sam_clk_en(sam_clk_ena),
-  .sym_clk_en(sym_clk_ena),
-  .clock_12_5_en(clock_12_5_en),
-  .x_in(y_inter3_delay),
   .y(y),
   .reset(reset)
 );
+
+// always @ (posedge clock_12_5_en)
+//   y_inter3_delay <= y_inter3;
+
+// halfband_filter_decim HB3(
+//   // .clk(sys_clk),
+//   .clk(clock_12_5_en),
+//   .sam_clk_en(sam_clk_ena),
+//   .sym_clk_en(sym_clk_ena),
+//   .clock_12_5_en(clock_12_5_en),
+//   .x_in(y_inter3_delay),
+//   .y(y),
+//   .reset(reset)
+// );
 
 
 // tx_pract_filter2 tx(
