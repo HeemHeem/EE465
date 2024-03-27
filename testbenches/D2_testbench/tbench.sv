@@ -9,7 +9,7 @@ reg clk;
 reg reset;
 int count;
 
-reg signed [17:0] x_in, y, y_inter;
+reg signed [17:0] x_in, y, y_inter, y_inter2, y_inter3, y_inter3_delay;
 
 reg sys_clk, sam_clk_ena, sym_clk_ena, load_data, clock_12_5_en;
 reg [21:0] q;
@@ -132,20 +132,10 @@ clocks test_clocks(
     .clock_12_5_ena(clock_12_5_en)
 );
 
-
-halfband_filter HB2(
-  // .clk(sys_clk),
-  .clk(clock_12_5_en),
-  .sam_clk_en(sam_clk_ena),
-  .sym_clk_en(sym_clk_ena),
-  .clock_12_5_en(clock_12_5_en),
-  .x_in(x_in),
-  .y(y),
-  .reset(reset)
-);
-
+// // decimator
 // halfband_filter HB2(
 //   .clk(sys_clk),
+//   // .clk(clock_12_5_en),
 //   .sam_clk_en(clock_12_5_en),
 //   .sym_clk_en(sym_clk_ena),
 //   .clock_12_5_en(sys_clk),
@@ -153,6 +143,52 @@ halfband_filter HB2(
 //   .y(y),
 //   .reset(reset)
 // );
+
+// interpolator
+halfband_filter_interp HB1(
+  // .clk(sys_clk),
+  .clk(clock_12_5_en),
+  .sam_clk_en(sam_clk_ena),
+  .sym_clk_en(sym_clk_ena),
+  .clock_12_5_en(clock_12_5_en),
+  .x_in(x_in),
+  .y(y_inter),
+  .reset(reset)
+);
+
+halfband_filter_interp HB2(
+  .clk(sys_clk),
+  .sam_clk_en(clock_12_5_en),
+  .sym_clk_en(sym_clk_ena),
+  .clock_12_5_en(sys_clk),
+  .x_in(y_inter),
+  .y(y_inter2),
+  .reset(reset)
+);
+
+halfband_filter_decim HB4(
+  .clk(sys_clk),
+  .sam_clk_en(clock_12_5_en),
+  .sym_clk_en(sym_clk_ena),
+  .clock_12_5_en(sys_clk),
+  .x_in(y_inter2),
+  .y(y_inter3),
+  .reset(reset)
+);
+
+always @ (posedge clock_12_5_en)
+  y_inter3_delay <= y_inter3;
+
+halfband_filter_decim HB3(
+  // .clk(sys_clk),
+  .clk(clock_12_5_en),
+  .sam_clk_en(sam_clk_ena),
+  .sym_clk_en(sym_clk_ena),
+  .clock_12_5_en(clock_12_5_en),
+  .x_in(y_inter3_delay),
+  .y(y),
+  .reset(reset)
+);
 
 
 // tx_pract_filter2 tx(

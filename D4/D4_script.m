@@ -437,8 +437,7 @@ figure(7)
 plot(f, 20*log10(abs(H_tx_prac_upsamp2)))
 
 figure(8)
-stem(h_lpf);
-
+stem(h_lpf)
 % calculate OB's
 fs_idx_up = find(f==f_stop/4);
 fOB1_start_idx_up = fs_idx_up + 1; % grab the next index
@@ -455,7 +454,45 @@ P_OB2_up = sum(abs(H_tx_prac_upsamp2(fOB2_start_idx_up:fOB2_stop_idx_up)).^2);
 P_diff_OB1_up = 10*log10(P_sig_chan_up/P_OB1_up);
 P_diff_OB2_up = 10*log10(P_sig_chan_up/P_OB2_up);
 
+% plot just the upsampl and down samp of the lpf
+% x_in = [1];
+% x_in_up = upsample(x_in,L);
+% x_in_up_lpf = conv(h_lpf, x_in_up)
+% h_lpf_up = upsample(h_lpf, L);
+% h_lpf_up_conv = conv(h_lpf_up, h_lpf);
+% h_lpf_up_conv_up = upsample(h_lpf_up_conv,L);
+% h_lpf_up_conv_up_down = downsample(h_lpf_up_conv_up,L);
+% h_lpf_up_conv_up_down_conv = conv(h_lpf_up_conv_up_down, h_lpf);
+% h_lpf_up_conv_up_down_conv_down = downsample(h_lpf_up_conv_up_down_conv, L);
+% h_lpf_up_conv_up_down_conv_down_conv = conv(h_lpf_up_conv_up_down_conv_down, h_lpf);
+h_lpf_up = upsample(h_lpf, L);
+h_lpf_up_conv = conv(h_lpf_up, h_lpf);
+h_lpf_up_conv_conv = conv(h_lpf_up_conv, h_lpf);
+h_lpf_up_conv_conv_down = downsample(h_lpf_up_conv_conv,L);
+h_lpf_up_conv_conv_down_conv = conv(h_lpf_up_conv_conv_down, h_lpf);
+h_lpf_up_conv_conv_down_conv_down = downsample(h_lpf_up_conv_conv_down_conv,L);
+% h_lpf_up_conv_down = downsample(h_lpf_up_conv, L);
+% h_lpf_up_conv_down_conv = conv(h_lpf_up_conv, h_lpf);
+% h_lpf_up_conv_down_conv_down = downsample(h_lpf_up_conv_down_conv, L);
+% h_lpf_down = downsample(conv(h_lpf_up_conv_down_conv_down, h_lpf),2);
 
-h_lpf_verilog = round(h_lpf*2^18);
-    
+
+% try just the upsampled lpf and downsample lpf
+h_up_lpf = upsample(h_lpf, L);
+h_conv = conv(h_up_lpf,h_lpf);
+h_conv_conv = conv(h_conv, h_lpf);
+h_uplpf_downlpf = downsample(h_conv_conv, L);
+h_uplpf_downlpf_conv = conv(h_uplpf_downlpf,h_lpf);
+h_uplpf_downlpf_conv_down = downsample(h_uplpf_downlpf_conv,L);
+
+figure(9)
+stem(round(h_lpf_up_conv_conv_down_conv_down*2^17))
+
+figure(10)
+% stem(round(h_uplpf_downlpf*2^17))
+stem(round(h_uplpf_downlpf_conv_down*2^17))
+
+
+figure(11)
+stem(round(h_lpf_up_conv_conv_down*2^17))
 

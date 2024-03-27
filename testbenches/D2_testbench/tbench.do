@@ -38,8 +38,10 @@ vlog -sv -work work ${SOURCE_DIR}/tbench.sv
 #vlog -sv -work work ${SOURCE_DIR}/test_timesharing5.v
 #vlog -sv -work work ${SOURCE_DIR}/tx_pract_filt2.v
 #vlog -sv -work work ${SOURCE_DIR}/test_timesharing6.v
-vlog -sv -work work ${SOURCE_DIR}/halfband_filter3.v
-
+#vlog -sv -work work ${SOURCE_DIR}/halfband_filter2.v
+#vlog -sv -work work ${SOURCE_DIR}/halfband_filter2_tryna_fix.v
+vlog -sv -work work ${SOURCE_DIR}/halfband_decim_polyphase_and_timesharing.v
+vlog -sv -work work ${SOURCE_DIR}/halfband_interp_polyphase_and_timesharing.v
 
 #vlog -sv -work work ${SOURCE_DIR}/test_polyphase_timesharing.v
 #vlog -sv -work work ${SOURCE_DIR}/upsampler.v
