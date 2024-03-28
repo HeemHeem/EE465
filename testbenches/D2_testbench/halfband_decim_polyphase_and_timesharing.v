@@ -63,13 +63,13 @@ always @ (posedge clk or posedge reset)
 // x1 delays
 always @ (posedge clk or posedge reset)
     if(reset)
-        for(i=1; i < 4; i = i+1)
+        for(i=1; i < 3; i = i+1)
             x1[i] <= 18'sd0;
     else if (sam_clk_en)
         for(i=1; i < 3; i = i+1)
             x1[i] <= x1[i-1];
     else
-        for(i = 1; i < 4; i = i+1)
+        for(i = 1; i < 3; i = i+1)
             x1[i] <= x1[i];   
 
 // x2 delays
@@ -90,7 +90,7 @@ always @ (posedge clk or posedge reset)
 // filter 1
 always @ (posedge clk)
     if( sam_clk_en)
-    y1 <= x1[2] >>> 1;
+        y1 <= x1[2] >>> 1;
     else
         y1 <= y1;
 // always @ (posedge clk)
@@ -131,7 +131,7 @@ always @ (posedge clk or posedge reset)
 always @ (posedge clk)
     if(reset)
         y2_acc <= y2;
-    else if (counter_lpf == 1'b0) // clear
+    else if (counter == 1'b0) // clear
         y2_acc <= y2;
     else
         y2_acc <= y2_acc + y2;
@@ -140,8 +140,8 @@ always @ (posedge clk)
 always @ (posedge clk)
     y2_acc_delay <= y2_acc[34:17];
 
-always @ (posedge clk)
-    y2_acc_delay2  <= y2_acc_delay;
+// always @ (posedge clk)
+//     y2_acc_delay2  <= y2_acc_delay;
 // always @ *// (posedge clk)
 //     y2 = h1_out + h3_out; // 2s34
 
@@ -154,18 +154,18 @@ always @ (posedge clk or posedge reset)
     // else
         // counter <= counter;
 
-always @ (posedge clk or posedge reset)
-    if(reset)
-        counter_lpf <= 1'd1;
-    // else if (sam_clk_en)
-    //     counter_lpf <= 1'd0;
-    else
-        counter_lpf <= counter_lpf + 1'd1;
+// always @ (posedge clk or posedge reset)
+//     if(reset)
+//         counter_lpf <= 1'd1;
+//     // else if (sam_clk_en)
+//     //     counter_lpf <= 1'd0;
+//     else
+//         counter_lpf <= counter_lpf + 1'd1;
 
 
 always @ *
     begin
-        case(counter_lpf)
+        case(counter)
         1'b0: h_mult = h1;
         1'b1: h_mult = h3;
         default: h_mult = h1;
@@ -175,25 +175,11 @@ always @ *
 
 always @ *
     begin
-        case(counter_lpf)
+        case(counter)
         1'b0: x_mult = h1_in;
         1'b1: x_mult = h3_in;
         default: x_mult = h1_in;
     endcase
     end
-    
-// always @ *
-//     y = y1 + y2[34:17];
-// always @ *
-// begin
-//     case(counter)
-//         1'b0: y = y1;
-//         1'b1: y = y2_acc_delay;//y2_acc_delay[34:17];
-//         default: y = y1;
-//     endcase
-// end
-
-
-
 
 endmodule
