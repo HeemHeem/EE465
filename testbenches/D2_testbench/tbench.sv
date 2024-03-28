@@ -9,7 +9,7 @@ reg clk;
 reg reset;
 int count;
 
-reg signed [17:0] x_in, y, y_inter, y_inter2, y_inter3, y_inter3_delay;
+reg signed [17:0] x_in, y, y_inter, y_inter1, y_inter2, y_inter3, y_inter3_delay, y_inter4, y_inter5;
 
 reg sys_clk, sam_clk_ena, sym_clk_ena, load_data, clock_12_5_en;
 reg [21:0] q;
@@ -102,8 +102,8 @@ always @ (posedge sys_clk or posedge reset)
 always @ (posedge sys_clk)
   // if(i > 100 && i < 150)
   if(i == 200)
-    x_in <= 18'sd131071;
-    // x_in <= 18'sd98304;
+    // x_in <= 18'sd131071;
+    x_in <= 18'sd98304;
     // x_in <= 18'sd1;
   else
     x_in <= 18'sd0;
@@ -139,8 +139,8 @@ halfband_filter_interp HB1(
   .sam_clk_en(sam_clk_ena),
   .sym_clk_en(sym_clk_ena),
   //.clock_12_5_en(clock_12_5_en),
-  .x_in(x_in),
-  .y(y_inter),
+  .x_in(y_inter),
+  .y(y_inter1),
   .reset(reset)
 );
 
@@ -149,7 +149,7 @@ halfband_filter_interp HB2(
   .sam_clk_en(clock_12_5_en),
   .sym_clk_en(sym_clk_ena),
   //.clock_12_5_en(sys_clk),
-  .x_in(y_inter),
+  .x_in(y_inter1),
   .y(y_inter2),
   .reset(reset)
 );
@@ -174,20 +174,20 @@ halfband_filter_decim HB4(
   .sym_clk_en(sym_clk_ena),
   //.clock_12_5_en(clock_12_5_en),
   .x_in(y_inter3),
-  .y(y),
+  .y(y_inter4),
   .reset(reset)
 );
 
 
-// tx_pract_filter2 tx(
-//   .clk(sys_clk),
-//   .sam_clk_en(sam_clk_ena),
-//   .sym_clk_en(sym_clk_ena),
-//   .x_in(x_in),
-//   .y(y_inter),
-//   // .counter(counter),
-//   .reset(reset)
-// );
+tx_pract_filter2 tx(
+  .clk(sys_clk),
+  .sam_clk_en(sam_clk_ena),
+  .sym_clk_en(sym_clk_ena),
+  .x_in(x_in),
+  .y(y_inter),
+  // .counter(counter),
+  .reset(reset)
+);
 
 
 // test_timesharing3 SUT(
@@ -201,15 +201,15 @@ halfband_filter_decim HB4(
 // );
 
 
-// test_timesharing6 SUT(
-//   .clk(sys_clk),
-//   .sam_clk_en(sam_clk_ena),
-//   .sym_clk_en(sym_clk_ena),
-//   .x_in(y_inter),
-//   .y(y),
-//   // .counter(counter),
-//   .reset(reset)
-// );
+rx_gs_filter rx(
+  .clk(sys_clk),
+  .sam_clk_en(sam_clk_ena),
+  .sym_clk_en(sym_clk_ena),
+  .x_in(y_inter4),
+  .y(y_inter5),
+  // .counter(counter),
+  .reset(reset)
+);
 
 
 // upsampler up_samp(
@@ -221,13 +221,13 @@ halfband_filter_decim HB4(
 //   .reset(reset)
 // );
 
-// downsampler downsamp(
-//   .sys_clk(sys_clk),
-//   .sym_clk_en(sym_clk_ena),
-//   .sig_in(y_inter),
-//   .sym_out(y),
-//   .reset(reset)
-// );
+downsampler downsamp(
+  .sys_clk(sys_clk),
+  .sym_clk_en(sym_clk_ena),
+  .sig_in(y_inter5),
+  .sym_out(y),
+  .reset(reset)
+);
 
 // LFSR lfsr(
 //     .clk(sys_clk),

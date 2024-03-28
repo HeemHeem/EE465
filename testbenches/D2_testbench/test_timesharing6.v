@@ -1,4 +1,4 @@
-module test_timesharing6 #(
+module rx_gs_filter #(
     parameter COEFF_LEN = 65,
     parameter HALF_COEFF_LEN = (COEFF_LEN-1)/2
 )
@@ -34,9 +34,9 @@ always @ (posedge clk or posedge reset)
 	else
 		counter <= counter + 2'd1;
 
-initial begin
-	counter = 2'd0;
-end
+//initial begin
+//	counter = 2'd0;
+//end
 
 
 
@@ -135,7 +135,7 @@ always @ *
 	else
 		y_temp = sum_level_3 + mout9_reg2;
 
-always @ (posedge clk or reset)
+always @ (posedge clk or posedge reset)
 	if(reset)
 		y <= y_temp[34:17];
 	else if (sam_clk_en)
