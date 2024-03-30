@@ -455,22 +455,22 @@ P_diff_OB1_up = 10*log10(P_sig_chan_up/P_OB1_up);
 P_diff_OB2_up = 10*log10(P_sig_chan_up/P_OB2_up);
 
 % plot just the upsampl and down samp of the lpf
-% x_in = [1];
+% plot just the upsampl and down samp of the lpf
+x_in = [0.75];
 % x_in_up = upsample(x_in,L);
-% x_in_up_lpf = conv(h_lpf, x_in_up)
-% h_lpf_up = upsample(h_lpf, L);
-% h_lpf_up_conv = conv(h_lpf_up, h_lpf);
-% h_lpf_up_conv_up = upsample(h_lpf_up_conv,L);
-% h_lpf_up_conv_up_down = downsample(h_lpf_up_conv_up,L);
-% h_lpf_up_conv_up_down_conv = conv(h_lpf_up_conv_up_down, h_lpf);
-% h_lpf_up_conv_up_down_conv_down = downsample(h_lpf_up_conv_up_down_conv, L);
-% h_lpf_up_conv_up_down_conv_down_conv = conv(h_lpf_up_conv_up_down_conv_down, h_lpf);
-h_lpf_up = upsample(h_lpf, L);
+h_tx_conv = conv(x_in,h_srrc_tx_pract_scld);
+h_tx_conv_up = upsample(h_tx_conv, L);
+h_tx_conv_up_conv = conv(h_tx_conv_up, h_lpf);
+
+h_lpf_up = upsample(h_tx_conv_up_conv, L);
 h_lpf_up_conv = conv(h_lpf_up, h_lpf);
 h_lpf_up_conv_conv = conv(h_lpf_up_conv, h_lpf);
 h_lpf_up_conv_conv_down = downsample(h_lpf_up_conv_conv,L);
 h_lpf_up_conv_conv_down_conv = conv(h_lpf_up_conv_conv_down, h_lpf);
 h_lpf_up_conv_conv_down_conv_down = downsample(h_lpf_up_conv_conv_down_conv,L);
+
+h_lpf_rx_conv = conv(h_lpf_up_conv_conv_down_conv_down, h_rx_scld);
+h_lpf_rx_conv_down = downsample([0 0 h_lpf_rx_conv], 4);
 % h_lpf_up_conv_down = downsample(h_lpf_up_conv, L);
 % h_lpf_up_conv_down_conv = conv(h_lpf_up_conv, h_lpf);
 % h_lpf_up_conv_down_conv_down = downsample(h_lpf_up_conv_down_conv, L);
@@ -496,3 +496,15 @@ stem(round(h_uplpf_downlpf_conv_down*2^17))
 figure(11)
 stem(round(h_lpf_up_conv_conv_down*2^17))
 
+figure(12)
+stem(round(h_lpf_rx_conv * 2^17));
+
+
+figure(13)
+stem(round(h_lpf_rx_conv_down * 2^17));
+
+figure(14)
+stem(round(h_tx_conv*2^17));
+
+figure(15)
+stem(round(h_tx_conv_up_conv *2^17));
