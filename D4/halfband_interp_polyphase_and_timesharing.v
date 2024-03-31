@@ -1,5 +1,5 @@
 module halfband_filter_interp(
-    input clk, reset, sym_clk_en, sam_clk_en, //clock_12_5_en,
+    input clk, reset, sym_clk_en, sam_clk_en, clock_12_5_en,
 							input [1:0] sw,
                     input signed [17:0] x_in, //1s17
                     output reg signed [17:0] y //1s17);
@@ -43,6 +43,7 @@ always @ (posedge clk or posedge reset)
 
 // filter 1
 always @ (posedge clk)
+    if(clock_12_5_en)
     y1 = x[2] >>> 1;
 
 // filter 2
@@ -53,8 +54,13 @@ always @ *
     h1_in = {x[0][17], x[0][17:1]} + {x[3][17], x[3][17:1]}; //2s16
 
 
-always @ *
+always @ *//(posedge clk)
     y2 = h_mult*x_mult;
+
+// reg signed [35:0] y2_delay;
+// always @ (posedge clk)
+//     if (clock_12_5_en)
+//         y2_delay = y2;
 // always @ *
 //     h3_out = h3 * h3_in; // 2s34
 
@@ -65,11 +71,12 @@ always @ *
 always @ (posedge clk)
     if(reset)
         y2_acc <= y2;
-    else if (counter_lpf == 1'b0)
+    else if (counter_lpf == 1'b1)
         y2_acc <= y2;
-    else
+    else if(clock_12_5_en)
         y2_acc <= y2_acc + y2;
-
+    else
+        y2_acc <= y2_acc;
 always @ (posedge clk)
     y2_acc_delay <= y2_acc[34:17];
 
@@ -82,19 +89,22 @@ always @ (posedge clk)
 always @ (posedge clk or posedge reset)
     if(reset)
         counter <= 1'b1;
-    else //if(clock_12_5_en)
+	else if(sam_clk_en)
+			counter <= 1'b1;
+    else if(clock_12_5_en)
         counter <= counter + 1'b1;
-    // else
-    //     counter <= counter;
+    else
+        counter <= counter;
 
 always @ (posedge clk or posedge reset)
     if(reset)
-        counter_lpf <= 1'd0;
+        counter_lpf <= 1'd1;
     else if (sam_clk_en)
-        counter_lpf <= 1'd0;
-    else
+        counter_lpf <= 1'd1;
+    else if (clock_12_5_en)
         counter_lpf <= counter_lpf + 1'd1;
-
+    else
+        counter_lpf <= counter_lpf;
 
 always @ *
     begin
@@ -116,15 +126,19 @@ always @ *
     end
     
 
+reg signed [17:0] y_delay;
 always @ *
 begin
     case(counter)
-        1'b0: y = y1;
-        1'b1: y = y2_acc_delay;//y2_acc_delay[34:17];
-        default: y = y1;
+        1'b0: y_delay = y1;
+        1'b1: y_delay = y2_acc_delay;//y2_acc_delay[34:17];
+        default: y_delay = y1;
     endcase
 end
 
+always @ (posedge clk)
+    if(clock_12_5_en)
+        y <= y_delay;
 
 
 

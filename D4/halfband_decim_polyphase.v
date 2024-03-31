@@ -2,16 +2,18 @@ module halfband_filter_decim_poly(
     input clk, reset, sym_clk_en, sam_clk_en, clock_12_5_en,
 							input [1:0] sw,
                     input signed [17:0] x_in, //1s17
-                    output reg signed [17:0] y //1s17);
+                    output reg signed [17:0] y, //1s17);
+						  output reg signed [35:0] y2
 );
 
+
 reg signed [17:0] y1, y2_acc_delay, y2_acc_delay2;
-reg signed [35:0] y2, y2_acc;// 2s34
+reg signed [35:0]  y2_acc;// 2s34y2,
 reg counter, counter_lpf;
 // inputs
 reg signed [17:0] x1[2:0]; // 1s17 filter 1 input
 reg signed [17:0] x2[3:0]; // 1s17 filter 2 input
-reg signed [17:0] x1_delay, x2_delay;
+reg signed [17:0] x1_delay, x2_delay, x1_delay2, x2_delay2;
 
 integer i;
 // coefficients
@@ -34,28 +36,34 @@ assign h1 = -18'sd 9220; // 0s18
 //     // else
 //     //     x[0] <= x[0];
 
-always @ (posedge clk or posedge reset)
+always @ (posedge clk)
     if(counter == 1'b0)
         x1_delay <= x_in;
     else 
         x1_delay <= x1_delay;
 
-always @ (posedge clk or posedge reset)
+always @ (posedge clk)
+	x1_delay2 <= x1_delay;
+
+
+always @ (posedge clk)
     if(counter == 1'b1)
         x2_delay <= x_in;
     else 
         x2_delay <= x2_delay;
 
-
-always @ (posedge clk or posedge reset)
+always @ (posedge clk)
+	x2_delay2 <= x2_delay;
+		  
+always @ (posedge clk)
     if(sam_clk_en)
-        x1[0] <= x1_delay;
+        x1[0] <= x1_delay2;
     else 
         x1[0] <= x1[0];
 
-always @ (posedge clk or posedge reset)
+always @ (posedge clk)
     if(sam_clk_en)
-        x2[0] <= x2_delay;
+        x2[0] <= x2_delay2;
     else 
         x2[0] <= x2[0];
 
@@ -63,13 +71,13 @@ always @ (posedge clk or posedge reset)
 // x1 delays
 always @ (posedge clk or posedge reset)
     if(reset)
-        for(i=1; i < 4; i = i+1)
+        for(i=1; i < 3; i = i+1)
             x1[i] <= 18'sd0;
     else if (sam_clk_en)
         for(i=1; i < 3; i = i+1)
             x1[i] <= x1[i-1];
     else
-        for(i = 1; i < 4; i = i+1)
+        for(i = 1; i < 3; i = i+1)
             x1[i] <= x1[i];   
 
 // x2 delays
@@ -138,6 +146,8 @@ always @ (posedge clk or posedge reset)
 always @ (posedge clk or posedge reset)
     if(reset)
         counter <= 1'b1;
+	else if (sam_clk_en)
+		counter <= 1'b1;
     else //if(clock_12_5_en)
         counter <= counter + 1'b1;
     // else

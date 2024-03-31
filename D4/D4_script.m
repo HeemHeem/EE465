@@ -453,7 +453,7 @@ P_OB2_up = sum(abs(H_tx_prac_upsamp2(fOB2_start_idx_up:fOB2_stop_idx_up)).^2);
 
 P_diff_OB1_up = 10*log10(P_sig_chan_up/P_OB1_up);
 P_diff_OB2_up = 10*log10(P_sig_chan_up/P_OB2_up);
-
+%% Filter Plots
 % plot just the upsampl and down samp of the lpf
 % plot just the upsampl and down samp of the lpf
 x_in = [0.75];
@@ -480,7 +480,7 @@ h_lpf_rx_conv_down = downsample([0 0 h_lpf_rx_conv], 4);
 % try just the upsampled lpf and downsample lpf
 h_up_lpf = upsample(h_lpf, L);
 h_conv = conv(h_up_lpf,h_lpf);
-h_conv_conv = conv(h_conv, h_lpf);
+h_conv_conv = conv(h_lpf, h_lpf);
 h_uplpf_downlpf = downsample(h_conv_conv, L);
 h_uplpf_downlpf_conv = conv(h_uplpf_downlpf,h_lpf);
 h_uplpf_downlpf_conv_down = downsample(h_uplpf_downlpf_conv,L);
@@ -505,6 +505,25 @@ stem(round(h_lpf_rx_conv_down * 2^17));
 
 figure(14)
 stem(round(h_tx_conv*2^17));
+%% figures
 
 figure(15)
 stem(round(h_tx_conv_up_conv *2^17));
+
+
+figure(16)
+stem(round(h_conv *2^17));
+
+figure(17)
+stem(round(h_uplpf_downlpf  *2^17));
+
+
+figure(18)
+stem(round(h_lpf_up_conv  *2^17));
+
+figure(19)
+stem(round(h_lpf  *2^17));
+
+figure(20)
+stem(round(h_uplpf_downlpf_conv *2^17));
+

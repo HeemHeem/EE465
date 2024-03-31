@@ -1,5 +1,5 @@
 module halfband_filter_decim(
-    input clk, reset, sym_clk_en, sam_clk_en, //clock_12_5_en,
+    input clk, reset, sym_clk_en, sam_clk_en, clock_12_5_en,
 							input [1:0] sw,
                     input signed [17:0] x_in, //1s17
                     output reg signed [17:0] y //1s17);
@@ -34,26 +34,26 @@ assign h1 = -18'sd 9220; // 0s18
 //     // else
 //     //     x[0] <= x[0];
 
-always @ (posedge clk or posedge reset)
-    if(counter == 1'b0)
+always @ (posedge clk)
+    if(counter == 1'b0 && clock_12_5_en)
         x1_delay <= x_in;
     else 
         x1_delay <= x1_delay;
 
-always @ (posedge clk or posedge reset)
-    if(counter == 1'b1)
+always @ (posedge clk)
+    if(counter == 1'b1 && clock_12_5_en)
         x2_delay <= x_in;
     else 
         x2_delay <= x2_delay;
 
 
-always @ (posedge clk or posedge reset)
+always @ (posedge clk)
     if(sam_clk_en)
         x1[0] <= x1_delay;
     else 
         x1[0] <= x1[0];
 
-always @ (posedge clk or posedge reset)
+always @ (posedge clk)
     if(sam_clk_en)
         x2[0] <= x2_delay;
     else 
@@ -107,8 +107,15 @@ always @ *
     h1_in = {x2[0][17], x2[0][17:1]} + {x2[3][17], x2[3][17:1]}; //2s16
 
 
-always @ *
-    y2 = h_mult*x_mult;
+always @ *// (posedge clk)
+    // if(clock_12_5_en)
+    y2 <= h_mult*x_mult;
+
+
+reg signed [35:0] y2_delay;
+always @ (posedge clk)
+    if(clock_12_5_en)
+        y2_delay <= y2;
 // always @ *
 //     h3_out = h3 * h3_in; // 2s34
 
@@ -117,6 +124,8 @@ always @ *
 
 // always @ *
 //     y2 = h1_out + h3_out; // 2s34 + 2s34
+
+
 
 always @ (posedge clk or posedge reset)
     if (reset)
@@ -131,14 +140,17 @@ always @ (posedge clk or posedge reset)
 always @ (posedge clk)
     if(reset)
         y2_acc <= y2;
-    else if (counter == 1'b0) // clear
+    else if (counter == 1'b0 && clock_12_5_en) // clear
         y2_acc <= y2;
-    else
+    else if (clock_12_5_en)
         y2_acc <= y2_acc + y2;
+    else
+        y2_acc <= y2_acc;
 
 
 always @ (posedge clk)
-    y2_acc_delay <= y2_acc[34:17];
+    if(clock_12_5_en)
+        y2_acc_delay <= y2_acc[34:17];
 
 // always @ (posedge clk)
 //     y2_acc_delay2  <= y2_acc_delay;
@@ -148,11 +160,13 @@ always @ (posedge clk)
 // output and counter
 always @ (posedge clk or posedge reset)
     if(reset)
-        counter <= 1'b1;
-    else //if(clock_12_5_en)
+        counter <= 1'b0;
+    else if (sam_clk_en)
+        counter <= 1'b0;
+    else if(clock_12_5_en)
         counter <= counter + 1'b1;
-    // else
-        // counter <= counter;
+    else
+        counter <= counter;
 
 // always @ (posedge clk or posedge reset)
 //     if(reset)

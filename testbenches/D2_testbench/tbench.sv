@@ -9,7 +9,7 @@ reg clk;
 reg reset;
 int count;
 
-reg signed [17:0] x_in, y, y_inter, y_inter1, y_inter2, y_inter3, y_inter3_delay, y_inter4, y_inter5;
+reg signed [17:0] x_in, y, y_inter, y_inter1, y_inter2, y_inter3, y_inter2_delay, y_inter3_delay,y_inter3_delay2,y_inter3_delay3, y_inter4, y_inter5;
 
 reg sys_clk, sam_clk_ena, sym_clk_ena, load_data, clock_12_5_en;
 reg [21:0] q;
@@ -133,33 +133,40 @@ clocks test_clocks(
 );
 
 // interpolator
-halfband_filter_interp HB1(
-  // .clk(sys_clk),
-  .clk(clock_12_5_en),
+halfband_filter_interp HB3(
+  .clk(sys_clk),
+  // .clk(clock_12_5_en),
   .sam_clk_en(sam_clk_ena),
   .sym_clk_en(sym_clk_ena),
-  //.clock_12_5_en(clock_12_5_en),
+  .clock_12_5_en(clock_12_5_en),
   .x_in(y_inter),
+  // .x_in(x_in),
   .y(y_inter1),
   .reset(reset)
 );
 
-halfband_filter_interp HB2(
+halfband_filter_interp2 HB2(
   .clk(sys_clk),
   .sam_clk_en(clock_12_5_en),
   .sym_clk_en(sym_clk_ena),
-  //.clock_12_5_en(sys_clk),
+  .clock_12_5_en(sys_clk),
   .x_in(y_inter1),
   .y(y_inter2),
+  // .y(y),
   .reset(reset)
 );
 
-halfband_filter_decim HB3(
+
+always @ (posedge sys_clk)
+  y_inter2_delay <= y_inter2;
+
+
+halfband_filter_decim HB4(
   .clk(sys_clk),
   .sam_clk_en(clock_12_5_en),
   .sym_clk_en(sym_clk_ena),
-  //.clock_12_5_en(sys_clk),
-  .x_in(y_inter2),
+  .clock_12_5_en(sys_clk),
+  .x_in(y_inter2_delay),
   .y(y_inter3),
   .reset(reset)
 );
@@ -167,13 +174,24 @@ halfband_filter_decim HB3(
 always @ (posedge clock_12_5_en)
   y_inter3_delay <= y_inter3;
 
-halfband_filter_decim HB4(
-  // .clk(sys_clk),
-  .clk(clock_12_5_en),
+always @ (posedge clock_12_5_en)
+  y_inter3_delay2 <= y_inter3_delay;
+
+always @ (posedge clock_12_5_en)
+  y_inter3_delay3 <= y_inter3_delay2;
+
+reg signed [17:0] y_inter3_delay4;
+
+always @ (posedge clock_12_5_en)
+  y_inter3_delay4 <= y_inter3_delay3;
+
+halfband_filter_decim HB1(
+  .clk(sys_clk),
+  // .clk(clock_12_5_en),
   .sam_clk_en(sam_clk_ena),
   .sym_clk_en(sym_clk_ena),
-  //.clock_12_5_en(clock_12_5_en),
-  .x_in(y_inter3),
+  .clock_12_5_en(clock_12_5_en),
+  .x_in(y_inter3_delay),
   .y(y_inter4),
   .reset(reset)
 );
@@ -221,10 +239,14 @@ rx_gs_filter rx(
 //   .reset(reset)
 // );
 
+reg [17:0] y_inter5_delay;
+always @ (sam_clk_ena)
+  y_inter5_delay  <= y_inter5;
+
 downsampler downsamp(
   .sys_clk(sys_clk),
   .sym_clk_en(sym_clk_ena),
-  .sig_in(y_inter5),
+  .sig_in(y_inter5_delay),
   .sym_out(y),
   .reset(reset)
 );

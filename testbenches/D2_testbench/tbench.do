@@ -44,7 +44,7 @@ vlog -sv -work work ${SOURCE_DIR}/tx_pract_filt2.v
 
 
 
-
+vlog -sv -work work ${SOURCE_DIR}/halfband_filter2.v
 vlog -sv -work work ${SOURCE_DIR}/halfband_decim_polyphase_and_timesharing.v
 vlog -sv -work work ${SOURCE_DIR}/halfband_interp_polyphase_and_timesharing.v
 
