@@ -8,16 +8,6 @@ parameter EN = 1'b1;
 parameter DISEN = 1'b0;
 
 
-// only for testing purposes
-initial begin
-    sys_clk = 1'd0;
-    clk_phase = 4'd0;
-    sam_clk_ena = 1'd0;
-    sym_clk_ena = 1'd0;
-end
-
-
-
 always @ (posedge clock_50)
     sys_clk <= ~sys_clk;
 

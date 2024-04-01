@@ -1,15 +1,15 @@
 module halfband_filter_interp2 (
-    input clk, reset, sym_clk_en, sam_clk_en, clock_12_5_en,
+    input clk, reset, sym_clk_en, sam_clk_en, bit_rate_en,
 							input [1:0] sw,
                     input signed [17:0] x_in, //1s17
-                    output reg signed [17:0] y, y1, //1s17);
-						  output reg signed [35:0] y2,
-						  output reg counter
+                    output reg signed [17:0] y //, y1, //1s17);
+						  //output reg signed [35:0] y2,
+						  //output reg counter
 );
 
-//reg signed [17:0] y1;
-//reg signed [35:0] y2;
-//reg counter;
+reg signed [17:0] y1;
+reg signed [35:0] y2;
+reg counter;
 // inputs
 reg signed [17:0] x[3:0]; // 1s17
 //reg signed [17:0] x_delay;
@@ -29,7 +29,7 @@ always @ (posedge clk or posedge reset)
     if(reset)
         x[0] <= 18'sd0;
     
-    else if(sam_clk_en)
+    else if(bit_rate_en)
         x[0] <= x_in;
     else
         x[0] <= x[0];
@@ -39,7 +39,7 @@ always @ (posedge clk or posedge reset)
     if(reset)
         for(i=1; i < 4; i = i+1)
             x[i] <= 18'sd0;
-    else if (sam_clk_en)
+    else if (bit_rate_en)
         for(i=1; i < 4; i = i+1)
             x[i] <= x[i-1];
     else
@@ -71,7 +71,7 @@ always @ *// (posedge clk)
 always @ (posedge clk or posedge reset)
     if(reset)
         counter <= 1'b0;
-	else if(sam_clk_en)
+	else if(bit_rate_en)
 		counter <= 1'b0;
     else //if(clock_12_5_en)
         counter <= counter + 1'b1;

@@ -1,5 +1,5 @@
 module halfband_filter_interp(
-    input clk, reset, sym_clk_en, sam_clk_en, clock_12_5_en,
+    input clk, reset, sym_clk_en, sam_clk_en, bit_rate_en,
 							input [1:0] sw,
                     input signed [17:0] x_in, //1s17
                     output reg signed [17:0] y //1s17);
@@ -43,7 +43,7 @@ always @ (posedge clk or posedge reset)
 
 // filter 1
 always @ (posedge clk)
-    if(clock_12_5_en)
+    if(bit_rate_en)
     y1 = x[2] >>> 1;
 
 // filter 2
@@ -57,23 +57,13 @@ always @ *
 always @ *//(posedge clk)
     y2 = h_mult*x_mult;
 
-// reg signed [35:0] y2_delay;
-// always @ (posedge clk)
-//     if (clock_12_5_en)
-//         y2_delay = y2;
-// always @ *
-//     h3_out = h3 * h3_in; // 2s34
-
-// always @ *
-//     h1_out = h1 * h1_in; //2s34
-
 // accumulator
 always @ (posedge clk)
     if(reset)
         y2_acc <= y2;
     else if (counter_lpf == 1'b1)
         y2_acc <= y2;
-    else if(clock_12_5_en)
+    else if(bit_rate_en)
         y2_acc <= y2_acc + y2;
     else
         y2_acc <= y2_acc;
@@ -91,7 +81,7 @@ always @ (posedge clk or posedge reset)
         counter <= 1'b1;
 	else if(sam_clk_en)
 			counter <= 1'b1;
-    else if(clock_12_5_en)
+    else if(bit_rate_en)
         counter <= counter + 1'b1;
     else
         counter <= counter;
@@ -101,7 +91,7 @@ always @ (posedge clk or posedge reset)
         counter_lpf <= 1'd1;
     else if (sam_clk_en)
         counter_lpf <= 1'd1;
-    else if (clock_12_5_en)
+    else if (bit_rate_en)
         counter_lpf <= counter_lpf + 1'd1;
     else
         counter_lpf <= counter_lpf;
@@ -137,7 +127,7 @@ begin
 end
 
 always @ (posedge clk)
-    if(clock_12_5_en)
+    if(bit_rate_en)
         y <= y_delay;
 
 

@@ -372,7 +372,8 @@ for M_lpf = 8:Nsps:100
     % filter after carrier shift
     M_down = 2;
     % h_lpf3 = h_lpf2;
-    h_rx_down_1 = downsample(conv(h_up_conv2, h_lpf), M_down);
+    h_up_conv_conv = conv(h_up_conv2, h_lpf);
+    h_rx_down_1 = downsample(h_up_conv_conv, M_down);
     
     H_rx_down_1 = abs(freqz(h_rx_down_1, 1, 2*pi*f));
     
@@ -464,6 +465,10 @@ h_tx_conv_up_conv = conv(h_tx_conv_up, h_lpf);
 
 h_lpf_up = upsample(h_tx_conv_up_conv, L);
 h_lpf_up_conv = conv(h_lpf_up, h_lpf);
+
+% NCO_1
+h_lpf_up_conv(2:2:end) = 0;
+
 h_lpf_up_conv_conv = conv(h_lpf_up_conv, h_lpf);
 h_lpf_up_conv_conv_down = downsample(h_lpf_up_conv_conv,L);
 h_lpf_up_conv_conv_down_conv = conv(h_lpf_up_conv_conv_down, h_lpf);
