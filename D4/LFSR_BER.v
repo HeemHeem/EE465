@@ -1,14 +1,16 @@
-module LFSR(
+module LFSR_BER
 	input wire clk,
 	input wire sam_clk_ena,
+	input wire d0,
 	input wire load_data,
 	output reg [21:0] q,
 	output reg [1:0] I_sym, Q_sym,
-	output reg [21:0] LFSR_Counter
+	output reg [21:0] LFSR_Counter,
+	output reg feedback
 
 );
 wire [21:0] data;
-reg d0;
+// reg d0;
 //(* noprune *) reg [21:0] counter;
 
 	
@@ -26,7 +28,7 @@ always @ (posedge clk)
 
 // feedback network
 always @ *
-	d0 = q[21]^((q[18]^(q[17]^q[16]))); // maximum value when qx = q4
+	feedback = q[21]^((q[18]^(q[17]^q[16]))); // maximum value when qx = q4
 	
 // counter
 always @ (posedge clk)
