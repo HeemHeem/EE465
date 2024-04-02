@@ -1,11 +1,8 @@
-module paralle_to_serial(
+module parallel_to_serial(
     input wire clk, sam_clk_en, reset
-    input wire [1:0] from_slicer_I, from_slice_Q,
+    input wire [1:0] from_slicer_I, from_slicer_Q,
 
     output reg p_to_s
-
-
-
 );
 
 reg [1:0] counter;
@@ -30,7 +27,5 @@ begin
         2'd1: p_to_s = from_slicer_Q[0];
         2'd2: p_to_s = from_slice_I[1];
         2'd3: p_to_s = from_slice_I[0];
-        
-
     endcase
 end
