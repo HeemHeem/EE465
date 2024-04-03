@@ -1,14 +1,16 @@
 module BER(
-    input sys_clk, sam_clk_en, sym_clk_en, KEY,
+    input sys_clk, sam_clk_en, sym_clk_en, KEY, reset,
     input [1:0] slicer_in_I, slicer_in_Q,
 
-    output [21:0] error_count // 22 bits instead of 21 because we are using both I and Q
+    output reg [21:0] error_count // 22 bits instead of 21 because we are using both I and Q
 
 
 );
 
-reg detect_errors, p_to_s, initialize, initialize_position, d0, error, error_ena, roll_over;
-reg [21:0] q;
+reg  initialize, initialize_position, d0, error, error_ena, roll_over;
+wire detect_errors, p_to_s;
+reg zero_reached_last_register_so_force_switch, initialize_position_ena;
+wire [21:0] q;
 reg [19:0] counter;
 
 // counter logic
@@ -35,13 +37,13 @@ always @ *
 
 // error counter
 always @ (posedge sys_clk)
-    if(roll_over)
+    if(roll_over || reset)
         error_count <= 22'd0; // clear
     
     else if(error_ena)
         error_count <= error_count + 22'd1;
     else
-        error_counter <= error_count;
+        error_count <= error_count;
 
 
 // error
@@ -60,14 +62,28 @@ end
 
 
 // initialize
-always @ (posedge clk)
+always @ (posedge sys_clk)
     if(~KEY)
         initialize <= 1'b1;
     else
         initialize <= 1'b0;
 
 
+// zero reached last register so force switch to detect errors
+always @ *
+    zero_reached_last_register_so_force_switch = ~q[21];
+
+
 // initialize position
+always @ (posedge sys_clk)
+    if(reset)
+        initialize_position <= 1'b0;
+    else if(zero_reached_last_register_so_force_switch || initialize)
+        initialize_position <= initialize;
+    else
+        initialize_position <= initialize_position;
+
+
 
 
 //Parallel to serial circuit
@@ -75,14 +91,14 @@ parallel_to_serial p2s(
     .clk(sys_clk),
     .reset(reset),
     .sam_clk_en(sam_clk_en),
-    .from_slice_I(slicer_in_I),
-    .from_slicer_Q(slicer_in_q),
+    .from_slicer_I(slicer_in_I),
+    .from_slicer_Q(slicer_in_Q),
     .p_to_s(p_to_s)
 
 );
 
 LFSR_BER lfsr_ber(
-    .clk(sys_clk)
+    .clk(sys_clk),
     .sam_clk_ena(sam_clk_en),
     .d0(d0),
     .load_data(initialize),

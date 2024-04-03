@@ -1,4 +1,4 @@
-module LFSR_BER
+module LFSR_BER (
 	input wire clk,
 	input wire sam_clk_ena,
 	input wire d0,

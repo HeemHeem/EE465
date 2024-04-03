@@ -1,12 +1,13 @@
 module Deliverable_4(
 	input [17:0] PHYS_SW,
+	input [3:0] PHYS_KEY,
 	input CLOCK_50,
 	//output wire [21:0] q, LFSR_Counter,
-	output wire [1:0] I_sym, Q_sym, I_slice_out, symb_a, //LFSR_2_BITS
+	output wire [1:0] I_sym, Q_sym, I_slice_out, symb_a, Q_slice_out, //LFSR_2_BITS
  	output wire sys_clk, sam_clk_ena, sym_clk_ena, sym_correct, sym_error, clock_12_5_ena,
-	output reg clear_accumulator,
+	//output reg clear_accumulator,
 	output wire [3:0] clk_phase,
-	output wire signed [17:0] I_reference_level, I_decision_variable,  I_error, I_b, I_tx_out, Q_tx_out, I_NCO_out_tx, Q_NCO_out_tx,//errorless_decision_variable, error_by_system, // 1s17
+	output wire signed [17:0] I_reference_level, I_decision_variable,  I_error, I_b, I_tx_out, I_NCO_out_tx,//errorless_decision_variable, error_by_system, // 1s17
 	
 	output wire [39:0] I_mapper_out_power, //4s36
 	//output wire [37:0] accumulator, absolute_value, acc_counter,
@@ -18,6 +19,7 @@ module Deliverable_4(
 	// accumulated_dc_error
 	//output wire signed [35:0] acc_dc,
 	output wire signed [35:0] I_accumulated_error, // -1s37
+	output wire [21:0] error_count,
 	
 	
 	// filters
@@ -48,8 +50,13 @@ module Deliverable_4(
 
 
 );
+wire signed [17:0] Q_tx_out, Q_NCO_out_tx;
+wire [39:0] Q_mapper_out_power; //4s36
+wire signed [39:0] Q_accumulated_squared_error; // -4u34
+wire signed [35:0] Q_accumulated_error; // -1s37
 wire [21:0] q, LFSR_Counter;
-wire signed [17:0] channel_out, channel_out_delay, I_NCO_out_rx, Q_NCO_out_rx, I_mapper_out; //1s17
+wire signed [17:0] channel_out, channel_out_delay, I_NCO_out_rx, Q_NCO_out_rx, I_mapper_out, Q_mapper_out; //1s17
+wire signed [17:0] Q_error; //1s17
 wire [37:0] accumulator, absolute_value, acc_counter;
 wire signed [35:0] acc_dc;
 wire [63:0] isi_in;
@@ -57,8 +64,9 @@ wire [49:0] acc_error;
 wire [35:0] sqr_error;
 wire [17:0] hb_interp1_out, hb_interp2_out, hb_interp2_out_delay, hb_decim1_out, hb_decim2_out, hb_decim1_down, hb_decim2_down;
 
-reg signed [17:0] channel_out_scld, I_NCO_out_tx_scld, Q_NCO_out_tx_scld;
-
+reg signed [17:0] channel_out_scld, I_NCO_out_tx_scld, Q_NCO_out_tx_scld; 
+wire signed [17:0] Q_decision_variable, Q_b, Q_reference_level;
+reg clear_accumulator;
 /************************
 			Set up DACs
 		*/
@@ -222,14 +230,14 @@ NCO_1 nco1_tx(
 	.NCO_sin(Q_NCO_out_tx)
 );
 
-always @ *
-	I_NCO_out_tx_scld = I_NCO_out_tx <<<1;
+//always @ *
+//	I_NCO_out_tx_scld = I_NCO_out_tx <<<1;
+//
+//always @ *
+//	Q_NCO_out_tx_scld = Q_NCO_out_tx <<<1;
 
 always @ *
-	Q_NCO_out_tx_scld = Q_NCO_out_tx <<<1;
-
-always @ *
-	tx_out = I_NCO_out_tx_scld + Q_NCO_out_tx_scld;
+	tx_out = I_NCO_out_tx + Q_NCO_out_tx;
 
 
 adjacent_channel adj_chan(
@@ -250,7 +258,7 @@ adjacent_channel adj_chan(
 );
 
 always @ *
-	channel_out_scld = channel_out <<<1;
+	channel_out_scld = channel_out<<<2;
 
 
 filter_delay #(.DELAY(10)) NCO_rx_in_delay(
@@ -287,6 +295,19 @@ RF_Channel_RX I_channel_rx(
 	.decision_variable(I_decision_variable)	
 );
 
+RF_Channel_RX Q_channel_rx(
+	.sys_clk(sys_clk),
+	.sam_clk_ena(sam_clk_ena),
+	.sym_clk_ena(sym_clk_ena),
+	.clock_12_5_ena(clock_12_5_ena),
+	.reset(PHYS_SW[17]),
+	.sig_in(Q_NCO_out_rx),
+	.delay_chain1(isi_in[27:24]),
+	.delay_chain2(isi_in[31:28]),
+	.delay_chain3(isi_in[35:32]),
+	.decision_variable(Q_decision_variable)	
+);
+
 
 reference_level_and_error I_ref_and_err(
 	.sys_clk(sys_clk),
@@ -301,6 +322,22 @@ reference_level_and_error I_ref_and_err(
 	.mapper_out(I_mapper_out),
 	.error(I_error)	
 );
+
+reference_level_and_error Q_ref_and_err(
+	.sys_clk(sys_clk),
+	.sam_clk_ena(sam_clk_ena),
+	.sym_clk_ena(sym_clk_ena),
+	.clock_12_5_ena(clock_12_5_ena),
+	.reset(PHYS_SW[17]),
+	.reference_level(Q_reference_level),
+	.decision_variable(Q_decision_variable),
+	.slice_out(Q_slice_out),
+	.b(Q_b),
+	.mapper_out(Q_mapper_out),
+	.error(Q_error)	
+);
+
+
 
 
 symbol_comparison I_sym_comp(
@@ -331,6 +368,47 @@ MER_circuit I_MER(
 	.accumulated_error(I_accumulated_error),
 	.reference_level(I_reference_level)
 );
+
+
+
+
+MER_circuit Q_MER(
+	.sys_clk(sys_clk),
+	.sam_clk_ena(sam_clk_ena),
+	.sym_clk_ena(sym_clk_ena),
+	.clock_12_5_ena(clock_12_5_ena),
+	.reset(PHYS_SW[17]),
+	.clear_accumulator(clear_accumulator),
+	.decision_variable(Q_decision_variable),
+	.error(Q_error),
+	.mapper_out_power(Q_mapper_out_power),
+	.accumulated_squared_error(Q_accumulated_squared_error),
+	.accumulated_error(Q_accumulated_error),
+	.reference_level(Q_reference_level)
+);
+
+
+BER ber(
+
+	.sys_clk(sys_clk),
+	.sam_clk_en(sam_clk_ena),
+	.sym_clk_en(sym_clk_ena),
+	.KEY(PHYS_KEY[0]),
+	.slicer_in_I(I_slice_out),
+	.slicer_in_Q(Q_slice_out),
+	.error_count(error_count)
+
+);
+
+
+
+
+
+
+
+
+
+
 
 
 

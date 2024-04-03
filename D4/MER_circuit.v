@@ -10,7 +10,7 @@ module MER_circuit(
 
 );
 
-wire [37:0] accumulator, absolute_value, acc_counter;
+wire [38:0] accumulator, absolute_value, acc_counter;
 wire signed [35:0] acc_dc;
 wire [35:0] sqr_error;
 wire [49:0] acc_error;
