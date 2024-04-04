@@ -15,7 +15,7 @@ reg [19:0] counter;
 
 // counter logic
 always @ (posedge sys_clk)
-    if(reset)
+    if(~reset)
         counter <= 20'd0;
     else if(sym_clk_en)
         counter <= counter + 20'd1;
@@ -37,7 +37,7 @@ always @ *
 
 // error counter
 always @ (posedge sys_clk)
-    if(roll_over || reset)
+    if(roll_over || ~reset)
         error_count <= 22'd0; // clear
     
     else if(error_ena)
@@ -76,9 +76,9 @@ always @ *
 
 // initialize position
 always @ (posedge sys_clk)
-    if(reset)
-        initialize_position <= 1'b0;
-    else if(zero_reached_last_register_so_force_switch || initialize)
+    // if(~reset)
+    //     initialize_position <= 1'b0;
+    if(zero_reached_last_register_so_force_switch || initialize)
         initialize_position <= initialize;
     else
         initialize_position <= initialize_position;
@@ -89,8 +89,9 @@ always @ (posedge sys_clk)
 //Parallel to serial circuit
 parallel_to_serial p2s(
     .clk(sys_clk),
-    .reset(reset),
+    .reset(~reset),
     .sam_clk_en(sam_clk_en),
+    .sym_clk_en(sym_clk_en),
     .from_slicer_I(slicer_in_I),
     .from_slicer_Q(slicer_in_Q),
     .p_to_s(p_to_s)

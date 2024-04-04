@@ -394,6 +394,7 @@ BER ber(
 	.sam_clk_en(sam_clk_ena),
 	.sym_clk_en(sym_clk_ena),
 	.KEY(PHYS_KEY[0]),
+	.reset(PHYS_KEY[0]),
 	.slicer_in_I(I_slice_out),
 	.slicer_in_Q(Q_slice_out),
 	.error_count(error_count)

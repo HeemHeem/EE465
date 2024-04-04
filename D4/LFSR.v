@@ -26,7 +26,7 @@ always @ (posedge clk)
 
 // feedback network
 always @ *
-	d0 = q[21]^((q[18]^(q[17]^q[16]))); // maximum value when qx = q4
+	d0 = q[21]^q[20];//q[21]^((q[18]^(q[17]^q[16]))); // maximum value when qx = q4
 	
 // counter
 always @ (posedge clk)
