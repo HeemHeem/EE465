@@ -122,6 +122,9 @@ MER isi_probes(
 );
 
 
+
+
+
 reg [10:0] counter_imp;
 reg [17:0] mux_out, periodic_impulse;
 
@@ -253,12 +256,15 @@ adjacent_channel adj_chan(
 	.NCO_in_delay_chain(isi_in[15:12]),
 	.NCO_out_delay_chain(isi_in[19:16]),
 	.sig_in(tx_out), // NCO out
-	.sig_out(channel_out)
+	.sig_out(channel_out),
+	//.reset_n(PHYS_SW[3]),
+	.base_channel_on_off(PHYS_SW[15]),
+	.gain_sel(PHYS_SW[1:0])
 
 );
 
 always @ *
-	channel_out_scld = channel_out<<<2;
+	channel_out_scld = channel_out>>>1;//<<<1;
 
 
 filter_delay #(.DELAY(10)) NCO_rx_in_delay(
