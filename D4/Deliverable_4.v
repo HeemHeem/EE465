@@ -64,8 +64,8 @@ wire [49:0] acc_error;
 wire [35:0] sqr_error;
 wire [17:0] hb_interp1_out, hb_interp2_out, hb_interp2_out_delay, hb_decim1_out, hb_decim2_out, hb_decim1_down, hb_decim2_down;
 
-reg signed [17:0] channel_out_scld, I_NCO_out_tx_scld, Q_NCO_out_tx_scld; 
-wire signed [17:0] Q_decision_variable, Q_b, Q_reference_level;
+reg signed [17:0] channel_out_scld, I_NCO_out_tx_scld, Q_NCO_out_tx_scld, test_point1, test_point2, test_out, test_points; 
+wire signed [17:0]  test_point3a, test_point3b, Q_decision_variable, Q_b, Q_reference_level;
 reg clear_accumulator;
 /************************
 			Set up DACs
@@ -81,14 +81,14 @@ reg clear_accumulator;
 		
 	always@ (posedge sys_clk)// convert 1s13 format to 0u14
 							//format and send it to DAC A
-	DAC_DA = {~channel_out_scld[17],
-					channel_out_scld[16:4]};	
+	DAC_DA = {~test_out[17],
+					test_out[16:4]};	
 			
 	always@ (posedge sys_clk) // DAC B is not used in this
 					// lab so makes it the same as DAC A
 				
-		DAC_DB = {~channel_out_scld[17],
-					channel_out_scld[16:4]};	
+		DAC_DB = {~test_out[17],
+					test_out[16:4]};	
 		/*  End DAC setup
 		************************/
 
@@ -114,7 +114,20 @@ assign ADC_CLK_A = sys_clk;
 		/*  End ADC setup
 		************************/	
 
+/*****************************TEST POINT CHANNEL OUTPUTS************************/
+always @ *
+	begin
+		case(PHYS_SW[6:5])
+		2'd0: test_points = test_point1;
+		2'd1: test_points = test_point2;
+		2'd2: test_points = test_point3a;
+		2'd3: test_points = test_point3b;
+		endcase
+	end
 
+always @ *
+	test_out = test_points;
+/*******************************************************************************/
 
 MER isi_probes(
 .probe(isi_in),
@@ -242,6 +255,9 @@ NCO_1 nco1_tx(
 always @ *
 	tx_out = I_NCO_out_tx + Q_NCO_out_tx;
 
+always @ *
+	test_point1 = tx_out;
+
 
 adjacent_channel adj_chan(
 	.sys_clk(sys_clk),
@@ -265,6 +281,9 @@ adjacent_channel adj_chan(
 
 always @ *
 	channel_out_scld = channel_out>>>1;//<<<1;
+
+always @ *
+	test_point2 = channel_out;
 
 
 filter_delay #(.DELAY(10)) NCO_rx_in_delay(
@@ -298,7 +317,9 @@ RF_Channel_RX I_channel_rx(
 	.delay_chain1(isi_in[27:24]),
 	.delay_chain2(isi_in[31:28]),
 	.delay_chain3(isi_in[35:32]),
-	.decision_variable(I_decision_variable)	
+	.decision_variable(I_decision_variable),
+	.test_point3a(test_point3a),
+	.test_point3b(test_point3b)	
 );
 
 RF_Channel_RX Q_channel_rx(
@@ -406,286 +427,6 @@ BER ber(
 	.error_count(error_count)
 
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-// upsampler upsam(
-// 	.sys_clk(sys_clk),
-// 	.sym_clk_en(sym_clk_ena),
-// 	.sam_clk_en(sam_clk_ena),
-// 	.reset(PHYS_SW[0]),
-// 	.symb_in(symbol_into_upsam),
-// 	.sig_out(symbol_into_filter)
-
-// );
-
-// tx_pract_filter2 pract(
-
-// 	.clk(sys_clk),
-// 	.reset(PHYS_SW[0]),
-// 	.sym_clk_en(sym_clk_ena),
-// 	.sam_clk_en(sam_clk_ena),
-// 	.x_in(symbol_into_filter),
-// 	.y(tx_out)
-
-// );
-
-//  //halfband interpolator
-// halfband_filter_interp interp1(
-// 	.clk(sys_clk),
-// 	.reset(PHYS_SW[0]),
-// 	.sym_clk_en(sym_clk_ena),
-// 	.sam_clk_en(sam_clk_ena),
-// 	.bit_rate_en(clock_12_5_ena),
-// 	//.x_in(periodic_impulse),
-// 	.x_in(tx_out),
-// 	.y(hb_interp1_out)
-
-
-// );
-
-// halfband_filter_interp2 interp2(
-// 	.clk(sys_clk),
-// 	.reset(PHYS_SW[0]),
-// 	.sym_clk_en(sym_clk_ena),
-// 	.sam_clk_en(sam_clk_ena),
-// 	.bit_rate_en(clock_12_5_ena),
-// 	.x_in(hb_interp1_out),
-// 	//.x_in(p_delay),
-// 	.y(hb_interp2_out)
-// 	//.y2(y2),
-// 	//.y1(y1),
-// 	//.counter(count)
-
-
-// );
-
-
-// filter_delay #(.DELAY(10)) hb1_interp_delay(
-// 	.sys_clk(sys_clk),
-// 	.reset(PHYS_SW[0]),
-// 	.sam_clk_en(1'b1),
-// 	.sig_in(hb_interp2_out),
-// 	.sig_out(hb_interp2_out_delay),
-// 	.delay_change(isi_in[19:16])
-
-// );
-
-
-// halfband_filter_decim_poly decim1(
-// 	.clk(sys_clk),
-// 	.reset(PHYS_SW[0]),
-// 	.sym_clk_en(sym_clk_ena),
-// 	.sam_clk_en(sam_clk_ena),
-// 	.bit_rate_en(clock_12_5_ena),
-// 	.x_in(hb_interp2_out_delay),
-// 	.y(hb_decim1_out)
-// 	//.y2(y2)
-
-
-// );
-
-
-// filter_delay #(.DELAY(10)) hb1_decim_delay(
-// 	.sys_clk(sys_clk),
-// 	.reset(PHYS_SW[0]),
-// 	.sam_clk_en(clock_12_5_ena),
-// 	.sig_in(hb_decim1_out),
-// 	.sig_out(hb_decim1_down),
-// 	.delay_change(isi_in[11:8])
-
-// );
-
-
-
-
-// halfband_filter_decim decim2(
-// 	.clk(sys_clk),
-// 	.reset(PHYS_SW[0]),
-// 	.sym_clk_en(sym_clk_ena),
-// 	.sam_clk_en(sam_clk_ena),
-// 	.bit_rate_en(clock_12_5_ena),
-// 	.x_in(hb_decim1_down),
-// 	.y(hb_decim2_out)
-
-
-// );
-
-
-// filter_delay #(.DELAY(10)) hb2_decim_delay(
-// 	.sys_clk(sys_clk),
-// 	.reset(PHYS_SW[0]),
-// 	.sam_clk_en(sam_clk_ena),
-// 	.sig_in(hb_decim2_out),
-// 	.sig_out(hb_decim2_down),
-// 	.delay_change(isi_in[15:12])
-
-// );
-// //tx_gs_filter2 gs(
-// //
-// //	.clk(sys_clk),
-// //	.reset(~load_data),
-// //	.sym_clk_en(sym_clk_ena),
-// //	.sam_clk_en(sam_clk_ena),
-// //	.x_in(symbol_into_filter),
-// //	.y(tx_out)
-// //
-// //);
-
-// rx_gs_filter filt2(
-
-// 	.clk(sys_clk),
-// 	.reset(PHYS_SW[0]),
-// 	.sym_clk_en(sym_clk_ena),
-// 	.sam_clk_en(sam_clk_ena),
-// 	.x_in(hb_decim2_down),
-// 	.y(y_into_delay)
-// 	//.y(decision_variable)
-// );
-
-
-// //test_timesharing5 filt2(
-// //
-// //	.clk(sys_clk),
-// //	.reset(~load_data),
-// //	.sym_clk_en(sym_clk_ena),
-// //	.sam_clk_en(sam_clk_ena),
-// //	.x_in(tx_out),
-// //	.y(y_into_delay),
-// //	.counter(time_share_counter)
-// //	//.y(decision_variable)
-// //);
-
-
-// filter_delay #(.DELAY(10)) filt_delay(
-// 	.sys_clk(sys_clk),
-// 	.reset(PHYS_SW[0]),
-// 	.sam_clk_en(sam_clk_ena),
-// 	.sig_in(y_into_delay),
-// 	.sig_out(y_into_down_sam),
-// 	.delay_change(isi_in[3:0])
-
-// );
-
-
-// downsampler downsam(
-
-// 	.sys_clk(sys_clk),
-// 	.sym_clk_en(sym_clk_ena),
-// 	.sam_clk_en(sam_clk_ena),
-// 	.reset(PHYS_SW[0]),
-// 	.sig_in(y_into_down_sam),
-// 	.sym_out(decision_variable)
-
-// );
-
-// //DUT_for_MER_measurement SUT(
-// //
-// //	.clk(sys_clk),
-// //	.clk_en(sym_clk_ena),
-// //	.reset(load_data),
-// //	 //.isi_power(18'sd9268), //20dB
-// //	// .isi_power(18'sd293), //50 dB
-// //	//.isi_power(18'sd165), //55dB
-// //	.isi_power(isi_in),
-// //	.in_data(symbol_into_filter),
-// //	.decision_variable(decision_variable),
-// //	.errorless_decision_variable(errorless_decision_variable),
-// //	.error(error_by_system)
-// //
-// //);
-
-
-
-
-// magnitude_estimate mag_est(
-
-// 	.clk(sys_clk),
-// 	.sym_clk_ena(sym_clk_ena),
-// 	.clear_accumulator(clear_accumulator),
-// 	.decision_variable(decision_variable),
-// 	.reference_level(reference_level),
-// 	.mapper_out_power(mapper_out_power),
-// 	.accumulator(accumulator),
-// 	//.b(b),
-// 	.absolute_value(absolute_value),
-// 	.acc_counter(acc_counter)
-
-// );
-
-// slicer slice(
-// 	.reference_level(reference_level),
-// 	.decision_variable(decision_variable),
-// 	.slice_out(slice_out)
-
-// );
-
-
-// delay dl(
-// 	.sym_clk_en(sym_clk_ena),
-// 	.sam_clk_en(sam_clk_ena),
-// 	.sig_in(LFSR_2_BITS),
-// 	.symb_a(symb_a),
-// 	.sys_clk(sys_clk),
-// 	.delay_change(isi_in[7:4])
-// );
-
-// comparator comp(
-// 	.sym_clk_ena(sym_clk_ena),
-// 	.symb_a(symb_a),
-// 	.symb_b(slice_out),
-// 	.sym_correct(sym_correct),
-// 	.sym_error(sym_error),
-// 	.clk(sys_clk)
-// );
-
-
-// output_mapper out_map(
-// 	.reference_level(reference_level),
-// 	.slice_in(slice_out),
-// 	.mapper_out(mapper_out),
-// 	.b(b)
-// );
-
-// decision_error	dec_err(
-// 	.clk(sys_clk),
-// 	.sym_clk_ena(sym_clk_ena),
-// 	.decision_variable(decision_variable),
-// 	.mapper_out(mapper_out),
-// 	.error(error)
-// );
-
-// average_accumulated_squared_error acc_sq_err(
-// 	.clk(sys_clk),
-// 	.clear_accumulator(clear_accumulator),
-// 	.sym_clk_ena(sym_clk_ena),
-// 	.error(error),
-// 	.acc_error(acc_error),
-// 	.sqr_error(sqr_error),
-// 	.accumulated_squared_error(accumulated_squared_error)
-// );
-
-// accumulated_dc_error acc_dc_error(
-// 	.clk(sys_clk),
-// 	.sym_clk_ena(sym_clk_ena),
-// 	.clear_accumulator(clear_accumulator),
-// 	.error(error),
-// 	.acc(acc_dc),
-// 	.accumulated_error(accumulated_error)
-// );
-
-
-
 
 
 

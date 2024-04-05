@@ -136,7 +136,7 @@ always @ *
 
 //multiply
 always @ *
-	sig_times_gain = sum1 * gain_out; // 2s16*4s14 = 6s30
+	sig_times_gain = (sum1 * gain_out)>>> 1; // 2s16*4s14 = 6s30
 
 
 always @ *

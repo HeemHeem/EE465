@@ -532,3 +532,4 @@ stem(round(h_lpf  *2^17));
 figure(20)
 stem(round(h_uplpf_downlpf_conv *2^17));
 
+freqz(h_tx_conv_up_conv, 1, 2*pi*f)

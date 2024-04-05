@@ -5,7 +5,8 @@ module RF_Channel_RX(
     input wire signed [17:0] sig_in, //1s17
     
     //output wire [1:0] mapper_out,
-    output wire signed [17:0] decision_variable //1s17
+    output wire signed [17:0] decision_variable,  //1s17
+	 output reg signed [17:0] test_point3a, test_point3b
 
 );
 
@@ -34,7 +35,8 @@ filter_delay #(.DELAY(10)) hb1_decim_delay(
 	.delay_change(delay_chain1)
 
 );
-
+always @ *
+	test_point3a = hb_decim1_down;
 
 halfband_filter_decim decim2(
 	.clk(sys_clk),
@@ -59,6 +61,8 @@ filter_delay #(.DELAY(10)) hb2_decim_delay(
 
 );
 
+always @ *
+	test_point3b = hb_decim2_down;
 
 rx_gs_filter filt2(
 
